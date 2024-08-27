@@ -1,0 +1,765 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Classroom/Venue Management System API",
+    "description": "API documentation for the Classroom/Venue Management System.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://wiman.azurewebsites.net",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    },
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Venues",
+      "description": "Operations related to venues"
+    },
+    {
+      "name": "Bookings",
+      "description": "Operations related to booking venues"
+    },
+    {
+      "name": "Maintenance",
+      "description": "Operations related to maintenance issues"
+    },
+    {
+      "name": "Notifications",
+      "description": "Operations related to notifications for users"
+    },
+    {
+      "name": "Admin",
+      "description": "Administrative operations"
+    },
+    {
+      "name": "Users",
+      "description": "User-related operations"
+    }
+  ],
+  "paths": {
+    "/venues/{venueId}/availability": {
+      "get": {
+        "tags": [
+          "Venues"
+        ],
+        "summary": "Get availability calendar for a venue",
+        "description": "Retrieve the availability calendar for a specific venue across different dates.",
+        "operationId": "venuesVenueIdAvailabilityGET",
+        "parameters": [
+          {
+            "name": "venueId",
+            "in": "path",
+            "description": "ID of the venue",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Availability calendar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Availability"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Venue not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/bookings": {
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Book a venue",
+        "description": "Book a specific venue for a user.",
+        "operationId": "bookingsPOST",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Booking confirmed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/bookings/{bookingId}": {
+      "delete": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Cancel a booking",
+        "description": "Cancel an existing booking by booking ID.",
+        "operationId": "bookingsBookingIdDELETE",
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "ID of the booking",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Booking cancelled"
+          },
+          "404": {
+            "description": "Booking not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance": {
+      "post": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Report a maintenance issue",
+        "description": "Report a maintenance issue for a specific venue.",
+        "operationId": "maintenancePOST",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaintenanceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Maintenance issue reported",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Maintenance"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance/{issueId}": {
+      "patch": {
+        "tags": [
+          "Maintenance"
+        ],
+        "summary": "Update maintenance issue status",
+        "description": "Update the status of a maintenance issue (e.g., In Progress, Completed).",
+        "operationId": "maintenanceIssueIdPATCH",
+        "parameters": [
+          {
+            "name": "issueId",
+            "in": "path",
+            "description": "ID of the maintenance issue",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaintenanceUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Maintenance issue status updated"
+          },
+          "404": {
+            "description": "Maintenance issue not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Get notifications for a user",
+        "description": "Retrieve all notifications related to bookings, maintenance issues, and more for a specific user.",
+        "operationId": "notificationsGET",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "ID of the user",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/bookings": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get booking history",
+        "description": "Retrieve the booking history for a specific user.",
+        "operationId": "usersUserIdBookingsGET",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User booking history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/schedule": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update academic schedule",
+        "description": "Update the academic schedule in the system to ensure classroom availability.",
+        "operationId": "adminSchedulePOST",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Schedule updated"
+          },
+          "400": {
+            "description": "Invalid file format"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/reports": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Generate usage reports",
+        "description": "Generate reports on room usage, booking trends, and maintenance issues.",
+        "operationId": "adminReportsGET",
+        "parameters": [
+          {
+            "name": "reportType",
+            "in": "query",
+            "description": "Type of report (e.g., usage, booking, maintenance)",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid report type"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/blackout-periods": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Set blackout periods for venues",
+        "description": "Set blackout periods for specific venues during maintenance or renovations.",
+        "operationId": "adminBlackout_periodsPOST",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlackoutPeriod"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Blackout period set"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/users/{userId}/ban": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Ban a user",
+        "description": "Ban a user from the system based on behavior or violation of terms.",
+        "operationId": "adminUsersUserIdBanPOST",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BanUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "User banned"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Availability": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeSlots": {
+            "type": "array",
+            "description": "List of available time slots for the venue on the given date.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": {
+          "date": "2000-01-01T00:00:00.000Z",
+          "timeSlots": [
+            "timeSlots",
+            "timeSlots"
+          ]
+        }
+      },
+      "BookingRequest": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeSlot": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "venueId": "venueId",
+          "userId": "userId",
+          "date": "2000-01-01T00:00:00.000Z",
+          "timeSlot": "timeSlot"
+        }
+      },
+      "Booking": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeSlot": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "id",
+          "venueId": "venueId",
+          "userId": "userId",
+          "date": "2000-01-01T00:00:00.000Z",
+          "timeSlot": "timeSlot"
+        }
+      },
+      "MaintenanceRequest": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "issueDescription": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "venueId": "venueId",
+          "issueDescription": "issueDescription"
+        }
+      },
+      "Maintenance": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "issueDescription": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "id",
+          "venueId": "venueId",
+          "issueDescription": "issueDescription",
+          "status": "status"
+        }
+      },
+      "MaintenanceUpdate": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "status": "status"
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "id",
+          "type": "type",
+          "message": "message",
+          "userId": "userId",
+          "date": "2000-01-01T00:00:00.000Z"
+        }
+      },
+      "ScheduleUpdate": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "example": {
+          "file": "file"
+        }
+      },
+      "Report": {
+        "type": "object",
+        "properties": {
+          "reportType": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "reportType": "reportType",
+          "data": "data"
+        }
+      },
+      "BlackoutPeriod": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "venueId": "venueId",
+          "startDate": "2000-01-01T00:00:00.000Z",
+          "endDate": "2000-01-01T00:00:00.000Z"
+        }
+      },
+      "BanUser": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "reason": "reason"
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    }
+  }
+}
