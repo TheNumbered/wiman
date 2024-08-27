@@ -1,0 +1,18 @@
+{
+  "files.exclude": {
+    "**/.git**": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/eslint**": true,
+    "**/**config**": true,
+    "**/**lock**": true,
+    "**/**vite**": true,
+    //"**/**package**": true,
+    "**/**coverage**": true,
+    "**/**.prettier**": true
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  }
+}
