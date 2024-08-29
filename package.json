@@ -3,10 +3,43 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "frontend": "cd frontend && pnpm dev",
-    "backend": "cd backend && pnpm dev"
+    "frontend": "cd frontend && vite --host",
+    "backend": "cd backend && pnpm dev",
+    "test": "vitest --run",
+    "coverage": "vitest run --coverage",
+    "prepare": "husky",
+    "commitmsg": "commitlint -E HUSKY_GIT_PARAMS --no-install"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.0.0",
+    "@mui/material": "^6.0.0",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.0.5",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "husky": "^9.1.5",
+    "js-yaml": "^4.1.0",
+    "jsdom": "^24.1.1",
+    "mysql2": "^3.11.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
+    "supertest": "^7.0.0",
+    "swagger-ui-express": "^5.0.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.5"
+  }
 }

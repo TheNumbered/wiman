@@ -1,9 +1,8 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ComponentShowcase from './pages/component-show';
-import { useEffect, useState } from 'react';
 
 const App: React.FC = () => {
-
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {

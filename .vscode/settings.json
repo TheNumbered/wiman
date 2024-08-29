@@ -1,6 +1,6 @@
 {
   "files.exclude": {
-    //"**/.git**": true,
+    "**/.git**": true,
     "**/node_modules": true,
     "**/dist": true,
     "**/eslint**": true,
@@ -14,5 +14,9 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "always"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
