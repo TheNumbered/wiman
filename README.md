@@ -37,6 +37,7 @@ To configure the app, you need to set the following environment variables:
 ### Frontend Environment Variables
 
 - `VITE_API_URL`: The API URL for the backend server.
+- `VITE_CLERK_PUBLISHABLE_KEY`: The publishable key provided by (https://clerk.com/)
 
 ### Backend Environment Variables
 
@@ -45,6 +46,9 @@ To configure the app, you need to set the following environment variables:
 - `MYSQL_PASSWORD`: The password for the MySQL database.
 - `MYSQL_PORT`: The port of the MySQL database.
 - `MYSQL_USER`: The username for the MySQL database.
+- `CLERK_PUBLISHABLE_KEY`: The publishable key provided by (https://clerk.com/)
+- `CLERK_SECRET_KEY` : The secret key provided by (https://clerk.com/)
+- `API_KEY`: This the secret key (used by other apps)
 
 Make sure to set these environment variables before running the app.
 
@@ -65,9 +69,9 @@ Make sure to set these environment variables before running the app.
 
 This project was developed as part of the Software Design course at Wits University by the following team:
 
-Daniel Ngobe,
-Karabo Joshua,
-Kharendwe Negota,
-Theophilus Kgopa,
-Sisekelo Ngcobo,
-Aphile Bulube
+- Karabo Joshua Mofamere,
+- Daniel Ngobe,
+- Theophilus Kgopa,
+- Sisekelo Ngcobo,
+- Kharendwe Negota,
+- Aphile Bulube

@@ -1,25 +1,45 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ComponentShowcase from './pages/component-show';
+import { SignOutButton, useAuth } from '@clerk/clerk-react';
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import SignInPage from './pages/sign-in';
+import SignUpPage from './pages/sign-up';
 
 const App: React.FC = () => {
-  const [message, setMessage] = useState<string | null>(null);
+  const { isSignedIn, isLoaded } = useAuth();
 
-  useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setMessage(data.message);
-      });
-  }, []);
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<center>{message ?? 'Loading...'}</center>} />
-        <Route path="/components" element={<ComponentShowcase />} />
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+
+        {isSignedIn && (
+          <Route
+            element={
+              // change this to route layout
+              <>
+                <Outlet />
+              </>
+            }
+          >
+            <Route
+              path="/dashboard"
+              element={
+                <>
+                  <h1>Dashboard</h1>
+                  <SignOutButton />
+                </>
+              }
+            />
+          </Route>
+        )}
+        <Route
+          path="/"
+          element={isSignedIn ? <Navigate to={'/dashboard'} /> : <Navigate to={'/sign-in'} />}
+        />
         <Route path="*" element={<>No Route Found</>} />
       </Routes>
     </BrowserRouter>
