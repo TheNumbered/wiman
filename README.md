@@ -1,6 +1,14 @@
 # WIMan
 
+[![codecov](https://codecov.io/gh/TheNumbered/wiman/branch/master/graph/badge.svg?token=FCO8UJYASN)](https://codecov.io/gh/TheNumbered/wiman)
+
 The Classroom/Venue Management App simplifies classroom and venue assignments, bookings, and maintenance on campus. It integrates with academic calendars, offers a room booking system, and includes a maintenance issue reporting tool. Users can view availability via a visual calendar and receive notifications for bookings and updates. The app features a user-friendly dashboard, an admin interface for managing schedules and maintenance, and APIs for bookings, schedules, maintenance, notifications, and user management. The infrastructure ensures secure, scalable, and efficient space utilization on campus.
+
+<br/>
+
+## Code Coverage Graph
+
+<img src="https://codecov.io/gh/TheNumbered/wiman/graphs/icicle.svg?token=FCO8UJYASN"/>
 
 ## Getting Started
 
