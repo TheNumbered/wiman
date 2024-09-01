@@ -3,6 +3,8 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
+import { authRequest } from './middlewares/auth.js';
+import errorHandler from './middlewares/error-handler.js';
 import userRoutes from './routes/user-route.js';
 
 const app = express();
@@ -20,8 +22,11 @@ try {
 
 app.use('/api', userRoutes);
 
-app.get('/', (req, res) => {
+app.get('/', authRequest, (req, res) => {
   res.json({ message: 'Hello, world!' });
 });
+
+// Error handler middleware must be the last one
+app.use(errorHandler);
 
 export default app;
