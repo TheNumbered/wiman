@@ -51,7 +51,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: '20px',
-          borderRadius: 20,
+          // borderRadius: 20,
           boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
         },
       },
@@ -59,7 +59,7 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 20,
+          //borderRadius: 20,
           boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
         },
       },

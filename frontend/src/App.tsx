@@ -1,5 +1,6 @@
 import { SignOutButton, useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import Layout from './components/layout';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 
@@ -20,9 +21,9 @@ const App: React.FC = () => {
           <Route
             element={
               // change this to route layout
-              <>
+              <Layout>
                 <Outlet />
-              </>
+              </Layout>
             }
           >
             <Route
