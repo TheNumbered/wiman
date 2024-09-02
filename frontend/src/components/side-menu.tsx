@@ -31,42 +31,22 @@ const Sidemenu: React.FC = () => {
       <nav>
         <Box component="ul" p={0} m={0} sx={{ listStyle: 'none' }}>
           <Box component="li" mb={2}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="secondary"
-              sx={{ textAlign: 'left' }}
-            >
+            <Button fullWidth variant="contained" color="secondary" sx={{ textAlign: 'left' }}>
               Home
             </Button>
           </Box>
           <Box component="li" mb={2}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="secondary"
-              sx={{ textAlign: 'left' }}
-            >
+            <Button fullWidth variant="contained" color="secondary" sx={{ textAlign: 'left' }}>
               Booking
             </Button>
           </Box>
           <Box component="li" mb={2}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="secondary"
-              sx={{ textAlign: 'left' }}
-            >
+            <Button fullWidth variant="contained" color="secondary" sx={{ textAlign: 'left' }}>
               Activity
             </Button>
           </Box>
           <Box component="li" mb={2}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="secondary"
-              sx={{ textAlign: 'left' }}
-            >
+            <Button fullWidth variant="contained" color="secondary" sx={{ textAlign: 'left' }}>
               Profile
             </Button>
           </Box>

@@ -64,6 +64,28 @@ const theme = createTheme({
         },
       },
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 20,
+          '&.Mui-selected': {
+            background: '#f99326',
+            color: '#fff',
+          },
+          '&.Mui-selected:hover': {
+            background: '#d3893a',
+            color: '#fff',
+          },
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
+        },
+      },
+    },
   },
 });
 

@@ -1,7 +1,9 @@
-import { SignOutButton, useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import Dashboard from './pages/dashboard';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
+import BookVenueForm from './pages/venue-booking/book-venue-form';
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded } = useAuth();
@@ -25,15 +27,8 @@ const App: React.FC = () => {
               </>
             }
           >
-            <Route
-              path="/dashboard"
-              element={
-                <>
-                  <h1>Dashboard</h1>
-                  <SignOutButton />
-                </>
-              }
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/book" element={<BookVenueForm />} />
           </Route>
         )}
         <Route

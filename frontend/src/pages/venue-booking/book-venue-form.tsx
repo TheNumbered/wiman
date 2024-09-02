@@ -11,7 +11,7 @@ import {
   TextField,
   ToggleButton,
   ToggleButtonGroup,
-  Typography
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -81,7 +81,7 @@ const BookVenueForm: React.FC = () => {
   };
 
   const filterVenues = () => {
-    let filtered = venues.filter(venue => venue.type === category);
+    const filtered = venues.filter((venue) => venue.type === category);
     setFilteredVenues(filtered);
     if (capacity) {
       filterVenuesByCapacity(capacity);
@@ -91,12 +91,12 @@ const BookVenueForm: React.FC = () => {
   };
 
   const filterVenuesByCapacity = (capacity: number) => {
-    const filtered = filteredVenues.filter(venue => venue.venue_size >= capacity);
+    const filtered = filteredVenues.filter((venue) => venue.venue_size >= capacity);
     setFilteredVenuesByCapacity(filtered);
   };
 
   const filterVenuesByBuilding = (building: string) => {
-    const filtered = filteredVenuesByCapacity.filter(venue => venue.building_name === building);
+    const filtered = filteredVenuesByCapacity.filter((venue) => venue.building_name === building);
     setFilteredVenuesByBuilding(filtered);
   };
 
@@ -146,14 +146,24 @@ const BookVenueForm: React.FC = () => {
 
     console.log('Form Data:', formData);
   };
-  console.log("filteredVenuesByBuilding", filteredVenuesByBuilding);
-  console.log("filteredVenuesByCapacity", filteredVenuesByCapacity);
-  
-  
+  console.log('filteredVenuesByBuilding', filteredVenuesByBuilding);
+  console.log('filteredVenuesByCapacity', filteredVenuesByCapacity);
+
   return (
-    <Box sx={{ maxWidth: '1000px', mx: 'auto', p: 3, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 3 }}>
+    <Box
+      sx={{
+        maxWidth: '1000px',
+        mx: 'auto',
+        p: 3,
+        bgcolor: 'background.paper',
+        borderRadius: 2,
+        boxShadow: 3,
+      }}
+    >
       <form onSubmit={handleSubmit}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '16px' }}>Book a Venue</h1>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '16px' }}>
+          Book a Venue
+        </h1>
 
         <Box sx={{ marginBottom: 3 }}>
           <InputLabel shrink>What is your event about?</InputLabel>
@@ -236,7 +246,11 @@ const BookVenueForm: React.FC = () => {
                   margin="normal"
                   inputProps={{ min: 1 }}
                 />
-                <Select defaultValue="week(s)" variant="outlined" sx={{ width: '150px', mx: 1, height: '55px', mt: 2 }}>
+                <Select
+                  defaultValue="week(s)"
+                  variant="outlined"
+                  sx={{ width: '150px', mx: 1, height: '55px', mt: 2 }}
+                >
                   <MenuItem value="week(s)">week(s)</MenuItem>
                   <MenuItem value="month(s)">month(s)</MenuItem>
                 </Select>
@@ -275,44 +289,45 @@ const BookVenueForm: React.FC = () => {
 
           {venueSelection === 'chooseForMe' && (
             <>
-            <Box sx={{ marginBottom: 2 }}>
-              <InputLabel shrink>Capacity</InputLabel>
-              <Select
-                name="capacity"
-                variant="outlined"
-                fullWidth
-                value={capacity || ''}
-                onChange={handleCapacityChange}
-                disabled={!category}
-              >
-                <MenuItem value="" disabled>Choose Capacity</MenuItem>
-                <MenuItem value={50}>50</MenuItem>
-                <MenuItem value={100}>100</MenuItem>
-                <MenuItem value={200}>200</MenuItem>
-                <MenuItem value={300}>300</MenuItem>
-              </Select>
-              {!category && (
-                <Typography color="text.secondary" sx={{ mt: 1 }}>
-                  Select a category to enable capacity selection
-                </Typography>
-              )}
-            </Box>
-            <Box>
-            <InputLabel shrink>Available Venues</InputLabel>
-            <Select
-              name='venue'
-              variant="outlined"
-              fullWidth  
-            >
-              <MenuItem value="" disabled>Choose Venue</MenuItem>
-              {filteredVenuesByCapacity.map((venue) => (
-                <MenuItem key={venue.room_id} value={venue.room_id}>
-                  {venue.building_name} Building {venue.location} room {venue.venue_code} has {venue.venue_size} seats
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-          </>
+              <Box sx={{ marginBottom: 2 }}>
+                <InputLabel shrink>Capacity</InputLabel>
+                <Select
+                  name="capacity"
+                  variant="outlined"
+                  fullWidth
+                  value={capacity || ''}
+                  onChange={handleCapacityChange}
+                  disabled={!category}
+                >
+                  <MenuItem value="" disabled>
+                    Choose Capacity
+                  </MenuItem>
+                  <MenuItem value={50}>50</MenuItem>
+                  <MenuItem value={100}>100</MenuItem>
+                  <MenuItem value={200}>200</MenuItem>
+                  <MenuItem value={300}>300</MenuItem>
+                </Select>
+                {!category && (
+                  <Typography color="text.secondary" sx={{ mt: 1 }}>
+                    Select a category to enable capacity selection
+                  </Typography>
+                )}
+              </Box>
+              <Box>
+                <InputLabel shrink>Available Venues</InputLabel>
+                <Select name="venue" variant="outlined" fullWidth>
+                  <MenuItem value="" disabled>
+                    Choose Venue
+                  </MenuItem>
+                  {filteredVenuesByCapacity.map((venue) => (
+                    <MenuItem key={venue.room_id} value={venue.room_id}>
+                      {venue.building_name} Building {venue.location} room {venue.venue_code} has{' '}
+                      {venue.venue_size} seats
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+            </>
           )}
 
           {venueSelection === 'searchVenue' && (
@@ -326,10 +341,16 @@ const BookVenueForm: React.FC = () => {
                   value={building}
                   onChange={handleBuildingChange}
                 >
-                  <MenuItem value="" disabled>Choose Building</MenuItem>
-                  {[...new Set(filteredVenues.map(venue => venue.building_name))].map(buildingName => (
-                    <MenuItem key={buildingName} value={buildingName}>{buildingName} Building</MenuItem>
-                  ))}
+                  <MenuItem value="" disabled>
+                    Choose Building
+                  </MenuItem>
+                  {[...new Set(filteredVenues.map((venue) => venue.building_name))].map(
+                    (buildingName) => (
+                      <MenuItem key={buildingName} value={buildingName}>
+                        {buildingName} Building
+                      </MenuItem>
+                    ),
+                  )}
                 </Select>
               </Box>
               <Box sx={{ marginTop: 2 }}>
@@ -341,7 +362,9 @@ const BookVenueForm: React.FC = () => {
                   value={selectedRoom || ''}
                   onChange={handleRoomChange}
                 >
-                  <MenuItem value="" disabled>Choose Specific Room</MenuItem>
+                  <MenuItem value="" disabled>
+                    Choose Specific Room
+                  </MenuItem>
                   {filteredVenuesByBuilding.map((venue) => (
                     <MenuItem key={venue.room_id} value={venue.room_id}>
                       {venue.location} room {venue.venue_code} has {venue.venue_size} seats
@@ -355,19 +378,10 @@ const BookVenueForm: React.FC = () => {
         {}
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            sx={{ px: 4, py: 1.5, mr: 2 }}
-          >
+          <Button variant="outlined" color="primary" sx={{ px: 4, py: 1.5, mr: 2 }}>
             Cancel
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ px: 4, py: 1.5 }}
-          >
+          <Button type="submit" variant="contained" color="primary" sx={{ px: 4, py: 1.5 }}>
             Book
           </Button>
         </Box>
