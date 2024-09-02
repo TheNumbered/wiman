@@ -1,7 +1,5 @@
 # Run lint scripts in both frontend and backend
-cd frontend && pnpm install && pnpm run lint
-rm -rf node_modules
-cd ../backend && pnpm install && pnpm run lint
-rm -rf node_modules
+cd frontend && rm -rf node_modules
+cd ../backend && rm -rf node_modules
 cd ..
-pnpm install && pnpm test
+pnpm install && pnpm lint && pnpm test
