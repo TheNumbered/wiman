@@ -4,10 +4,15 @@ import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 
 const App: React.FC = () => {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded, userId } = useAuth();
 
   if (!isLoaded) {
     return <div>Loading...</div>;
+  }
+
+  if (isSignedIn && userId) {
+    localStorage.setItem('onesignalUserId', userId);
+    localStorage.setItem('onesignalUserRole', 'user'); // user | admin | mantainer
   }
 
   return (
