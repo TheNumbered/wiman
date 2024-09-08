@@ -1,0 +1,27 @@
+.user-ban-management table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-ban-management th .user-ban-management th,
+.user-ban-management td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.user-ban-management th {
+  background-color: #f2f2f2;
+}
+
+.user-ban-management button {
+  padding: 8px 16px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.user-ban-management button:hover {
+  opacity: 0.8;
+}

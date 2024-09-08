@@ -1,0 +1,58 @@
+.role-change-requests {
+  padding: 20px; /* Add padding around the entire section */
+  font-family: Arial, sans-serif; /* Set the font for the text */
+  text-align: center; /* Center text and inline elements */
+  margin-left: 50px; /* Shift content to the left */
+}
+
+.role-change-requests h2 {
+  margin-bottom: 20px; /* Add space below the heading */
+}
+
+.role-change-requests table {
+  margin: 0 auto; /* Center the table horizontally */
+  width: 100%; /* Set the table width to fill the container */
+  max-width: 800px; /* Limit the maximum width of the table */
+  border-collapse: collapse; /* Collapse borders between cells */
+}
+
+.role-change-requests th,
+.role-change-requests td {
+  padding: 12px; /* Add padding inside table cells */
+  border-bottom: 1px solid #ddd; /* Add a bottom border to cells */
+  vertical-align: middle; /* Vertically align content in cells */
+}
+
+.role-change-requests th {
+  background-color: #f2f2f2; /* Set background color for table headers */
+  text-align: center; /* Center header text */
+}
+
+/* Align the Role header and column content to the right */
+.role-change-requests th:nth-child(2),
+.role-change-requests td:nth-child(2) {
+  text-align: right; /* Align text and dropdown to the right */
+}
+
+/* Add margin-left to shift the Role header to the left */
+.role-change-requests th:nth-child(2) {
+  padding-right: 10px; /* Add padding to the left side of the Role header */
+}
+
+/* Add padding-right for better alignment if needed */
+.role-change-requests td:nth-child(2) {
+  padding-right: 10px; /* Add space on the right side of cells in the second column */
+}
+
+.role-change-requests select {
+  padding: 8px; /* Add padding inside the select dropdown */
+  border: 1px solid #ccc; /* Add a border around the dropdown */
+  border-radius: 4px; /* Round the corners of the dropdown */
+  background-color: #f9f9f9; /* Set background color for the dropdown */
+}
+
+.role-change-requests select:focus {
+  outline: none; /* Remove the default outline on focus */
+  border-color: #007bff; /* Change border color on focus */
+  background-color: #fff; /* Change background color on focus */
+}

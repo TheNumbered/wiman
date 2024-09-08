@@ -1,0 +1,59 @@
+.admin-dashboard {
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #d39219;
+  padding: 10px;
+  margin-top: 300px; /* Increased space between the search bar and navbar */
+}
+
+.navbar button {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.navbar button:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100vh - 170px); /* Adjusted height to account for the increased space */
+}
+
+.button-container {
+  display: flex;
+  gap: 20px; /* Space between buttons */
+  margin: 40px 0; /* Vertical spacing */
+  align-items: center; /* Align items vertically centered */
+  margin-left: 20px; /* Shift the whole container to the left */
+}
+
+.view-requests-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #d39219;
+  border: none;
+  border-radius: 12px; /* Rounded corners */
+  cursor: pointer;
+  text-align: center;
+  width: auto;
+  min-width: 150px;
+}
+
+.view-requests-button:hover {
+  background-color: #b87d14;
+}
+
+.maintenance-button {
+  /* Additional styles if needed for the second button */
+}
