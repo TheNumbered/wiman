@@ -4,7 +4,7 @@ import { Box, Button, Link, Typography } from '@mui/material';
 
 const SingleVenueDetails = () => {
   return (
-    <Box sx={{ maxWidth: '30rem', padding: '1rem' }}>
+    <Box sx={{ padding: '1rem' }}>
       <img
         src="https://wits100.wits.ac.za/media/wits-university/centenary/timeline/timeline%201983_1.JPG"
         alt=""
@@ -12,7 +12,11 @@ const SingleVenueDetails = () => {
       />
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ color: '#777' }}>
-          <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: '#000' }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ fontWeight: 'bold', color: '#000', lineHeight: '0.7' }}
+          >
             Wits Art Theatre
           </Typography>
           <Typography>East Campus, Braamfontein</Typography>

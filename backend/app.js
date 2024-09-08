@@ -5,11 +5,13 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { authRequest } from './middlewares/auth.js';
 import errorHandler from './middlewares/error-handler.js';
+import issueReportRoutes from './routes/issue-report-route.js';
 import userRoutes from './routes/user-route.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Read swagger.json using fs
 try {
@@ -21,6 +23,7 @@ try {
 }
 
 app.use('/api', userRoutes);
+app.use('/api', issueReportRoutes);
 
 app.get('/', authRequest, (req, res) => {
   res.json({ message: 'Hello, world!' });

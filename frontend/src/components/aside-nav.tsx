@@ -11,14 +11,19 @@ import { Box, Divider, List, ListItemButton, ListItemIcon, ListItemText } from '
 import React from 'react';
 import Logo from '../assets/LOGO.png';
 
-const AsideNav = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+interface AsideNavProps {
+  onSelect: (index: number) => void;
+}
+
+const AsideNav: React.FC<AsideNavProps> = ({ onSelect }) => {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number,
   ) => {
     setSelectedIndex(index);
+    onSelect(index);
   };
   return (
     <Box
