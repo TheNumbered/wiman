@@ -36,15 +36,22 @@ const MaintenanceDashboard: React.FC = () => {
 
   return (
     <>
-      <Box component={'main'} sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden' }}>
-        <Box component={'section'} bgcolor={'background.paper'} px={4}>
+      <Box
+        component={'main'}
+        sx={{ background: '#fff', display: 'flex', maxWidth: '100vw', overflowX: 'hidden' }}
+      >
+        <Box component={'section'} bgcolor={'background.paper'} pl={4}>
           {isSmallScreen ? <div>Bottom Nav</div> : <AsideNav onSelect={setSelectedPage} />}
         </Box>
-        <Box component={'section'} sx={{ background: '#fff' }}>
-          <Box ml={1} mr={6} py={4}>
-            {/* DESKTOP SECTION */}
-            {renderSelectedPage()}
-          </Box>
+        <Box
+          component={'section'}
+          sx={{ background: '#fff', width: '-webkit-fill-available', overflowY: 'hidden' }}
+          ml={1}
+          pr={2}
+          py={4}
+        >
+          {/* DESKTOP SECTION */}
+          {renderSelectedPage()}
         </Box>
       </Box>
     </>

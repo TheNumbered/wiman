@@ -111,7 +111,7 @@ const RoomDetails: React.FC = () => {
   return (
     <Box display="flex">
       <Sidemenu />
-      <Box component="main" sx={{ flex: 1, p: 3, bgcolor: 'background.default', ml: 30 }}>
+      <Box component="main" sx={{ flex: 1, p: 3, backgroundColor: '#fff', ml: 30 }}>
         <Box mb={3}>
           <TextField fullWidth label="Search for a Venue" variant="outlined" />
         </Box>

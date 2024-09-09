@@ -28,6 +28,7 @@ const AsideNav: React.FC<AsideNavProps> = ({ onSelect }) => {
   return (
     <Box
       sx={{
+        overflowY: 'hidden',
         height: '100vh', // Full viewport height
         width: '16rem',
         bgcolor: 'background.paper', // Optional: background color for visibility

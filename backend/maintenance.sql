@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2024 at 05:20 PM
+-- Generation Time: Sep 09, 2024 at 01:53 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -45,7 +45,7 @@ CREATE TABLE `maintenance` (
 
 INSERT INTO `maintenance` (`issue_id`, `room_id`, `reported_by`, `issue_description`, `status`, `reported_date`, `resolved_date`, `resolution_log`, `image_url`) VALUES
 (1, '101A', 1, 'Leaking faucet in the bathroom', 'Reported', '2024-09-01 09:00:00', NULL, '{\"Problem Class\":\"Major Issue\",\"Requirements To Fix\":\"It needs money!\",\"Set Back\":\"\"}', 'https://example.com/image1.jpg'),
-(2, '202B', 2, 'Air conditioning not working', 'In Progress', '2024-09-02 11:15:00', NULL, NULL, 'https://example.com/image2.jpg'),
+(2, '202B', 2, 'Air conditioning not working', 'In Progress', '2024-09-02 11:15:00', NULL, '{\"Problem Class\":\"Security\",\"Requirements To Fix\":\"New Door\",\"Set Back\":\"Door cannot hold a door lock anymore\"}', 'https://example.com/image2.jpg'),
 (3, '303C', 3, 'Broken window in the living room', 'Resolved', '2024-08-25 14:30:00', '2024-08-26 09:00:00', '{\n        \"Problem Class\": \"Structural\",\n        \"Requirements To Fix\": \"Window replacement\",\n        \"Set Back\": \"Delivery of new window delayed\"\n    }', 'https://example.com/image3.jpg'),
 (4, '404D', 4, 'Clogged kitchen sink', 'Reported', '2024-09-03 16:45:00', NULL, NULL, 'https://example.com/image4.jpg'),
 (5, '505E', 5, 'Noisy air vent', 'In Progress', '2024-09-04 10:00:00', NULL, NULL, 'https://example.com/image5.jpg'),

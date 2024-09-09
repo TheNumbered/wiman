@@ -73,10 +73,38 @@ export const addReviewToIssueReportReview = async (req, res) => {
     };
 
     // Log the ID and body for debugging purposes
-    console.log(JSON.stringify(resolution_log));
+    // console.log(JSON.stringify(resolution_log));
 
     await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolution_log));
     res.status(200).send({ message: `Review added to issue report with ID: ${id}` });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+    console.error(err.message);
+  }
+};
+
+export const addIssueSetBackReport = async (req, res) => {
+  try {
+    // Extract the 'id' from the URL parameters
+    const { id } = req.params;
+
+    // Extract the review and issue_state from the request body
+    const { setback, new_fix_requirements } = req.body;
+    const target_issue_report = await IssueReport.getIssueReportById(id);
+
+    // Check if the issue report exists
+    if (!target_issue_report) {
+      return res.status(404).send({ message: `Issue report with ID: ${id} not found` });
+    }
+    const resolution_log = {
+      'Problem Class': JSON.parse(target_issue_report[0]['resolution_log'])['Problem Class'],
+      'Requirements To Fix': new_fix_requirements,
+      'Set Back': setback,
+    };
+    await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolution_log));
+    res
+      .status(200)
+      .send({ message: `Set Back successfuly reported to issue report with ID: ${id}` });
   } catch (err) {
     res.status(500).send({ message: err.message });
     console.error(err.message);

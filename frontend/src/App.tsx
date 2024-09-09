@@ -8,10 +8,15 @@ import SignUpPage from './pages/sign-up';
 import BookVenueForm from './pages/venue-booking/book-venue-form';
 
 const App: React.FC = () => {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded, userId } = useAuth();
 
   if (!isLoaded) {
     return <div>Loading...</div>;
+  }
+
+  if (isSignedIn && userId) {
+    localStorage.setItem('onesignalUserId', userId);
+    localStorage.setItem('onesignalUserRole', 'user'); // user | admin | mantainer
   }
 
   return (
