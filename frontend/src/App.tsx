@@ -1,5 +1,6 @@
-import { SignOutButton, useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import NotificationList from './components/notifications/list';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 
@@ -30,15 +31,7 @@ const App: React.FC = () => {
               </>
             }
           >
-            <Route
-              path="/dashboard"
-              element={
-                <>
-                  <h1>Dashboard</h1>
-                  <SignOutButton />
-                </>
-              }
-            />
+            <Route path="/dashboard" element={<NotificationList />} />
           </Route>
         )}
         <Route

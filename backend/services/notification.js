@@ -19,7 +19,7 @@ class NotificationService {
     };
   }
 
-  async sendNotification({ heading, content, userIds = [], filters = [] }) {
+  async pushNotification({ heading, content, userIds = [], filters = [] }) {
     try {
       const notification = new OneSignal.Notification();
       notification.app_id = this.appId;

@@ -39,8 +39,8 @@ describe('NotificationService', () => {
     // Mock the `createNotification` method to return a resolved promise with 'response data'
     createNotificationMock.mockResolvedValue('response data');
 
-    // Call sendNotification
-    const response = await notificationService.sendNotification({
+    // Call pushNotification
+    const response = await notificationService.pushNotification({
       heading,
       content,
       userIds,
@@ -73,8 +73,8 @@ describe('NotificationService', () => {
     const error = new Error('Test error');
     createNotificationMock.mockRejectedValue(error);
 
-    // Call sendNotification and expect it to handle the error
-    const response = await notificationService.sendNotification({
+    // Call pushNotification and expect it to handle the error
+    const response = await notificationService.pushNotification({
       heading,
       content,
       userIds,

@@ -3,9 +3,9 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
-import { authRequest } from './middlewares/auth.js';
-import errorHandler from './middlewares/error-handler.js';
-import userRoutes from './routes/user-route.js';
+import { authRequest } from './middleware/auth.js';
+import errorHandler from './middleware/error-handler.js';
+import apiRouter from './routes/index.js';
 
 const app = express();
 app.use(cors());
@@ -20,7 +20,7 @@ try {
   console.log('Error reading swagger.json file');
 }
 
-app.use('/api', userRoutes);
+app.use('/api', apiRouter);
 
 app.get('/', authRequest, (req, res) => {
   res.json({ message: 'Hello, world!' });

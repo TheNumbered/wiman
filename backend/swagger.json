@@ -518,19 +518,6 @@
         "summary": "Get notifications for a user",
         "description": "Retrieve all notifications related to bookings, maintenance issues, and more for a specific user.",
         "operationId": "notificationsGET",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "ID of the user",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "A list of notifications",
@@ -544,7 +531,7 @@
                   "example": [
                     {
                       "id": "notificationId",
-                      "userId": "userId",
+                      "title": "Example Notification",
                       "message": "Your booking has been confirmed",
                       "date": "2024-08-29T04:56:07.000Z",
                       "read": false
@@ -1118,7 +1105,7 @@
           "id": {
             "type": "string"
           },
-          "userId": {
+          "title": {
             "type": "string"
           },
           "message": {
