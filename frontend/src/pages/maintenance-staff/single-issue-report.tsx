@@ -33,8 +33,8 @@ const SingleIssueReport = ({
   return (
     <Box sx={{ width: '100%', padding: '0 1rem 2rem' }}>
       <img
-        src={data?.image_url || 'https://via.placeholder.com/400'} // Assuming the image URL is part of the response
-        alt=""
+        src={data[0].image_url ? data[0].image_url : 'https://via.placeholder.com/400'} // Assuming the image URL is part of the response
+        alt="issue image"
         style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
       />
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -65,17 +65,17 @@ const SingleIssueReport = ({
                 // If resolutionLog exists, render the fields, else show a fallback message
                 return resolutionLog ? (
                   <Box>
-                    <Typography variant="h6">Problem Class</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }}>Problem Class</Typography>
                     <Typography sx={{ marginBottom: '0.5rem' }}>
                       {resolutionLog['Problem Class'] || 'No data available'}
                     </Typography>
 
-                    <Typography variant="h6">Requirements To Fix</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }}>Requirements To Fix</Typography>
                     <Typography sx={{ marginBottom: '0.5rem' }}>
                       {resolutionLog['Requirements To Fix'] || 'No data available'}
                     </Typography>
 
-                    <Typography variant="h6">Set Back</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }}>Set Back</Typography>
                     <Typography sx={{ marginBottom: '0.5rem' }}>
                       {resolutionLog['Set Back'] || 'No data available'}
                     </Typography>

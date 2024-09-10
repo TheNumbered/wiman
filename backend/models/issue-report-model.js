@@ -2,7 +2,7 @@ import db from '../config/db.js';
 
 class IssueReport {
   static async getAllIssueReports() {
-    const [rows] = await db.query('SELECT * FROM maintenance');
+    const [rows] = await db.query('SELECT * FROM maintenance ORDER BY reported_date DESC');
     return rows;
   }
 
@@ -19,11 +19,11 @@ class IssueReport {
     return result.insertId;
   }
 
-  static async addReviewToIssueReport(issue_id, resolution_log) {
-    const [result] = await db.query('UPDATE maintenance set resolution_log = ? WHERE issue_id= ?', [
-      resolution_log,
-      issue_id,
-    ]);
+  static async addReviewToIssueReport(issue_id, resolution_log, status = 'In Progress') {
+    const [result] = await db.query(
+      'UPDATE maintenance set resolution_log = ?, status = ? WHERE issue_id= ?',
+      [resolution_log, status, issue_id],
+    );
     return result.insertId;
   }
 }

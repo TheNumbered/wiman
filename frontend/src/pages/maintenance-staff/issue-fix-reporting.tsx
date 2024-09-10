@@ -106,6 +106,7 @@ const IssueFixReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) => {
         message={snackbarMessage}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
+        severity={'success'}
       />
     </Container>
   );

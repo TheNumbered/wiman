@@ -1,6 +1,6 @@
 import ImageUploadButton from '@/components/image-upload-button';
 import AutohideSnackbar from '@/components/snackbar';
-import { useCreateMutation } from '@/hooks/create-mutation'; // Adjust the import path accordingly
+// import { useCreateMutation } from '@/hooks/create-mutation'; // Adjust the import path accordinglys
 import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -27,12 +27,6 @@ const IssueReporting: React.FC = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // Define the mutation hook
-  const createIssueMutation = useCreateMutation({
-    resource: 'api/issue-report',
-    invalidateKeys: ['buildings'],
-    contentType: 'application/x-www-form-urlencoded',
-    // Don't set contentType to application/json here; FormData handles it
-  });
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/buildings`)
@@ -81,32 +75,27 @@ const IssueReporting: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData();
+    formData.append('building', selectedBuilding);
+    formData.append('room', selectedRoom);
+    formData.append('description', event.currentTarget.description.value);
 
-    const data = new URLSearchParams();
-    data.append('building', selectedBuilding);
-    data.append('room', selectedRoom);
-    data.append('description', formData.get('description') as string);
     if (selectedImage) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64String = reader.result as string;
-        data.append('image', base64String);
-      };
-      reader.readAsDataURL(selectedImage);
+      formData.append('image', selectedImage); // Append the image file directly to FormData
     }
-    createIssueMutation.mutate(data, {
-      onSuccess: (data) => {
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/issue-report`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
         console.log('Issue created:', data);
         // Handle success
         clearFormEntries();
         setSnackbarMessage(data.message);
-      },
-      onError: (error: any) => {
-        console.error('Error creating issue:', error);
-        // Handle error
-      },
-    });
+      })
+      .catch((error) => console.error('Error:', error));
   };
 
   const handleCloseSnackbar = () => {
@@ -183,7 +172,7 @@ const IssueReporting: React.FC = () => {
               </Box>
             )}
           </Grid>
-          <Grid xs={12} mt={2}>
+          <Grid item xs={12} mt={2}>
             <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>
@@ -194,6 +183,7 @@ const IssueReporting: React.FC = () => {
         message={snackbarMessage}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
+        severity={'success'}
       />
     </Container>
   );

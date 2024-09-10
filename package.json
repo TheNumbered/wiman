@@ -56,6 +56,7 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.24.0",
     "@onesignal/node-onesignal": "5.0.0-alpha-01",
     "@tanstack/react-query": "^5.53.3",
     "dotenv": "^16.4.5"

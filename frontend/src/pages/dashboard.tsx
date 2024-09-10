@@ -62,11 +62,14 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Box component={'main'} sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden' }}>
+      <Box
+        component={'main'}
+        sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden', background: '#fff' }}
+      >
         <Box component={'section'} bgcolor={'background.paper'} px={4}>
           {isSmallScreen ? <div>Bottom Nav</div> : <AsideNav onSelect={setSelectedPage} />}
         </Box>
-        <Box component={'section'} sx={{ background: '#fff' }}>
+        <Box component={'section'}>
           <Box ml={1} mr={6} py={4}>
             {/* DESKTOP SECTION */}
             {renderSelectedPage()}

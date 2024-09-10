@@ -1,6 +1,9 @@
+import { BlobServiceClient } from '@azure/storage-blob';
+import dotenv from 'dotenv';
 import multer from 'multer';
+import process from 'process';
 import IssueReport from '../models/issue-report-model.js';
-
+dotenv.config({ path: '.env.local' });
 // Sample data for testing, Please remove
 const buildings = [
   {
@@ -32,6 +35,22 @@ const buildings = [
 // Configure multer storage
 const storage = multer.memoryStorage(); // or use diskStorage if you want to save to disk
 const upload = multer({ storage });
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const containerName = process.env.AZURE_BLOB_CONTAINER_NAME;
+
+async function uploadToAzureBlob(file) {
+  const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
+
+  const blobName = `${Date.now()}-${file.originalname}`;
+  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+  // Upload file buffer to Azure Blob Storage
+  await blockBlobClient.uploadData(file.buffer);
+
+  // Return the URL of the uploaded image
+  return blockBlobClient.url;
+}
 
 export const getAllIssueReports = async (req, res) => {
   try {
@@ -79,7 +98,6 @@ export const addReviewToIssueReportReview = async (req, res) => {
     res.status(200).send({ message: `Review added to issue report with ID: ${id}` });
   } catch (err) {
     res.status(500).send({ message: err.message });
-    console.error(err.message);
   }
 };
 
@@ -107,7 +125,7 @@ export const addIssueSetBackReport = async (req, res) => {
       .send({ message: `Set Back successfuly reported to issue report with ID: ${id}` });
   } catch (err) {
     res.status(500).send({ message: err.message });
-    console.error(err.message);
+    // console.error(err.message);
   }
 };
 
@@ -120,23 +138,20 @@ export const createIssueReport = async (req, res) => {
     try {
       const { building, room, description } = req.body;
       let image_url = null;
-
       if (req.file) {
         // Process the uploaded image file (e.g., save it to disk or cloud storage)
         // For now, assume you store the image file and get its URL.
-        image_url = `path/to/your/images/${req.file.filename}`;
+        image_url = await uploadToAzureBlob(req.file);
       }
 
-      let reported_by = 'some_user'; // Replace with actual logic if needed
+      let reported_by = 'some_user'; // Replace with getUserID
       let room_id = building + room; // Concatenate building and room for room_id
-      let issue_description = { report: description }; // Append image URL if available
-      console.log(image_url);
       // Save the issue report
-      await IssueReport.createIssueReport(room_id, reported_by, issue_description, image_url);
+      await IssueReport.createIssueReport(room_id, reported_by, description, image_url);
 
       res.status(201).send({ message: 'Issue report created' });
     } catch (err) {
-      res.status(500).send({ message: err.message });
+      res.status(500).send(err.message);
     }
   });
 };
