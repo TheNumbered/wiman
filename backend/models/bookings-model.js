@@ -38,10 +38,10 @@ class Booking {
     return result.affectedRows; // Returns the number of rows updated
   }
 
-  // Delete a booking
-  static async deleteBooking(id) {
-    const [result] = await db.query('DELETE FROM bookings WHERE id = ?', [id]);
-    return result.affectedRows; // Returns the number of rows deleted
+  // Booking Status
+  static async getBookingStatus(id) {
+    const [rows] = await db.query('SELECT status FROM bookings WHERE id = ?', [id]);
+    return rows[0].status;
   }
 }
 

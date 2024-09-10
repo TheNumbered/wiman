@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://wiman.azurewebsites.net"
+      "url": "https://wiman.azurewebsites.net/api/"
     }
   ],
   "security": [
@@ -37,7 +37,7 @@
       "description": "Administrative operations"
     },
     {
-      "name": "Users",
+      "name": "User",
       "description": "User-related operations"
     }
   ],
@@ -136,19 +136,8 @@
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "VENUE_NOT_FOUND",
-                        "message": "No venues were found matching the criteria"
-                      }
+                      "type": "string",
+                      "example": "No venues found"
                     }
                   }
                 }
@@ -204,26 +193,15 @@
             }
           },
           "404": {
-            "description": "Venue not found",
+            "description": "No venues found",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "VENUE_NOT_FOUND",
-                        "message": "Venue with the given ID was not found"
-                      }
+                      "type": "string",
+                      "example": "No venues found"
                     }
                   }
                 }
@@ -239,7 +217,7 @@
         "x-swagger-router-controller": "Venues"
       }
     },
-    "/bookings/active": {
+    "/user/bookings/active": {
       "get": {
         "summary": "Get active bookings",
         "security": [
@@ -247,7 +225,7 @@
             "BearerAuth": []
           }
         ],
-        "tags": ["Bookings"],
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "List of active bookings",
@@ -261,38 +239,11 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "No booking found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "BOOKINGS_NOT_FOUND",
-                        "message": "No booking were found"
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
     },
-    "/bookings/past": {
+    "/user/bookings/past": {
       "get": {
         "summary": "Get past bookings",
         "security": [
@@ -300,7 +251,7 @@
             "BearerAuth": []
           }
         ],
-        "tags": ["Bookings"],
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "List of past bookings",
@@ -315,30 +266,16 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "404": {
-            "description": "No past booking found",
+            "description": "No past bookings found",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "PAST_BOOKINGS_NOT_FOUND",
-                        "message": "No past booking were found"
-                      }
+                      "type": "string",
+                      "example": "No past bookings found"
                     }
                   }
                 }
@@ -348,43 +285,7 @@
         }
       }
     },
-    "/bookings/cancel/{id}": {
-      "put": {
-        "summary": "Cancel a booking",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "tags": ["Bookings"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID of the booking to cancel",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Booking cancelled successfully"
-          },
-          "400": {
-            "description": "Invalid booking ID"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Booking not found"
-          }
-        }
-      }
-    },
-    "/bookings/new": {
+    "/bookings": {
       "post": {
         "summary": "Create a new booking",
         "security": [
@@ -409,16 +310,177 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Booking"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid request body"
+            "description": "Invalid request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid request body"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings/status/{bookingId}": {
+      "get": {
+        "summary": "Get the status of a booking",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Bookings"],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the booking to get the status for",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bookingId": {
+                      "type": "string",
+                      "example": "12345"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "confirmed"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "401": {
-            "description": "Unauthorized"
+          "400": {
+            "description": "Invalid booking ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid booking ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Booking not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Booking not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings/cancel/{bookingId}": {
+      "put": {
+        "summary": "Cancel a booking",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Bookings"],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the booking to cancel",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking cancelled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking cancelled successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid booking ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid booking ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Booking not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Booking not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -470,26 +532,15 @@
             }
           },
           "400": {
-            "description": "Invalid request",
+            "description": "Invalid Request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "INVALID_REQUEST",
-                        "message": "The request contains invalid parameters"
-                      }
+                      "type": "string",
+                      "example": "Invalid Request body"
                     }
                   }
                 }
@@ -536,29 +587,31 @@
         },
         "responses": {
           "200": {
-            "description": "Maintenance issue status updated"
+            "description": "Maintenance issue status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Maintenance issue status updated"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Maintenance issue not found",
+            "description": "No maintenance issue foud",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "MAINTENANCE_NOT_FOUND",
-                        "message": "Maintenance issue with the given ID was not found"
-                      }
+                      "type": "string",
+                      "example": " Maintenance issue with the given ID was not found"
                     }
                   }
                 }
@@ -604,26 +657,15 @@
             }
           },
           "404": {
-            "description": "User not found",
+            "description": "No notifications found",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "USER_NOT_FOUND",
-                        "message": "User with the given ID was not found"
-                      }
+                      "type": "string",
+                      "example": " User with the given ID was not found"
                     }
                   }
                 }
@@ -637,86 +679,6 @@
           }
         ],
         "x-swagger-router-controller": "Notifications"
-      }
-    },
-    "/users/{userId}/bookings": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get booking history",
-        "description": "Retrieve the booking history for a specific user.",
-        "operationId": "usersUserIdBookingsGET",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "ID of the user",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User booking history",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Booking"
-                  },
-                  "example": [
-                    {
-                      "id": "bookingId",
-                      "date": "2000-01-23T00:00:00.000Z",
-                      "venueId": "venueId",
-                      "startTime": "13:00",
-                      "endTime": "14:00",
-                      "userId": "userId",
-                      "status": "confirmed"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "USER_NOT_FOUND",
-                        "message": "User with the given ID was not found"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Users"
       }
     },
     "/admin/schedule": {
@@ -747,19 +709,8 @@
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "INVALID_FILE_FORMAT",
-                        "message": "The uploaded file format is not supported"
-                      }
+                      "type": "string",
+                      "example": "The uploaded file format is not supported"
                     }
                   }
                 }
@@ -800,12 +751,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Report",
-                  "example": {
-                    "reportId": "reportId",
-                    "reportType": "usage",
-                    "generatedOn": "2000-01-23T04:56:07.000Z"
-                  }
+                  "$ref": "#/components/schemas/Report"
                 }
               }
             }
@@ -818,19 +764,8 @@
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "INVALID_REPORT_TYPE",
-                        "message": "The report type provided is invalid"
-                      }
+                      "type": "string",
+                      "example": "The report type provided is invalid"
                     }
                   }
                 }
@@ -874,19 +809,8 @@
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "INVALID_REQUEST",
-                        "message": "The request contains invalid parameters"
-                      }
+                      "type": "string",
+                      "example": "The request contains invalid parameters"
                     }
                   }
                 }
@@ -943,19 +867,8 @@
                   "type": "object",
                   "properties": {
                     "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "USER_NOT_FOUND",
-                        "message": "User with the given ID was not found"
-                      }
+                      "type": "string",
+                      "example": "User with the given ID was not found"
                     }
                   }
                 }
@@ -1062,10 +975,6 @@
             "type": "integer",
             "description": "Unique identifier for the booking"
           },
-          "userId": {
-            "type": "string",
-            "description": "User ID associated with the booking"
-          },
           "date": {
             "type": "string",
             "format": "date",
@@ -1104,16 +1013,12 @@
             "description": "Purpose of the booking"
           }
         },
-        "required": ["id", "userId", "date", "startTime", "endTime", "venueId", "status", "purpose"]
+        "required": ["id", "date", "startTime", "endTime", "venueId", "status", "purpose"]
       },
       "NewBooking": {
         "type": "object",
-        "required": ["userId", "date", "startTime", "endTime", "venueId", "purpose"],
+        "required": ["date", "startTime", "endTime", "venueId", "purpose"],
         "properties": {
-          "userId": {
-            "type": "string",
-            "description": "ID of the user creating the booking"
-          },
           "date": {
             "type": "string",
             "format": "date",

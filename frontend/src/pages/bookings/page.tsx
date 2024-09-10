@@ -17,14 +17,14 @@ const BookingPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { data: activeBookings } = useGetQuery({
-    resource: 'api/bookings/active',
+    resource: 'api/user/bookings/active',
   });
   const { data: pastBookings } = useGetQuery({
-    resource: 'api/bookings/past',
+    resource: 'api/user/bookings/past',
   });
   const { mutate: cancelBooking } = useUpdateMutation({
     resource: 'api/bookings/cancel',
-    invalidateKeys: ['api/bookings/active', 'api/bookings/past'],
+    invalidateKeys: ['api/user/bookings/active', 'api/user/bookings/past'],
   });
 
   const filterBookings = (bookings: Booking[]) => {
