@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import NotificationList from './components/notifications/list';
+import BookingPage from './pages/bookings/page';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 
@@ -31,7 +31,7 @@ const App: React.FC = () => {
               </>
             }
           >
-            <Route path="/dashboard" element={<NotificationList />} />
+            <Route path="/dashboard" element={<BookingPage />} />
           </Route>
         )}
         <Route

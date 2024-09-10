@@ -239,25 +239,173 @@
         "x-swagger-router-controller": "Venues"
       }
     },
-    "/bookings": {
-      "post": {
+    "/bookings/active": {
+      "get": {
+        "summary": "Get active bookings",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "tags": ["Bookings"],
-        "summary": "Book a venue",
-        "description": "Book a specific venue for a user.",
-        "operationId": "bookingsPOST",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
+        "responses": {
+          "200": {
+            "description": "List of active bookings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
               }
             }
           },
-          "required": true
+          "404": {
+            "description": "No booking found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "example": {
+                        "code": "BOOKINGS_NOT_FOUND",
+                        "message": "No booking were found"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings/past": {
+      "get": {
+        "summary": "Get past bookings",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Bookings"],
+        "responses": {
+          "200": {
+            "description": "List of past bookings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "No past booking found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "example": {
+                        "code": "PAST_BOOKINGS_NOT_FOUND",
+                        "message": "No past booking were found"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings/cancel/{id}": {
+      "put": {
+        "summary": "Cancel a booking",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Bookings"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the booking to cancel",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking cancelled successfully"
+          },
+          "400": {
+            "description": "Invalid booking ID"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Booking not found"
+          }
+        }
+      }
+    },
+    "/bookings/new": {
+      "post": {
+        "summary": "Create a new booking",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Bookings"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewBooking"
+              }
+            }
+          }
         },
         "responses": {
           "201": {
-            "description": "Booking confirmed",
+            "description": "Booking created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -267,98 +415,12 @@
             }
           },
           "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "INVALID_REQUEST",
-                        "message": "The request contains invalid parameters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Bookings"
-      }
-    },
-    "/bookings/{bookingId}": {
-      "delete": {
-        "tags": ["Bookings"],
-        "summary": "Cancel a booking",
-        "description": "Cancel an existing booking by booking ID.",
-        "operationId": "bookingsBookingIdDELETE",
-        "parameters": [
-          {
-            "name": "bookingId",
-            "in": "path",
-            "description": "ID of the booking",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Booking cancelled"
+            "description": "Invalid request body"
           },
-          "404": {
-            "description": "Booking not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      },
-                      "example": {
-                        "code": "BOOKING_NOT_FOUND",
-                        "message": "Booking with the given ID was not found"
-                      }
-                    }
-                  }
-                }
-              }
-            }
+          "401": {
+            "description": "Unauthorized"
           }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Bookings"
+        }
       }
     },
     "/maintenance": {
@@ -993,70 +1055,88 @@
           "bookedTimeSlots": ["13:00-13:50", "14:15-15:00"]
         }
       },
-      "BookingRequest": {
+      "Booking": {
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "string"
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the booking"
           },
-          "venueId": {
-            "type": "string"
+          "userId": {
+            "type": "string",
+            "description": "User ID associated with the booking"
           },
           "date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "description": "Date of the booking (YYYY-MM-DD)"
           },
           "startTime": {
             "type": "string",
-            "format": "time"
+            "format": "time",
+            "description": "Start time of the booking (HH:MM:SS)"
           },
           "endTime": {
             "type": "string",
-            "format": "time"
+            "format": "time",
+            "description": "End time of the booking (HH:MM:SS)"
+          },
+          "venueId": {
+            "type": "integer",
+            "description": "Venue ID for the booking"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "cancelled", "inactive"],
+            "description": "Status of the booking"
+          },
+          "reasonForCancellation": {
+            "type": "string",
+            "description": "Reason for cancellation (if applicable)"
+          },
+          "repeatFrequency": {
+            "type": "string",
+            "enum": ["none", "daily", "weekly", "monthly"],
+            "description": "Frequency of repeating bookings"
           },
           "purpose": {
             "type": "string",
             "description": "Purpose of the booking"
           }
-        }
+        },
+        "required": ["id", "userId", "date", "startTime", "endTime", "venueId", "status", "purpose"]
       },
-      "Booking": {
+      "NewBooking": {
         "type": "object",
+        "required": ["userId", "date", "startTime", "endTime", "venueId", "purpose"],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "userId": {
-            "type": "string"
-          },
-          "venueId": {
-            "type": "string"
+            "type": "string",
+            "description": "ID of the user creating the booking"
           },
           "date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "description": "Date of the booking (YYYY-MM-DD)"
           },
           "startTime": {
             "type": "string",
-            "format": "time"
+            "format": "time",
+            "description": "Start time of the booking (HH:MM:SS)"
           },
           "endTime": {
             "type": "string",
-            "format": "time"
+            "format": "time",
+            "description": "End time of the booking (HH:MM:SS)"
           },
-          "status": {
+          "venueId": {
+            "type": "integer",
+            "description": "ID of the venue for the booking"
+          },
+          "purpose": {
             "type": "string",
-            "enum": ["confirmed", "cancelled"]
+            "description": "Purpose of the booking"
           }
-        },
-        "example": {
-          "id": "bookingId",
-          "date": "2000-01-23T00:00:00.000Z",
-          "venueId": "venueId",
-          "startTime": "13:00",
-          "endTime": "14:00",
-          "userId": "userId",
-          "status": "confirmed"
         }
       },
       "Maintenance": {
