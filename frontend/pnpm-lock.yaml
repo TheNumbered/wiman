@@ -140,9 +140,6 @@ packages:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
-      react-onesignal:
-        specifier: ^3.0.1
-        version: 3.0.1(react@18.3.1)
       react-router-dom:
         specifier: ^6.26.1
         version: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1731,12 +1728,6 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
-  react-onesignal@3.0.1:
-    resolution: {integrity: sha512-AfAtGdXRcuMhVf+9OXehGcQeiJIYl1ihAByvfVNa3RCA1Vnn19tBha4XQB+o3ukUh2IQn0yiflRO4vXgI9nOng==}
-    engines: {node: '>=8', npm: '>=5'}
-    peerDependencies:
-      react: '>= 16.8'
 
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
@@ -5974,39 +5965,11 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
-  /react-is@16.13.1:
-    resolution:
-      {
-        integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==,
-      }
-    dev: false
+  react-is@16.13.1: {}
 
-  /react-is@17.0.2:
-    resolution:
-      {
-        integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==,
-      }
-    dev: true
+  react-is@17.0.2: {}
 
-  /react-is@18.3.1:
-    resolution:
-      {
-        integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==,
-      }
-    dev: false
-
-<<<<<<< HEAD
-  /react-refresh@0.14.2:
-    resolution:
-      {
-        integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==,
-      }
-    engines: { node: '>=0.10.0' }
-    dev: true
-=======
-  react-onesignal@3.0.1(react@18.3.1):
-    dependencies:
-      react: 18.3.1
+  react-is@18.3.1: {}
 
   react-refresh@0.14.2: {}
 >>>>>>> e1b98c643bad887ac9567072732d1d62d7607e2f
