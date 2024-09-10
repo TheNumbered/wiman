@@ -129,8 +129,8 @@ export const createIssueReport = async (req, res) => {
 
       let reported_by = 'some_user'; // Replace with actual logic if needed
       let room_id = building + room; // Concatenate building and room for room_id
-      let issue_description = { report: description }; // Append image URL if available
-      console.log(image_url);
+      let issue_description = description; 
+      // console.log(image_url);
       // Save the issue report
       await IssueReport.createIssueReport(room_id, reported_by, issue_description, image_url);
 
