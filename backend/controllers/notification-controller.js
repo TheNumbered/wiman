@@ -6,7 +6,7 @@ export const getNotifications = async (req, res) => {
     const notifications = await Notification.getNotificationsByUserId(userId);
     res.json(notifications);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -16,7 +16,7 @@ export const createNotification = async (req, res) => {
     await Notification.createNotification(userId, code, message);
     res.status(201).json({ message: 'Notification created' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -26,6 +26,6 @@ export const markNotificationAsRead = async (req, res) => {
     await Notification.markAsRead(id);
     res.status(200).json({ message: 'Notification marked as read' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };

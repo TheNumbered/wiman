@@ -7,7 +7,7 @@ export const getActiveBookings = async (req, res) => {
     const bookings = await Booking.getActiveBookingsByUserId(userId);
     res.json(bookings);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -18,7 +18,7 @@ export const getPastBookings = async (req, res) => {
     const bookings = await Booking.getPastBookingsByUserId(userId);
     res.json(bookings);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -29,7 +29,7 @@ export const createBooking = async (req, res) => {
     await Booking.createBooking(userId, date, start_time, end_time, venue_id, purpose);
     res.status(201).json({ message: 'Booking created' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -41,6 +41,17 @@ export const cancelBooking = async (req, res) => {
     await Booking.cancelBooking(id, reason_for_cancellation);
     res.status(200).json({ message: 'Booking cancelled' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get booking status
+export const getBookingStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const status = await Booking.getBookingStatus(id);
+    res.json({ status });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
