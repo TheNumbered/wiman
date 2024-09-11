@@ -1,8 +1,7 @@
-// RoomsList.tsx
 import { Alert, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Room } from '../../types'; // Adjust the import path as needed
+import { Room } from '../../types';
 
 const RoomsList: React.FC = () => {
     const [rooms, setRooms] = useState<Room[]>([]);
@@ -10,7 +9,7 @@ const RoomsList: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/reservations`)
+        fetch(`${import.meta.env.VITE_API_URL}/venues`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -57,7 +56,11 @@ const RoomsList: React.FC = () => {
             <Grid container spacing={2}>
                 {rooms.map(room => (
                     <Grid item key={room.room_id} xs={12} sm={6} md={4}>
-                        <Link to={`/room/${room.room_id}`} style={{ textDecoration: 'none' }}>
+                        <Link 
+                            to={`/room/${room.room_id}`} 
+                            style={{ textDecoration: 'none' }}
+                            state={{ room }}
+                        >
                             <Card>
                                 <CardMedia
                                     component="img"

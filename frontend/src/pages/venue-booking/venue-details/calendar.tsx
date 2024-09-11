@@ -2,12 +2,12 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from "date-fns";
 import React, { useEffect, useState } from "react";
-import theme from "../../theme";
+import theme from "../../../theme";
 
 interface CalendarProps {
     onDateSelect: (date: Date) => void;
     //@ts-ignore
-    reservationsData: Record<string, Reservation[]>;  // Add this prop
+    reservationsData: Record<string, Reservation[]>;
 }
 
 const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) => {

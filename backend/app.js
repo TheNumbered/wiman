@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import userRoutes from './routes/user-route.js';
+import bookingRoutes from './routes/bookings-routes.js';
+import venueRoutes from './routes/venue-routes.js';
 
 const app = express();
 app.use(cors());
@@ -19,6 +21,8 @@ try {
 }
 
 app.use('/api', userRoutes);
+app.use('/', bookingRoutes);
+app.use('/', venueRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Hello, world!' });

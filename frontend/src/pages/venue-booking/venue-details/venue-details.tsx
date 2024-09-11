@@ -1,11 +1,12 @@
 import Sidemenu from '@/components/side-menu';
+import { useGetQuery } from '@/hooks';
 import theme from '@/theme';
 import DefaultAmenityIcon from '@mui/icons-material/CheckCircleOutline';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Calendar from './calendar';
 
 const FacilityCard = styled(Paper)(({ theme }) => ({
@@ -16,19 +17,6 @@ const FacilityCard = styled(Paper)(({ theme }) => ({
 type Reservation = {
     time: string;
     event: string;
-};
-
-const reservationsData: Record<string, Reservation[]> = {
-    "2024-08-31": [
-        { time: "10:00 AM - 11:00 AM", event: "Tutorial Session" },
-        { time: "12:00 PM - 01:00 PM", event: "Project Meeting" }
-    ],
-    "2024-09-01": [
-        { time: "09:00 AM - 10:00 AM", event: "Staff Meeting" }
-    ],
-    "2024-08-02": [
-        { time: "02:00 PM - 03:00 PM", event: "Lecture" }
-    ],
 };
 
 const amenityIcons: Record<string, React.ReactElement> = {
@@ -67,51 +55,83 @@ const amenityIcons: Record<string, React.ReactElement> = {
 };
 
 const RoomDetails: React.FC = () => {
-    const { roomId } = useParams<{ roomId: string }>();
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [venueData, setVenueData] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [bookings, setBookings] = useState<any[]>([]);
+    const location = useLocation();
+    const {room} = location.state as any;
+    const navigate = useNavigate();
+    
+
+    const { isError, isLoading, data } = useGetQuery({
+        resource: `bookings/room/${room.room_id}`,
+      });
+    
+    useEffect(() => {
+        if (isError) {
+            console.error('Error fetching booking data:', isError);
+        }
+        if (isLoading) {
+          console.log('Loading booking data...');
+        }
+    
+        if (data) {
+          setBookings(data);
+        }
+    }, [isError, isLoading, data]);
+
+    const formatTime = (time: string): string => {
+        const [hour, minute] = time.split(':').map(Number);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const formattedHour = hour % 12 || 12;
+        return `${formattedHour}:${minute.toString().padStart(2, '0')} ${ampm}`;
+    };
+
+    //@ts-ignore
+    const transformBookings = (b:any ) => {
+        const reservationsData: Record<string, Reservation[]> = {};
+    
+        bookings.forEach(b => {
+            const eventDate = new Date(b.event_date).toISOString().split('T')[0];
+            const timeRange = `${formatTime(b.start_time)} - ${formatTime(b.end_time)}`;
+    
+            if (!reservationsData[eventDate]) {
+                reservationsData[eventDate] = [];
+            }
+    
+            reservationsData[eventDate].push({
+                time: timeRange,
+                event: b.event_name,
+            });
+        });
+    
+        return reservationsData;
+    };
+    
+    const reservationsData = transformBookings(bookings);
+    
 
     useEffect(() => {
-        const fetchVenueData = async () => {
-            const url = `${import.meta.env.VITE_API_URL}/reservations/${roomId}`;
-            try {
-                const response = await fetch(url);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.length > 0) {
-                        // Assuming data is an array and taking the first item
-                        const venue = data[0];
-                        // Parsing amenities and pictures from JSON strings
-                        const parsedVenue = {
-                            ...venue,
-                            amenities: JSON.parse(venue.amenities || '[]'),
-                            pictures: JSON.parse(venue.pictures || '[]'),
-                        };
-                        setVenueData(parsedVenue);
-                    }
-                } else {
-                    throw new Error('Failed to fetch data');
-                }
-            } catch (error) {
-                setError('Failed to load venue data.');
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchVenueData();
-    }, [roomId]);
+        if (room) {
+            setVenueData(room);
+            setLoading(false);
+        } else {
+            setError("Room data not available");
+        }
+    }, [room]);
 
-    const handleDateSelect = (date: Date) => {
+    const handleDateSelect = React.useCallback((date: Date) => {
         const formattedDate: string = format(date, "yyyy-MM-dd");
         setReservations(reservationsData[formattedDate] || []);
         setSelectedDate(date);
+    }, []);
+
+    const handleBookVenue = () => {
+        navigate(`/room/${room.room_id}/book`, { state: { venue: room } });
     };
-    console.log(venueData);
-    
 
     return (
         <Box display="flex">
@@ -211,14 +231,16 @@ const RoomDetails: React.FC = () => {
                             variant="outlined"
                             color="primary"
                             sx={{ px: 4, py: 1.5, mr: 2 }}
+                            onClick={() => window.history.back()}
                         >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             sx={{ px: 4, py: 1.5 }}
+                            onClick={handleBookVenue}
                         >
                             Book
                         </Button>
