@@ -21,13 +21,13 @@ export default tseslint.config({
   plugins: {
     'react-hooks': reactHooks,
     'react-refresh': reactRefresh,
-    'prettier': eslintPluginPrettier,
+    prettier: eslintPluginPrettier,
   },
   rules: {
     ...reactHooks.configs.recommended.rules,
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     '@typescript-eslint/ban-ts-comment': 'off', // Allowing @ts-ignore
     'prettier/prettier': 'error', // Ensure prettier rules are enforced
-    '@typescript-eslint/no-explicit-any' : 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 });
