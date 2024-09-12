@@ -5,6 +5,7 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { authRequest } from './middlewares/auth.js';
 import errorHandler from './middlewares/error-handler.js';
+import bookingRoutes from './routes/booking-routes.js';
 import issueReportRoutes from './routes/issue-report-route.js'; // Import issue-report routes
 import userRoutes from './routes/user-route.js';
 
@@ -24,6 +25,7 @@ try {
 }
 
 // Register your routes
+app.use('/api', bookingRoutes); //booking
 app.use('/api', userRoutes); // User routes
 app.use('/api', issueReportRoutes); // Issue report routes
 

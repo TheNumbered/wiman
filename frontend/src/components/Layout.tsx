@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
 import RoleChangeRequests from '../pages/admin/RoleChangeRequests';
 import UserBanManagement from '../pages/admin/UserBanManagement';
@@ -13,7 +13,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, hasSearch = true }) => {
-  const theme = useTheme();
+  //  const theme = useTheme();
   const [activePage, setActivePage] = useState<string>(''); // State to track the active page
 
   const handleSidebarItemClick = (page: string) => {
