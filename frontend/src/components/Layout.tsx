@@ -1,11 +1,11 @@
 import { Box, useTheme } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
-import RoleChangeRequests from '../../pages/admin/RoleChangeRequests';
-import UserBanManagement from '../../pages/admin/UserBanManagement';
-import BookingRequestsModal from '../../pages/booking/BookingRequestsModal';
-import MaintenanceRequestsModal from '../../pages/maintenance/MaintenanceRequestsModal';
-import SearchBar from './SearchBar';
-import Sidebar from './Sidebar';
+import RoleChangeRequests from '../pages/admin/RoleChangeRequests';
+import UserBanManagement from '../pages/admin/UserBanManagement';
+import BookingRequestsModal from '../pages/booking/BookingRequestsModal';
+import MaintenancePage from '../pages/maintenance/MaintenancePage'; // Ensure path is correct
+import SearchBar from './sidebar/SearchBar';
+import Sidebar from './sidebar/Sidebar';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,7 +14,6 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, hasSearch = true }) => {
   const theme = useTheme();
-  //const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [activePage, setActivePage] = useState<string>(''); // State to track the active page
 
   const handleSidebarItemClick = (page: string) => {
@@ -47,7 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children, hasSearch = true }) => {
         {activePage === 'manage-users' && <UserBanManagement />}
         {activePage === 'role-change-requests' && <RoleChangeRequests />}
         {activePage === 'view-booking-requests' && <BookingRequestsModal />}
-        {activePage === 'view-maintenance-requests' && <MaintenanceRequestsModal />}
+        {activePage === 'view-maintenance-requests' && <MaintenancePage />}
         {/* Render children if no page is active */}
         {!activePage && children}
       </Box>

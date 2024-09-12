@@ -5,13 +5,16 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { authRequest } from './middlewares/auth.js';
 import errorHandler from './middlewares/error-handler.js';
+import issueReportRoutes from './routes/issue-report-route.js'; // Import issue-report routes
 import userRoutes from './routes/user-route.js';
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-// Read swagger.json using fs
+// Place CORS middleware at the top
+app.use(cors());
+app.use(express.json()); // Middleware for JSON request parsing
+
+// Swagger documentation setup
 try {
   const swaggerPath = path.resolve('./swagger.json');
   const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf8'));
@@ -20,13 +23,16 @@ try {
   console.log('Error reading swagger.json file');
 }
 
-app.use('/api', userRoutes);
+// Register your routes
+app.use('/api', userRoutes); // User routes
+app.use('/api', issueReportRoutes); // Issue report routes
 
+// Example protected route
 app.get('/', authRequest, (req, res) => {
   res.json({ message: 'Hello, world!' });
 });
 
-// Error handler middleware must be the last one
+// Error handling middleware must be last
 app.use(errorHandler);
 
 export default app;

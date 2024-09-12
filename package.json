@@ -45,6 +45,7 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
+    "chart.js": "^4.4.4",
     "dotenv": "^16.4.5"
   }
 }
