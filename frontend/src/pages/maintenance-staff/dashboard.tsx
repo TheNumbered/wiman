@@ -1,7 +1,8 @@
 import AsideNav from '@/components/aside-nav';
-import { Box, useMediaQuery } from '@mui/material';
+import BottomNav from '@/components/bottom-nav';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
-import Issues from './maintenance-issues';
+import Issues from './maintenance-reports-layout';
 
 const Home = () => <Issues />;
 const Bookings = () => {
@@ -14,7 +15,7 @@ const OtherApps = () => <div>Other Wits Apps Component</div>;
 
 const MaintenanceDashboard: React.FC = () => {
   const [selectedPage, setSelectedPage] = React.useState<number>(0);
-  const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isSmallScreen = useMediaQuery(useTheme().breakpoints.up('sm'));
   const renderSelectedPage = () => {
     switch (selectedPage) {
       case 0:
@@ -38,21 +39,27 @@ const MaintenanceDashboard: React.FC = () => {
     <>
       <Box
         component={'main'}
-        sx={{ background: '#fff', display: 'flex', maxWidth: '100vw', overflowX: 'hidden' }}
+        display={'flex'}
+        sx={{ background: '#fff', maxWidth: '100vw', overflowX: 'hidden' }}
       >
-        <Box component={'section'} bgcolor={'background.paper'} pl={4}>
-          {isSmallScreen ? <div>Bottom Nav</div> : <AsideNav onSelect={setSelectedPage} />}
+        <Box component={'section'} bgcolor={'background.paper'} sx={{ pl: { md: 4 } }}>
+          {isSmallScreen && <AsideNav onSelect={setSelectedPage} />}
         </Box>
         <Box
           component={'section'}
-          sx={{ background: '#fff', width: '-webkit-fill-available', overflowY: 'hidden' }}
-          ml={1}
-          pr={2}
-          py={4}
+          sx={{
+            background: '#fff',
+            width: '-webkit-fill-available',
+            overflowY: 'hidden',
+            ml: { md: 1 }, // Margin-left only on large screens and up
+            pr: { md: 2 }, // Padding-right only on large screens and up
+            py: { md: 4 },
+          }}
         >
           {/* DESKTOP SECTION */}
           {renderSelectedPage()}
         </Box>
+        {!isSmallScreen && <BottomNav />}
       </Box>
     </>
   );

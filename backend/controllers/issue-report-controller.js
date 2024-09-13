@@ -91,9 +91,6 @@ export const addReviewToIssueReportReview = async (req, res) => {
       'Set Back': '',
     };
 
-    // Log the ID and body for debugging purposes
-    // console.log(JSON.stringify(resolution_log));
-
     await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolution_log));
     res.status(200).send({ message: `Review added to issue report with ID: ${id}` });
   } catch (err) {
@@ -151,9 +148,29 @@ export const createIssueReport = async (req, res) => {
 
       res.status(201).send({ message: 'Issue report created' });
     } catch (err) {
-      res.status(500).send(err.message);
+      res.status(500).send({ message: err.message });
     }
   });
+};
+
+export const closeIssueReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const target_issue_report = await IssueReport.getIssueReportById(id);
+
+    // Check if the issue report exists
+    if (!target_issue_report) {
+      return res.status(404).send({ message: `Issue report with ID: ${id} not found` });
+    }
+    await IssueReport.addReviewToIssueReport(
+      id,
+      target_issue_report[0]['resolution_log'],
+      'Resolved',
+    );
+    res.status(200).send({ message: `Successfully closed issue report with ID: ${id}` });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };
 
 export const getBuildings = async (req, res) => {

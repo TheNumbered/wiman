@@ -1,6 +1,18 @@
+import ErrorView from '@/components/error-view';
 import TimeAgo from '@/components/time-ago';
 import { DoneOutlineRounded, NavigateNext, ReportProblem, Timelapse } from '@mui/icons-material';
-import { Box, Breadcrumbs, Button, Container, Link, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  Link,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState } from 'react';
 import { useGetQuery } from '../../hooks/get-query'; // Adjust the path as per your project structure
@@ -48,12 +60,12 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
   const { data, isLoading, isError, error } = useGetQuery({
     resource: 'api/issue-reports',
   });
-
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null); // For filtering by status
-  const [, setAnchorEl] = useState<null | HTMLElement>(null); // For the filter menu
-  // State to track the selected filter
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+
+  const isMobileView = useMediaQuery('(max-width:1300px)');
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value.toLowerCase());
@@ -65,6 +77,13 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
     setAnchorEl(null);
   };
 
+  const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleFilterClose = () => {
+    setAnchorEl(null);
+  };
+
   const filteredData = data?.filter((issue: any) => {
     const matchesSearch = issue.issue_description.toLowerCase().includes(searchQuery);
     const matchesStatus = statusFilter ? issue.status === statusFilter : true;
@@ -73,18 +92,23 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
 
   if (isLoading) {
     return (
-      <Container>
+      <Container
+        sx={{
+          width: '100%',
+          height: '100%',
+          padding: '1rem',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <CircularProgress />
       </Container>
     );
   }
 
   if (isError) {
-    return (
-      <Container>
-        <Typography color="error">Failed to load issue reports: {error.message}</Typography>
-      </Container>
-    );
+    return <ErrorView message={'Could Not Load Issue Reports, ' + error} />;
   }
 
   const breadcrumbs = [
@@ -124,32 +148,50 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
         onChange={handleSearch}
         sx={{ mb: 2 }}
       />
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Button
-          variant={selectedFilter === null ? 'contained' : 'outlined'} // 'contained' for the selected filter
-          onClick={() => handleFilterSelect(null)}
-        >
-          All
-        </Button>
-        <Button
-          variant={selectedFilter === 'In Progress' ? 'contained' : 'outlined'}
-          onClick={() => handleFilterSelect('In Progress')}
-        >
-          In Progress
-        </Button>
-        <Button
-          variant={selectedFilter === 'Resolved' ? 'contained' : 'outlined'}
-          onClick={() => handleFilterSelect('Resolved')}
-        >
-          Resolved
-        </Button>
-        <Button
-          variant={selectedFilter === 'Reported' ? 'contained' : 'outlined'}
-          onClick={() => handleFilterSelect('Reported')}
-        >
-          Reported
-        </Button>
-      </Box>
+      {/* Box with Filter Menu (visible on small screens) */}
+      {isMobileView && (
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+          <Button fullWidth variant="text" onClick={handleFilterClick}>
+            Filter by Status
+          </Button>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleFilterClose}>
+            <MenuItem onClick={() => handleFilterSelect(null)}>All</MenuItem>
+            <MenuItem onClick={() => handleFilterSelect('In Progress')}>In Progress</MenuItem>
+            <MenuItem onClick={() => handleFilterSelect('Resolved')}>Resolved</MenuItem>
+            <MenuItem onClick={() => handleFilterSelect('Reported')}>Reported</MenuItem>
+          </Menu>
+        </Box>
+      )}
+
+      {/* Box with Buttons (hidden on small screens) */}
+      {!isMobileView && (
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+          <Button
+            variant={selectedFilter === null ? 'contained' : 'outlined'}
+            onClick={() => handleFilterSelect(null)}
+          >
+            All
+          </Button>
+          <Button
+            variant={selectedFilter === 'In Progress' ? 'contained' : 'outlined'}
+            onClick={() => handleFilterSelect('In Progress')}
+          >
+            In Progress
+          </Button>
+          <Button
+            variant={selectedFilter === 'Resolved' ? 'contained' : 'outlined'}
+            onClick={() => handleFilterSelect('Resolved')}
+          >
+            Resolved
+          </Button>
+          <Button
+            variant={selectedFilter === 'Reported' ? 'contained' : 'outlined'}
+            onClick={() => handleFilterSelect('Reported')}
+          >
+            Reported
+          </Button>
+        </Box>
+      )}
       <Box>
         {/* Render filtered issue reports */}
         {filteredData?.map((issue: any) => (

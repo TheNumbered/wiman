@@ -1,6 +1,6 @@
 import { scrollbarStyles } from '@/theme';
 import { NavigateBeforeRounded } from '@mui/icons-material';
-import { Box, Button, Container } from '@mui/material';
+import { Box, Button, Container, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import IssueFixReporting from './issue-fix-reporting';
 import IssueReportsList from './issue-reports-list';
@@ -32,10 +32,10 @@ const NoCardSelected = () => (
         alignItems: 'center',
       }}
     >
-      <img style={{ width: '15rem' }} src="/src/assets/illustration.svg" alt="illustration" />
+      <img style={{ width: '15rem' }} src="/illustration.svg" alt="illustration" />
       <h2 style={{ marginBottom: '0' }}>No report is selected yet</h2>
       <p style={{ color: '#777', margin: '0' }}>
-        Choose report on the left menu to view its details
+        Choose a report on the left menu to view its details
       </p>
     </Box>
   </Box>
@@ -45,60 +45,82 @@ const CardDetails = ({
   issue_id,
   onNext,
   onShowSetBackForm,
+  onPrev,
 }: {
   issue_id: string;
   onNext: () => void;
   onShowSetBackForm: () => void;
+  onPrev: () => void;
 }) => (
   <Box
+    component={'article'}
     sx={{
       flex: '1',
       overflowY: 'scroll',
       height: '100vh',
-      paddingBottom: '2rem',
+      paddingBottom: '5rem',
+      flexDirection: 'column',
       ...scrollbarStyles,
     }}
   >
+    {useMediaQuery(useTheme().breakpoints.down('md')) && (
+      <Button
+        sx={{ margin: '1rem', width: '100%', height: '2rem' }}
+        onClick={onPrev}
+        variant="text"
+        disableElevation
+      >
+        <NavigateBeforeRounded /> Return
+      </Button>
+    )}
     <SingleIssueReport
       id={issue_id}
       onReviewButtonClick={onNext}
       onSetBackButtonClick={onShowSetBackForm}
     />
-    {/* <button onClick={onNext}>Go to Another View</button> */}
   </Box>
 );
 
-const AnotherView = ({
+const FormView = ({
   issue_id,
   onPrev,
   which_view,
 }: {
   issue_id: string;
   onPrev: () => void;
-  which_view: string;
+  which_view: 'review' | 'setback';
 }) => (
-  <div style={{ flex: '1' }}>
+  <Box
+    sx={{
+      flex: '1',
+      overflowY: 'scroll',
+      height: '100vh',
+      paddingBottom: '5rem',
+      ...scrollbarStyles,
+    }}
+  >
     <Button
       sx={{ marginLeft: '1rem', width: '100%' }}
       onClick={onPrev}
       variant="text"
       disableElevation
     >
-      <NavigateBeforeRounded /> Return To List
+      <NavigateBeforeRounded /> Return
     </Button>
 
-    {which_view == 'setback' ? (
+    {which_view === 'setback' ? (
       <IssueSetBackReporting issue_id={issue_id} />
     ) : (
       <IssueFixReporting issue_id={issue_id} />
     )}
-  </div>
+  </Box>
 );
 
 export default function Issues() {
   // State management
   const [view, setView] = useState<'list' | 'details' | 'form' | 'setbackform'>('list'); // Manage views
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null); // Manage selected card
+  const isTabletScreen = useMediaQuery(useTheme().breakpoints.up('md'));
 
   // Handlers
   const handleCardSelect = (id: string) => {
@@ -106,57 +128,61 @@ export default function Issues() {
     setView('details'); // Move to details view
   };
 
-  const handleNextView = () => {
-    setView('form'); // Move to the 'form' view
-  };
-  const handleShowSetBackForm = () => {
-    setView('setbackform'); // Move to the 'form' view
-  };
-
-  const handlePrevView = () => {
-    setView('details'); // Move back to the list view
-    // setSelectedCardId(null); // Reset card selection
-  };
-
   return (
-    <Container sx={{ background: '#fff', width: '-webkit-fill-available' }}>
+    <Container sx={{ background: '#fff', width: '-webkit-fill-available', pt: { xs: 4, md: 0 } }}>
       <div style={{ display: 'flex' }}>
         {view === 'list' && (
           <>
             <CardList onSelect={handleCardSelect} />
-            {!selectedCardId && <NoCardSelected />}
+            {!selectedCardId && isTabletScreen && <NoCardSelected />}
           </>
         )}
 
         {view === 'details' && selectedCardId && (
           <>
-            <CardList onSelect={handleCardSelect} />
+            {isTabletScreen && <CardList onSelect={handleCardSelect} />}
             <CardDetails
               issue_id={selectedCardId}
-              onNext={handleNextView}
-              onShowSetBackForm={handleShowSetBackForm}
+              onNext={() => setView('form')}
+              onShowSetBackForm={() => setView('setbackform')}
+              onPrev={() => setView('list')} // Adjusted to handle return to list
             />
           </>
         )}
 
         {view === 'form' && selectedCardId && (
           <>
-            <CardDetails
+            {isTabletScreen && (
+              <CardDetails
+                issue_id={selectedCardId}
+                onNext={() => setView('form')}
+                onShowSetBackForm={() => setView('setbackform')}
+                onPrev={() => setView('list')} // Adjusted to handle return to list
+              />
+            )}
+            <FormView
+              onPrev={() => setView('details')}
               issue_id={selectedCardId}
-              onNext={handleNextView}
-              onShowSetBackForm={handleShowSetBackForm}
+              which_view="review"
             />
-            <AnotherView onPrev={handlePrevView} issue_id={selectedCardId} which_view="review" />
           </>
         )}
+
         {view === 'setbackform' && selectedCardId && (
           <>
-            <CardDetails
+            {isTabletScreen && (
+              <CardDetails
+                issue_id={selectedCardId}
+                onNext={() => setView('form')}
+                onShowSetBackForm={() => setView('setbackform')}
+                onPrev={() => setView('list')} // Adjusted to handle return to list
+              />
+            )}
+            <FormView
+              onPrev={() => setView('details')}
               issue_id={selectedCardId}
-              onNext={handleNextView}
-              onShowSetBackForm={handleShowSetBackForm}
+              which_view="setback"
             />
-            <AnotherView onPrev={handlePrevView} issue_id={selectedCardId} which_view="setback" />
           </>
         )}
       </div>

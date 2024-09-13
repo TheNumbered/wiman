@@ -30,6 +30,15 @@ const theme = createTheme({
       contrastText: '#ffffff', // White text
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   typography: {
     fontFamily: 'Roboto, Arial, sans-serif',
     // h1: {
@@ -57,7 +66,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+          // boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
           padding: '10px 20px',
           '&:hover': {
             boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.15)',

@@ -2,6 +2,7 @@ import express from 'express';
 import {
   addIssueSetBackReport,
   addReviewToIssueReportReview,
+  closeIssueReport,
   createIssueReport,
   getAllIssueReports,
   getBuildings,
@@ -15,6 +16,7 @@ router.get('/single-issue-report/:id', getIssueReportById);
 router.post('/issue-report', createIssueReport);
 router.put('/review-issue-report/:id', addReviewToIssueReportReview);
 router.put('/add-issue-setback-report/:id', addIssueSetBackReport);
+router.put('/close-issue-report/:id', closeIssueReport);
 router.get('/buildings', getBuildings); ///TESTING PLEASE REMOVE
 
 export default router;
