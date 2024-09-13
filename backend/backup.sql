@@ -110,6 +110,33 @@ INSERT INTO `notifications` VALUES (1,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','bookin
 UNLOCK TABLES;
 
 --
+-- Table structure for table `rooms`
+--
+
+DROP TABLE IF EXISTS `rooms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rooms` (
+  `room_id` varchar(10) NOT NULL,
+  `building_id` int NOT NULL,
+  `capacity` int NOT NULL,
+  `type` enum('LECTURE','TUTORIAL','LAB','MEETING') NOT NULL,
+  `amenities` json NOT NULL,
+  PRIMARY KEY (`room_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rooms`
+--
+
+LOCK TABLES `rooms` WRITE;
+/*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
+INSERT INTO `rooms` VALUES ('LAB1D',2,20,'LAB','[\"computer\", \"projector\"]'),('LT1A',1,100,'LECTURE','[\"projector\", \"whiteboard\"]'),('LT2B',1,80,'LECTURE','[\"projector\"]'),('MTG1E',3,10,'MEETING','[\"conference phone\", \"whiteboard\"]'),('TUT1C',2,40,'TUTORIAL','[\"whiteboard\"]');
+/*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -143,4 +170,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-13  9:02:13
+-- Dump completed on 2024-09-13 16:16:05

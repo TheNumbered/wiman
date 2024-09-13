@@ -8,7 +8,6 @@ import MaintenanceDashboard from './pages/maintenance-staff/dashboard';
 import Issues from './pages/maintenance-staff/maintenance-issues';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
-import BookVenueForm from './pages/venue-booking/book-venue-form';
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded, userId } = useAuth();
@@ -39,7 +38,6 @@ const App: React.FC = () => {
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/maintenance" element={<MaintenanceDashboard />} />
-            <Route path="/book" element={<BookVenueForm />} />
             <Route path="/test" element={<Issues />} />
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/searchings" element={<Searchings />} />

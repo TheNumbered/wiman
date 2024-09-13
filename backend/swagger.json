@@ -55,31 +55,7 @@
         "operationId": "venuesGET",
         "parameters": [
           {
-            "name": "date",
-            "in": "query",
-            "description": "Date for which the venue is needed.",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "time",
-            "in": "query",
-            "description": "Time for which the venue is needed.",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "time"
-            }
-          },
-          {
-            "name": "building",
+            "name": "buildingName",
             "in": "query",
             "description": "Location of the venue.",
             "required": false,
@@ -92,12 +68,23 @@
           {
             "name": "features",
             "in": "query",
-            "description": "Specific features required (e.g., projector, seating capacity).",
+            "description": "Specific features required (e.g., 'projector', 'whiteboard').",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "seatingCapacity",
+            "in": "query",
+            "description": "Minimum amout seat required",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -113,17 +100,12 @@
                   },
                   "example": [
                     {
-                      "venueId": 0,
+                      "venueId": "CLM201",
                       "capacity": 0,
-                      "code": "CLM07",
-                      "campus": "West Campus",
+                      "campusName": "West Campus",
                       "type": "Lecture Theatre",
-                      "name": "Commerce, Law & Management",
+                      "buildingName": "Commerce, Law & Management",
                       "amenities": ["projector", "whiteboard"],
-                      "location": {
-                        "lat": 20,
-                        "lng": 20
-                      },
                       "pictures": [
                         "https://example.com/images/clm37_1.jpg",
                         "https://example.com/images/clm37_2.jpg"
@@ -159,20 +141,18 @@
         "x-swagger-router-controller": "Venues"
       }
     },
-    "/venues/{venueId}/availability": {
+    "/venues/{venueId}/reservations": {
       "get": {
         "tags": ["Venues"],
-        "summary": "Get availability calendar for a venue",
-        "description": "Retrieve the availability calendar for a specific venue across different dates.",
-        "operationId": "venuesVenueIdAvailabilityGET",
+        "summary": "Get reservation details for a venue",
+        "description": "Retrieve the reservation details for a specific venue across different dates, including event name and time slots.",
+        "operationId": "venueReservationsGET",
         "parameters": [
           {
             "name": "venueId",
             "in": "path",
             "description": "ID of the venue",
             "required": true,
-            "style": "simple",
-            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -180,20 +160,20 @@
         ],
         "responses": {
           "200": {
-            "description": "Availability calendar",
+            "description": "Reservation details for the venue",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Availability"
+                    "$ref": "#/components/schemas/Reservation"
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "No venues found",
+            "description": "No reservations found",
             "content": {
               "application/json": {
                 "schema": {
@@ -201,7 +181,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "No venues found"
+                      "example": "No reservations found"
                     }
                   }
                 }
@@ -1021,26 +1001,13 @@
         "type": "object",
         "properties": {
           "venueId": {
-            "type": "number"
-          },
-          "name": {
             "type": "string"
           },
-          "campus": {
+          "buildingName": {
             "type": "string"
           },
-          "location": {
-            "type": "object",
-            "properties": {
-              "lat": {
-                "type": "number",
-                "format": "float"
-              },
-              "lng": {
-                "type": "number",
-                "format": "float"
-              }
-            }
+          "campusName": {
+            "type": "string"
           },
           "amenities": {
             "type": "array",
@@ -1054,9 +1021,6 @@
           "capacity": {
             "type": "integer"
           },
-          "code": {
-            "type": "string"
-          },
           "pictures": {
             "type": "array",
             "items": {
@@ -1065,24 +1029,44 @@
           }
         }
       },
-      "Availability": {
+      "Reservation": {
         "type": "object",
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "bookedTimeSlots": {
-            "type": "array",
-            "description": "List of available time slots for the venue on the given date.",
-            "items": {
-              "type": "string"
+        "description": "A map of dates to reservation details for a specific venue.",
+        "additionalProperties": {
+          "type": "array",
+          "description": "List of reservations for the given date.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "event_name": {
+                "type": "string",
+                "description": "Name of the event"
+              },
+              "time": {
+                "type": "string",
+                "description": "The time slot for the event, in format 'HH:mm:ss-HH:mm:ss'",
+                "example": "09:00:00-11:00:00"
+              }
             }
           }
         },
         "example": {
-          "date": "2020-01-23",
-          "bookedTimeSlots": ["13:00-13:50", "14:15-15:00"]
+          "2024-10-20": [
+            {
+              "event_name": "Conference Meeting",
+              "time": "09:00:00-11:00:00"
+            },
+            {
+              "event_name": "Team Meeting",
+              "time": "10:00:00-12:00:00"
+            }
+          ],
+          "2024-10-21": [
+            {
+              "event_name": "Workshop",
+              "time": "13:00:00-15:00:00"
+            }
+          ]
         }
       },
       "Booking": {
