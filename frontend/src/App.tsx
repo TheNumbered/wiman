@@ -2,6 +2,8 @@ import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import BookingPage from './pages/bookings/page';
 import Dashboard from './pages/dashboard';
+import HomePage from './pages/home/home';
+import Searchings from './pages/home/searching';
 import MaintenanceDashboard from './pages/maintenance-staff/dashboard';
 import Issues from './pages/maintenance-staff/maintenance-issues';
 import SignInPage from './pages/sign-in';
@@ -40,6 +42,8 @@ const App: React.FC = () => {
             <Route path="/book" element={<BookVenueForm />} />
             <Route path="/test" element={<Issues />} />
             <Route path="/bookings" element={<BookingPage />} />
+            <Route path="/searchings" element={<Searchings />} />
+            <Route path="/home" element={<HomePage />} />
           </Route>
         )}
         <Route

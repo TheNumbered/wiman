@@ -113,7 +113,7 @@
                   },
                   "example": [
                     {
-                      "id": 0,
+                      "venueId": 0,
                       "capacity": 0,
                       "code": "CLM07",
                       "campus": "West Campus",
@@ -641,14 +641,14 @@
                   },
                   "example": [
                     {
-                      "id": 1,
+                      "notificationId": 1,
                       "message": "Your booking has been confirmed",
                       "date": "2024-08-29T04:56:07.000Z",
                       "code": "booking_confirmed",
                       "isRead": false
                     },
                     {
-                      "id": 2,
+                      "notificationId": 2,
                       "message": "Maintenance work is scheduled for tomorrow",
                       "date": "2024-08-28T11:22:45.000Z",
                       "code": "maintenance_scheduled",
@@ -753,7 +753,7 @@
         }
       }
     },
-    "/notifications/{id}/read": {
+    "/notifications/{notificationId}/read": {
       "put": {
         "tags": ["Notifications"],
         "summary": "Mark a notification as read",
@@ -761,7 +761,7 @@
         "operationId": "markNotificationAsReadPUT",
         "parameters": [
           {
-            "name": "id",
+            "name": "notificationId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1020,7 +1020,7 @@
       "Venue": {
         "type": "object",
         "properties": {
-          "id": {
+          "venueId": {
             "type": "number"
           },
           "name": {
@@ -1088,7 +1088,7 @@
       "Booking": {
         "type": "object",
         "properties": {
-          "id": {
+          "bookingId": {
             "type": "integer",
             "description": "Unique identifier for the booking"
           },
@@ -1219,7 +1219,7 @@
       "Notification": {
         "type": "object",
         "properties": {
-          "id": {
+          "notificationId": {
             "type": "integer",
             "description": "Unique identifier for the notification"
           },
@@ -1241,7 +1241,7 @@
             "description": "Indicates whether the notification has been read"
           }
         },
-        "required": ["id", "code", "message", "date", "isRead"]
+        "required": ["notificationId", "code", "message", "date", "isRead"]
       },
       "ScheduleUpdate": {
         "type": "object",

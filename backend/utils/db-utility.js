@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import process from 'process';
 
 // Function to read the MySQL dump file
 function readMySQLDump(filePath) {
