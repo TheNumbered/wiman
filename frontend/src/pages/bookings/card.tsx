@@ -1,10 +1,10 @@
-import { Booking } from '@/interfaces';
+import { Bookings } from '@/interfaces';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Card, CardContent, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 interface BookingCardProps {
-  booking: Booking;
+  booking: Bookings;
   onCancelBooking?: () => void;
   onRebooking?: () => void;
 }
@@ -33,21 +33,13 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
     }
   };
 
+  const pastDate = new Date(booking.date) < new Date();
+
   // Determine colors based on status
   const cardBackgroundColor =
-    booking.status === 'cancelled'
-      ? '#ffebee'
-      : booking.status === 'inactive'
-        ? '#e0e0e0'
-        : '#fff7e8';
-  const borderColor =
-    booking.status === 'cancelled'
-      ? '#ffcccb'
-      : booking.status === 'inactive'
-        ? '#bdbdbd'
-        : '#1565c0'; // Light version for cancelled and inactive
-  const dateColor =
-    booking.status === 'cancelled' || booking.status === 'inactive' ? '#9e9e9e' : '#1565c0'; // Gray color for past bookings
+    booking.status === 'cancelled' ? '#ffebee' : pastDate ? '#e0e0e0' : '#fff7e8';
+  const borderColor = booking.status === 'cancelled' ? '#ffcccb' : pastDate ? '#bdbdbd' : '#1565c0'; // Light version for cancelled and inactive
+  const dateColor = booking.status === 'cancelled' || pastDate ? '#9e9e9e' : '#1565c0'; // Gray color for past bookings
 
   return (
     <div style={{ display: 'flex', width: '100%' }}>
@@ -87,13 +79,13 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
         {/* Details Section */}
         <CardContent sx={{ flex: 1, paddingLeft: 2 }}>
           <Typography variant="h6" fontWeight="bold" color="primary">
-            {booking.purpose}
+            {booking.eventName}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             VENUE LOCATION
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            {booking.status === 'cancelled' || booking.status === 'inactive'
+            {booking.status === 'cancelled' || booking.status === 'pending'
               ? `${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)} ${getCancellationReason()}`
               : booking.startTime}
           </Typography>
@@ -129,14 +121,14 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
               </Typography>
             </MenuItem>
           )}
-          {booking.status === 'inactive' && onRebooking && (
+          {new Date(booking.date) < new Date() && onRebooking && (
             <MenuItem onClick={onRebooking}>
               <Typography variant="body2" color="primary">
                 Rebook
               </Typography>
             </MenuItem>
           )}
-          {booking.status !== 'cancelled' && booking.status !== 'inactive' && onCancelBooking && (
+          {booking.status !== 'cancelled' && pastDate && onCancelBooking && (
             <MenuItem onClick={onCancelBooking}>
               <Typography variant="body2" color="error">
                 Cancel Booking

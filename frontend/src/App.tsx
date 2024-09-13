@@ -1,5 +1,6 @@
 import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import BookingPage from './pages/bookings/page';
 import Dashboard from './pages/dashboard';
 import MaintenanceDashboard from './pages/maintenance-staff/dashboard';
 import Issues from './pages/maintenance-staff/maintenance-issues';
@@ -38,6 +39,7 @@ const App: React.FC = () => {
             <Route path="/maintenance" element={<MaintenanceDashboard />} />
             <Route path="/book" element={<BookVenueForm />} />
             <Route path="/test" element={<Issues />} />
+            <Route path="/bookings" element={<BookingPage />} />
           </Route>
         )}
         <Route

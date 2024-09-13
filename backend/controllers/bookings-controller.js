@@ -25,21 +25,25 @@ export const getPastBookings = async (req, res) => {
 // Create a new booking
 export const createBooking = async (req, res) => {
   try {
-    const { userId, date, start_time, end_time, venue_id, purpose } = req.body;
-    await Booking.createBooking(userId, date, start_time, end_time, venue_id, purpose);
-    res.status(201).json({ message: 'Booking created' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    const { date, startTime, endTime, venueId, eventName, repeatFrequency, repeatUntil } = req.body;
+    let userId = req.auth?.userId || 'api_user';
+    console.log(userId, date, startTime, endTime, venueId, eventName, repeatFrequency, repeatUntil);
 
-// Cancel a booking
-export const cancelBooking = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { reason_for_cancellation } = req.body;
-    await Booking.cancelBooking(id, reason_for_cancellation);
-    res.status(200).json({ message: 'Booking cancelled' });
+    if (!date || !startTime || !endTime || !eventName || isNaN(venueId)) {
+      return res.status(400).json({ error: 'Required fields are missing' });
+    }
+
+    await Booking.createBooking(
+      userId,
+      date,
+      startTime,
+      endTime,
+      venueId,
+      eventName,
+      repeatFrequency,
+      repeatUntil,
+    );
+    res.status(201).json({ message: 'Booking created' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -49,8 +53,30 @@ export const cancelBooking = async (req, res) => {
 export const getBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid booking ID' });
+    }
     const status = await Booking.getBookingStatus(id);
-    res.json({ status });
+
+    if (!status) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+    res.status(200).json({ status });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Cancel a booking
+export const cancelBooking = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid booking ID' });
+    }
+    const { reason_for_cancellation } = req.body;
+    await Booking.cancelBooking(id, reason_for_cancellation);
+    res.status(200).json({ message: 'Booking cancelled' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

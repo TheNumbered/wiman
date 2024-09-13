@@ -6,8 +6,6 @@ import swaggerUi from 'swagger-ui-express';
 import { authRequest } from './middleware/auth.js';
 import errorHandler from './middleware/error-handler.js';
 import apiRouter from './routes/index.js';
-import issueReportRoutes from './routes/issue-report-route.js';
-import userRoutes from './routes/user-route.js';
 
 const app = express();
 app.use(cors());
@@ -24,8 +22,6 @@ try {
 }
 
 app.use('/api', apiRouter);
-app.use('/api', userRoutes);
-app.use('/api', issueReportRoutes);
 
 app.get('/', authRequest, (req, res) => {
   res.json({ message: 'Hello, world!' });
