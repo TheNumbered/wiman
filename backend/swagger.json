@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://wiman.azurewebsites.net/api/"
+      "url": "https://wiman.azurewebsites.net/api/",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000/api/",
+      "description": "Local server"
     }
   ],
   "security": [
@@ -74,7 +79,7 @@
             }
           },
           {
-            "name": "location",
+            "name": "building",
             "in": "query",
             "description": "Location of the venue.",
             "required": false,
@@ -108,9 +113,10 @@
                   },
                   "example": [
                     {
-                      "id": "venueId",
+                      "venueId": 0,
                       "capacity": 0,
                       "code": "CLM07",
+                      "campus": "West Campus",
                       "type": "Lecture Theatre",
                       "name": "Commerce, Law & Management",
                       "amenities": ["projector", "whiteboard"],
@@ -181,13 +187,7 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Availability"
-                  },
-                  "example": [
-                    {
-                      "date": "2000-01-23T00:00:00.000Z",
-                      "bookedTimeSlots": ["13:00-13:50", "14:15-15:00"]
-                    }
-                  ]
+                  }
                 }
               }
             }
@@ -327,7 +327,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Invalid request body"
+                      "example": "Required fields are missing"
                     }
                   }
                 }
@@ -365,10 +365,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "bookingId": {
-                      "type": "string",
-                      "example": "12345"
-                    },
                     "status": {
                       "type": "string",
                       "example": "confirmed"
@@ -443,7 +439,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Booking cancelled successfully"
+                      "example": "Booking cancelled"
                     }
                   }
                 }
@@ -645,11 +641,18 @@
                   },
                   "example": [
                     {
-                      "id": "notificationId",
-                      "title": "Example Notification",
+                      "notificationId": 1,
                       "message": "Your booking has been confirmed",
                       "date": "2024-08-29T04:56:07.000Z",
-                      "read": false
+                      "code": "booking_confirmed",
+                      "isRead": false
+                    },
+                    {
+                      "notificationId": 2,
+                      "message": "Maintenance work is scheduled for tomorrow",
+                      "date": "2024-08-28T11:22:45.000Z",
+                      "code": "maintenance_scheduled",
+                      "isRead": true
                     }
                   ]
                 }
@@ -665,7 +668,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": " User with the given ID was not found"
+                      "example": "No notifications found"
                     }
                   }
                 }
@@ -677,8 +680,135 @@
           {
             "BearerAuth": []
           }
+        ]
+      },
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Create a notification",
+        "description": "Create a new notification for a specific user.",
+        "operationId": "createNotificationPOST",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "integer",
+                    "description": "ID of the user receiving the notification"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "Code identifying the type of notification"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "The message content of the notification"
+                  }
+                },
+                "required": ["userId", "code", "message"],
+                "example": {
+                  "userId": 123,
+                  "code": "booking_cancelled",
+                  "message": "Your booking has been cancelled"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Notification created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Notification created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid input"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{notificationId}/read": {
+      "put": {
+        "tags": ["Notifications"],
+        "summary": "Mark a notification as read",
+        "description": "Mark a specific notification as read by its ID.",
+        "operationId": "markNotificationAsReadPUT",
+        "parameters": [
+          {
+            "name": "notificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the notification to mark as read"
+          }
         ],
-        "x-swagger-router-controller": "Notifications"
+        "responses": {
+          "200": {
+            "description": "Notification marked as read",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Notification marked as read"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Notification not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Notification not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/admin/schedule": {
@@ -890,10 +1020,13 @@
       "Venue": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
+          "venueId": {
+            "type": "number"
           },
           "name": {
+            "type": "string"
+          },
+          "campus": {
             "type": "string"
           },
           "location": {
@@ -930,22 +1063,6 @@
               "type": "string"
             }
           }
-        },
-        "example": {
-          "id": "venueId",
-          "capacity": 0,
-          "code": "CLM07",
-          "type": "Lecture Theatre",
-          "name": "Commerce, Law & Management",
-          "amenities": ["projector", "whiteboard"],
-          "location": {
-            "lat": 20,
-            "lng": 20
-          },
-          "pictures": [
-            "https://example.com/images/clm37_1.jpg",
-            "https://example.com/images/clm37_2.jpg"
-          ]
         }
       },
       "Availability": {
@@ -964,14 +1081,14 @@
           }
         },
         "example": {
-          "date": "2000-01-23T00:00:00.000Z",
+          "date": "2020-01-23",
           "bookedTimeSlots": ["13:00-13:50", "14:15-15:00"]
         }
       },
       "Booking": {
         "type": "object",
         "properties": {
-          "id": {
+          "bookingId": {
             "type": "integer",
             "description": "Unique identifier for the booking"
           },
@@ -996,7 +1113,7 @@
           },
           "status": {
             "type": "string",
-            "enum": ["active", "cancelled", "inactive"],
+            "enum": ["pending", "cancelled", "confirmed"],
             "description": "Status of the booking"
           },
           "reasonForCancellation": {
@@ -1008,16 +1125,21 @@
             "enum": ["none", "daily", "weekly", "monthly"],
             "description": "Frequency of repeating bookings"
           },
-          "purpose": {
+          "repeatUntil": {
             "type": "string",
-            "description": "Purpose of the booking"
+            "format": "date",
+            "description": "Date until which the booking repeats (optional, can be null)"
+          },
+          "eventName": {
+            "type": "string",
+            "description": "Name of the event"
           }
         },
-        "required": ["id", "date", "startTime", "endTime", "venueId", "status", "purpose"]
+        "required": ["id", "date", "startTime", "endTime", "venueId", "status", "eventName"]
       },
       "NewBooking": {
         "type": "object",
-        "required": ["date", "startTime", "endTime", "venueId", "purpose"],
+        "required": ["date", "startTime", "endTime", "venueId", "eventName"],
         "properties": {
           "date": {
             "type": "string",
@@ -1038,9 +1160,19 @@
             "type": "integer",
             "description": "ID of the venue for the booking"
           },
-          "purpose": {
+          "eventName": {
             "type": "string",
-            "description": "Purpose of the booking"
+            "description": "Name of the event"
+          },
+          "repeatFrequency": {
+            "type": "string",
+            "enum": ["none", "daily", "weekly", "monthly"],
+            "description": "Frequency of repeating bookings (optional, defaults to 'none')"
+          },
+          "repeatUntil": {
+            "type": "string",
+            "format": "date",
+            "description": "Date until which the booking repeats (optional, can be null)"
           }
         }
       },
@@ -1087,23 +1219,29 @@
       "Notification": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
+          "notificationId": {
+            "type": "integer",
+            "description": "Unique identifier for the notification"
           },
-          "title": {
-            "type": "string"
+          "code": {
+            "type": "string",
+            "description": "Code representing the type or category of the notification"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Message content of the notification"
           },
           "date": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Date and time the notification was created (ISO 8601 format)"
           },
-          "read": {
-            "type": "boolean"
+          "isRead": {
+            "type": "boolean",
+            "description": "Indicates whether the notification has been read"
           }
-        }
+        },
+        "required": ["notificationId", "code", "message", "date", "isRead"]
       },
       "ScheduleUpdate": {
         "type": "object",

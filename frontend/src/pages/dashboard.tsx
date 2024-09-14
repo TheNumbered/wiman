@@ -1,12 +1,13 @@
 import AsideNav from '@/components/aside-nav';
 import BottomNav from '@/components/bottom-nav';
 import { KeyboardArrowLeftRounded } from '@mui/icons-material';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid2, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
+import Searchings from './home/searching';
 import IssueReporting from './issue-reporting';
 import SingleVenueDetails from './single-venue-details';
 
-const Home = () => <div>Home Component</div>;
+const Home = () => <Searchings />;
 const Bookings = () => {
   return (
     <>
@@ -72,29 +73,38 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Box
+      <Grid2
+        container
         component={'main'}
-        sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden', background: '#fff' }}
+        sx={{ display: '', maxWidth: '100vw', overflowX: 'hidden', background: '#fff' }}
       >
-        <Box component={'section'} bgcolor={'background.paper'} sx={{ px: { md: 4 } }}>
-          {!isSmallScreen && <AsideNav onSelect={setSelectedPage} />}
-        </Box>
-        <Box component={'section'}>
+        {!isSmallScreen && (
+          <Grid2
+            size={3}
+            component={'section'}
+            bgcolor={'background.paper'}
+            sx={{ px: { md: 4 }, height: '100vh', overflow: 'hidden' }}
+          >
+            <AsideNav onSelect={setSelectedPage} />
+          </Grid2>
+        )}
+        <Grid2 component={'section'} size={{ md: 9, sm: 12 }}>
           <Box
             sx={{
               background: '#fff',
-              width: '-webkit-fill-available',
               ml: { md: 1 }, // Margin-left only on large screens and up
               pr: { md: 2 }, // Padding-right only on large screens and up
               py: { md: 4 },
+              height: '100vh',
+              overflowY: 'scroll',
             }}
           >
             {/* DESKTOP SECTION */}
             {renderSelectedPage()}
           </Box>
-          {isSmallScreen && <BottomNav />}
-        </Box>
-      </Box>
+          {isSmallScreen && <BottomNav onSelect={setSelectedPage} />}
+        </Grid2>
+      </Grid2>
     </>
   );
 };

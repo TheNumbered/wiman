@@ -9,7 +9,8 @@ const theme = createTheme({
       main: '#f99326', // Gold
     },
     background: {
-      default: '#F5F5F5', // Light Gray Background
+      // default: '#F5F5F5', // Light Gray Background
+      default: '#fff',
     },
     error: {
       main: '#f44336', // Red
