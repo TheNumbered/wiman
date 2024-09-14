@@ -1,8 +1,5 @@
 import axios from 'axios';
-<<<<<<< HEAD
-=======
 import process from 'process';
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
 import db from '../config/db.js';
 import { expandRepeats } from '../utils/expand-repeats.js';
 
@@ -52,11 +49,7 @@ class Venue {
         });
 
         return response.data;
-<<<<<<< HEAD
       } catch (err) {
-=======
-      } catch {
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
         return (
           mockBuildingInfo[buildingId] || {
             campusName: 'Unknown Campus',
@@ -124,9 +117,6 @@ class Venue {
   }
 }
 
-<<<<<<< HEAD
 //get reservations for a venue have status pending
 
-=======
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
 export default Venue;
