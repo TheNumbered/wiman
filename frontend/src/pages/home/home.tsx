@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
                 width: '100%',
               }}
             >
-              <img src="/logo.jpg" alt="Logo" style={{ width: '350px', height: 'auto' }} />
+              <img src="/LOGO.png" alt="Logo" style={{ width: '350px', height: 'auto' }} />
             </Box>
           </Box>
 

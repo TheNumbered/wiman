@@ -4,10 +4,10 @@
     "**/node_modules": true,
     "**/dist": true,
     "**/eslint**": true,
-    // "**/**config**": true,
+    "**/**config**": true,
     "**/**lock**": true,
     "**/**vite**": true,
-    "**/**package**": true,
+    //"**/**package**": true,
     "**/**coverage**": true,
     "**/**.prettier**": true
   },

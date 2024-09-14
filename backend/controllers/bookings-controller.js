@@ -1,5 +1,18 @@
 import Booking from '../models/bookings-model.js';
 
+<<<<<<< HEAD
+=======
+// Fetch all bookings
+export const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.getAllBookings();
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+>>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
 // Get active bookings
 export const getActiveBookings = async (req, res) => {
   try {
@@ -74,8 +87,8 @@ export const cancelBooking = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).json({ error: 'Invalid booking ID' });
     }
-    const { reason_for_cancellation } = req.body;
-    await Booking.cancelBooking(id, reason_for_cancellation);
+    const { reasonForCancellation } = req.body;
+    await Booking.cancelBooking(id, reasonForCancellation);
     res.status(200).json({ message: 'Booking cancelled' });
   } catch (err) {
     res.status(500).json({ error: err.message });

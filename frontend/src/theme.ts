@@ -9,7 +9,8 @@ const theme = createTheme({
       main: '#f99326', // Gold
     },
     background: {
-      default: '#F5F5F5', // Light Gray Background
+      // default: '#F5F5F5', // Light Gray Background
+      default: '#fff',
     },
     error: {
       main: '#f44336', // Red
@@ -28,6 +29,15 @@ const theme = createTheme({
       light: '#81c784', // Light Green
       dark: '#388e3c', // Dark Green
       contrastText: '#ffffff', // White text
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
     },
   },
   typography: {
@@ -57,7 +67,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+          // boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
           padding: '10px 20px',
           '&:hover': {
             boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.15)',

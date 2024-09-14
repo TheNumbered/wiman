@@ -1,5 +1,20 @@
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { useGetQuery } from '../../hooks/get-query'; // Adjust the import based on your project structure
+import AutohideSnackbar from '@/components/snackbar';
+import { IssueReport } from '@/interfaces';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
+import { useUpdateMutation } from '../../hooks'; // Import your updateMutation hook
+import { useGetQuery } from '../../hooks/get-query';
+
+type SnackbarType = 'error' | 'success' | 'info' | 'warning';
 
 const SingleIssueReport = ({
   id,
@@ -10,10 +25,48 @@ const SingleIssueReport = ({
   onReviewButtonClick: () => void;
   onSetBackButtonClick: () => void;
 }) => {
-  // Fetch the single issue report based on the given id
-  const { data, isLoading, isError, error } = useGetQuery({
+  const { data, isLoading, isError, error } = useGetQuery<IssueReport[]>({
     resource: `api/single-issue-report/${id}`,
   });
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarType, setSnackBarType] = useState<SnackbarType>('info');
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const updateIssueMutation = useUpdateMutation({
+    resource: 'api/close-issue-report',
+    contentType: 'application/json',
+  });
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleConfirmClose = () => {
+    updateIssueMutation.mutate(
+      {
+        id: id as string | number,
+        data: {},
+      },
+      {
+        onSuccess: (responseData) => {
+          console.log('Issue closed:', responseData);
+          setSnackbarMessage(responseData.message || 'Issue closed successfully.');
+          setSnackBarType('success');
+          setOpenSnackbar(true);
+          handleCloseDialog();
+        },
+        onError: (error) => {
+          console.error('Error closing issue:', error);
+          setSnackbarMessage('Failed to close the issue.');
+          setSnackBarType('error');
+          setOpenSnackbar(true);
+          handleCloseDialog();
+        },
+      },
+    );
+  };
 
   if (isLoading) {
     return (
@@ -30,10 +83,20 @@ const SingleIssueReport = ({
       </Box>
     );
   }
+
+  // Add a check to ensure `data` is defined and has items
+  if (!data || data.length === 0) {
+    return (
+      <Box sx={{ width: '100%', padding: '1rem' }}>
+        <Typography>No data available</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', padding: '0 1rem 2rem' }}>
       <img
-        src={data[0].image_url ? data[0].image_url : 'https://via.placeholder.com/400'} // Assuming the image URL is part of the response
+        src={data[0].image_url ? data[0].image_url : 'https://via.placeholder.com/400'}
         alt="issue image"
         style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
       />
@@ -44,44 +107,39 @@ const SingleIssueReport = ({
             component="h2"
             sx={{ fontWeight: 'bold', color: '#000', lineHeight: '0.9' }}
           >
-            {data ? data[0].room_id : 'No Title Available'}
+            {data[0].room_id || 'No Title Available'}
           </Typography>
-          <Typography>{data ? data[0].room_id : 'No Location Available'}</Typography>
+          <Typography>{data[0].room_id || 'No Location Available'}</Typography>
           <Box my={1}>
             <Typography color="black" variant="h6">
               Problem Description
             </Typography>
-            <Typography>{data ? data[0].issue_description : 'No description provided.'}</Typography>
+            <Typography>{data[0].issue_description || 'No description provided.'}</Typography>
             <Typography color="black" variant="h6">
               Resolution Log
             </Typography>
             {data[0].status !== 'Reported' ? (
               (() => {
-                // Safely check if resolution_log is not null or empty
                 const resolutionLog = data[0].resolution_log
                   ? JSON.parse(data[0].resolution_log)
                   : null;
-
-                // If resolutionLog exists, render the fields, else show a fallback message
                 return resolutionLog ? (
                   <Box>
                     <Typography sx={{ fontWeight: 'bold' }}>Problem Class</Typography>
                     <Typography sx={{ marginBottom: '0.5rem' }}>
                       {resolutionLog['Problem Class'] || 'No data available'}
                     </Typography>
-
                     <Typography sx={{ fontWeight: 'bold' }}>Requirements To Fix</Typography>
                     <Typography sx={{ marginBottom: '0.5rem' }}>
                       {resolutionLog['Requirements To Fix'] || 'No data available'}
                     </Typography>
-
                     <Typography sx={{ fontWeight: 'bold' }}>Set Back</Typography>
                     <Typography sx={{ marginBottom: '0.5rem' }}>
                       {resolutionLog['Set Back'] || 'No data available'}
                     </Typography>
                   </Box>
                 ) : (
-                  <Typography>No resolution log available</Typography> // Fallback if log is null
+                  <Typography>No resolution log available</Typography>
                 );
               })()
             ) : (
@@ -89,7 +147,6 @@ const SingleIssueReport = ({
             )}
           </Box>
         </Box>
-        {/* <Typography>{data ? `${data[0].reported_date} Ago` : 'Unknown time'}</Typography> */}
       </Box>
       {(() => {
         switch (data[0].status) {
@@ -120,7 +177,7 @@ const SingleIssueReport = ({
                   Report Set Back
                 </Button>
                 <Button
-                  onClick={onReviewButtonClick}
+                  onClick={() => setDialogOpen(true)}
                   variant="contained"
                   size="medium"
                   color="primary"
@@ -135,6 +192,29 @@ const SingleIssueReport = ({
             return '';
         }
       })()}
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Report Issue As Resolved</DialogTitle>
+        <DialogContent>
+          <Typography sx={{ color: '#999' }}>
+            You are about to report this issue as resolved to the admin. Are you sure this issue has
+            been resolved as expected and the venue is ready for public use?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmClose} color="error">
+            Continue
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <AutohideSnackbar
+        message={snackbarMessage}
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+        severity={snackbarType}
+      />
     </Box>
   );
 };

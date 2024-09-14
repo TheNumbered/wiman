@@ -60,7 +60,14 @@
     "@onesignal/node-onesignal": "5.0.0-alpha-01",
     "@tanstack/react-query": "^5.53.3",
     "axios": "^1.7.7",
+<<<<<<< HEAD
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5"
+=======
+    "chart.js": "^4.4.4",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "react-chartjs-2": "^5.2.0"
+>>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
   }
 }

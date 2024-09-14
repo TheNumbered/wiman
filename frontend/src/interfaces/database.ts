@@ -52,11 +52,29 @@ export type Rooms = {
     amenities: any;
 }
 
+export type Rooms = {
+  roomId: string;
+  buildingId: number;
+  capacity: number;
+  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
+  amenities: any;
+};
+
 export type Users = {
+<<<<<<< HEAD
     id: number;
     name: string;
     email: string;
 }
+=======
+  userId: string;
+  fullName?: string;
+  profileUrl?: string;
+  role: 'user' | 'admin' | 'maintenance';
+  blocked: boolean;
+  createdAt: Date | string;
+};
+>>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
 
 export type BookingsInput = {
     bookingId?: number;
@@ -101,6 +119,7 @@ export type RoomsInput = {
     amenities: any;
 }
 
+<<<<<<< HEAD
 export type UsersInput = {
     id?: number;
     name: string;
@@ -108,3 +127,21 @@ export type UsersInput = {
 }
   
 
+=======
+export type RoomsInput = {
+  roomId?: string;
+  buildingId: number;
+  capacity: number;
+  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
+  amenities: any;
+};
+
+export type UsersInput = {
+  userId?: string;
+  fullName?: string;
+  profileUrl?: string;
+  role: 'user' | 'admin' | 'maintenance';
+  blocked: boolean;
+  createdAt: Date | string;
+};
+>>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480

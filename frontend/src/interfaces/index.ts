@@ -14,3 +14,19 @@ export interface Venue {
   };
   pictures: string[];
 }
+
+export interface Issue {
+  issue_id: string;
+  issue_description: string;
+  room_id: string;
+  status: string;
+  reported_date: string;
+}
+
+export interface IssueReport {
+  image_url: string;
+  room_id: string;
+  issue_description: string;
+  status: 'Reported' | 'In Progress' | 'Resolved';
+  resolution_log: string | null;
+}

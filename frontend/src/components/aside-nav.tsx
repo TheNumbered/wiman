@@ -9,7 +9,7 @@ import {
 } from '@mui/icons-material';
 import { Box, Divider, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React from 'react';
-import Logo from '../assets/LOGO.png';
+import Logo from '/LOGO.png';
 
 interface AsideNavProps {
   onSelect: (index: number) => void;
@@ -19,7 +19,7 @@ const AsideNav: React.FC<AsideNavProps> = ({ onSelect }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    _event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number,
   ) => {
     setSelectedIndex(index);
