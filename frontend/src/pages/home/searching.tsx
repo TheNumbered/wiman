@@ -112,10 +112,6 @@ const Searchings: React.FC = () => {
     setSearchTerm(filter);
   };
 
-  // const handleBookingsClick = () => {
-  //   navigate('/bookings');
-  // };
-
   return (
     <Box sx={{ padding: 3 }}>
       {/* Placeholder image for desktop only */}

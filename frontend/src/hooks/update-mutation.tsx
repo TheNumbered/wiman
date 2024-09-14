@@ -1,21 +1,31 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useGlobal } from './global-provider';
 const ourApiBaseUrl = import.meta.env.VITE_API_URL;
+
+interface UpdateMutationOptions {
+  resource: string;
+  baseUrl?: string;
+  invalidateKeys?: string[];
+  onSuccessMessage?: string;
+  onSucessCallback?: () => void;
+  method?: string;
+  contentType?: string;
+  bearerToken?: string;
+}
 
 export const useUpdateMutation = ({
   resource,
   invalidateKeys,
+  onSuccessMessage,
+  method,
   contentType,
   baseUrl,
   bearerToken,
-}: {
-  resource: string;
-  baseUrl?: string;
-  invalidateKeys?: string[];
-  contentType?: string;
-  bearerToken?: string;
-}) => {
+  onSucessCallback,
+}: UpdateMutationOptions) => {
   const { getToken } = useAuth();
+  const { showToast } = useGlobal();
   const queryClient = useQueryClient();
   const baseUrlToUse = baseUrl || ourApiBaseUrl;
 
@@ -28,7 +38,7 @@ export const useUpdateMutation = ({
       const { id, data } = variables;
       // @ts-ignore
       return fetch(`${baseUrlToUse}/${resource}/${id}`, {
-        method: 'PUT',
+        method: method || 'PUT',
         headers: {
           Authorization: `Bearer ${bearerToken || (await getToken())}`,
           ...ContentType,
@@ -36,16 +46,26 @@ export const useUpdateMutation = ({
         body: contentType === 'application/json' ? JSON.stringify(data) : data,
       }).then((response) => {
         if (!response.ok) {
+          showToast('Failed to update resource', 'error');
           throw new Error('Failed to update resource');
         }
         return response.json();
       });
     },
-    onSettled: () => {
+    onSuccess: () => {
+      if (onSuccessMessage) {
+        showToast(onSuccessMessage, 'success');
+      }
+      if (onSucessCallback) {
+        onSucessCallback();
+      }
       queryClient.invalidateQueries({ queryKey: [resource] });
       invalidateKeys?.forEach((key) => {
         queryClient.invalidateQueries({ queryKey: [key] });
       });
+    },
+    onError: () => {
+      showToast('Failed to update resource', 'error');
     },
   });
 };

@@ -1,17 +1,17 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
+import { useGlobal } from './global-provider';
 const ourApiBaseUrl = import.meta.env.VITE_API_URL;
 
-export const useGetQuery = <T,>({
-  resource,
-  baseURL,
-  bearerToken,
-}: {
+interface QueryOptions {
   resource: string;
   baseURL?: string;
   bearerToken?: string;
-}) => {
+}
+
+export const useGetQuery = <T,>({ resource, baseURL, bearerToken }: QueryOptions) => {
   const { getToken } = useAuth();
+  const { showToast } = useGlobal();
 
   const baseUrlToUse = baseURL || ourApiBaseUrl;
 
@@ -24,6 +24,7 @@ export const useGetQuery = <T,>({
         },
       }).then((response) => {
         if (!response.ok) {
+          showToast('Failed to fetch data', 'error');
           throw new Error('Failed to fetch data');
         }
         return response.json();

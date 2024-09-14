@@ -1,30 +1,42 @@
 import ImageUploadButton from '@/components/image-upload-button';
 import AutohideSnackbar from '@/components/snackbar';
-import { useGetQuery } from '@/hooks/get-query';
 import { useAuth } from '@clerk/clerk-react';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React, { useRef, useState } from 'react';
+// import { useCreateMutation } from '@/hooks/create-mutation'; // Adjust the import path accordinglys
+import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
 
 interface Room {
   id: string;
   name: string;
 }
 
-interface Building {
-  id: string;
-  name: string;
-  rooms: Room[];
-}
-
-type SnackbarType = 'error' | 'success' | 'info' | 'warning';
+// Sample data for testing, Please remove
+const buildings = [
+  {
+    id: 'building1',
+    name: 'Chemistry Building',
+    rooms: [
+      { id: 'room1', name: 'Room 1' },
+      { id: 'room2', name: 'Room 2' },
+    ],
+  },
+  {
+    id: 'Law Building',
+    name: 'Law Building',
+    rooms: [
+      { id: 'room3', name: 'Room 3' },
+      { id: 'room4', name: 'Room 4' },
+    ],
+  },
+  {
+    id: 'MSL',
+    name: 'MSL',
+    rooms: [
+      { id: 'Lab3', name: 'Lab3' },
+      { id: 'room4', name: 'Room 4' },
+    ],
+  },
+];
 
 const IssueReporting: React.FC = () => {
   const [selectedBuilding, setSelectedBuilding] = useState<string>('');
@@ -32,42 +44,13 @@ const IssueReporting: React.FC = () => {
   const [selectedRoom, setSelectedRoom] = useState<string>('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarType, setSnackBarType] = useState<SnackbarType>('info');
-  const [errors, setErrors] = useState({
-    building: '',
-    room: '',
-    description: '',
-  });
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [errors, setErrors] = useState({ building: '', room: '', description: '' });
+  const [snackbarType, setSnackBarType] = useState<'success' | 'error'>('success');
 
-  const { getToken } = useAuth(); // Get auth token
-
-  const {
-    data: buildings,
-    isLoading,
-    isError,
-    error,
-  } = useGetQuery<Building[]>({
-    resource: 'api/buildings',
-  });
-
-  if (isLoading) {
-    return (
-      <Box sx={{ width: '100%', padding: '1rem' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Box sx={{ width: '100%', padding: '1rem' }}>
-        <Typography color="error">Failed to load issue report: {error.message}</Typography>
-      </Box>
-    );
-  }
+  const { getToken } = useAuth();
 
   const handleBuildingChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const buildingId = event.target.value as string;
@@ -204,17 +187,11 @@ const IssueReporting: React.FC = () => {
             helperText={errors.building}
           >
             <option value="" disabled></option>
-            {buildings && buildings.length > 0 ? (
-              buildings.map((building: { id: string; name: string }) => (
-                <option key={building.id} value={building.id}>
-                  {building.name}
-                </option>
-              ))
-            ) : (
-              <option value="" disabled>
-                Could not load buildings
+            {buildings?.map((building) => (
+              <option key={building.id} value={building.id}>
+                {building.name}
               </option>
-            )}
+            ))}
           </TextField>
 
           <TextField
@@ -233,20 +210,12 @@ const IssueReporting: React.FC = () => {
             helperText={errors.room}
             disabled={!selectedBuilding}
           >
-            <option value="" disabled>
-              ""
-            </option>
-            {rooms.length > 0 ? (
-              rooms.map((room) => (
-                <option key={room.id} value={room.id}>
-                  {room.name}
-                </option>
-              ))
-            ) : (
-              <option value="" disabled>
-                Could not load rooms
+            <option value="" disabled></option>
+            {rooms?.map((room) => (
+              <option key={room.id} value={room.id}>
+                {room.name}
               </option>
-            )}
+            ))}
           </TextField>
 
           <TextField

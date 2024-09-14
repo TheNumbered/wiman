@@ -2,11 +2,17 @@ import { useAuth } from '@clerk/clerk-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { useUpdateMutation } from '../update-mutation';
+import { useCreateMutation } from '../create-mutation';
 
 // Mocking useAuth
 vi.mock('@clerk/clerk-react', () => ({
   useAuth: vi.fn(),
+}));
+
+vi.mock('./global-provider', () => ({
+  useGlobal: {
+    showToast: vi.fn(),
+  },
 }));
 
 // Mocking useMutation and useQueryClient
@@ -15,13 +21,14 @@ vi.mock('@tanstack/react-query', () => ({
   useQueryClient: vi.fn(),
 }));
 
-describe('useUpdateMutation Hook', () => {
-  // it("should update a resource and invalidate queries", async () => {
+describe('useCreateMutation Hook', () => {
+  // it("should create a resource and invalidate queries", async () => {
   //   const mockGetToken = vi.fn().mockResolvedValue("mocked-token");
   //   const mockFetch = vi.fn().mockResolvedValue({
   //     ok: true,
-  //     json: () => Promise.resolve({ data: "updated data" })
+  //     json: () => Promise.resolve({ data: "mocked data" })
   //   });
+
   //   //@ts-ignore
   //   global.fetch = mockFetch;
 
@@ -40,14 +47,14 @@ describe('useUpdateMutation Hook', () => {
 
   //   const mockUseMutation = vi.fn().mockImplementation(({ mutationFn }) => {
   //     return {
-  //       mutateAsync: () => mutationFn({ id: 1, data: { foo: "bar" } }),
+  //       mutateAsync: () => mutationFn({ foo: "bar" }),
   //     };
   //   });
   //   //@ts-ignore
   //   (useMutation as vi.Mock).mockImplementation(mockUseMutation);
 
   //   const { result } = renderHook(() =>
-  //     useUpdateMutation({
+  //     useCreateMutation({
   //       resource: "test-resource",
   //       invalidateKeys: ["key1", "key2"]
   //     })
@@ -63,9 +70,9 @@ describe('useUpdateMutation Hook', () => {
 
   //   // Check if fetch was called with the correct arguments
   //   expect(mockFetch).toHaveBeenCalledWith(
-  //     `${import.meta.env.VITE_API_URL}/test-resource/1`,
+  //     `${import.meta.env.VITE_API_URL}/test-resource`,
   //     {
-  //       method: "PUT",
+  //       method: "POST",
   //       headers: {
   //         Authorization: "Bearer mocked-token",
   //         "Content-Type": "application/json"
@@ -84,32 +91,34 @@ describe('useUpdateMutation Hook', () => {
     const mockGetToken = vi.fn().mockResolvedValue('mocked-token');
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
-      json: () => Promise.resolve({ message: 'Failed to update resource' }),
+      json: () => Promise.resolve({ message: 'Failed to create resource' }),
     });
-
+    //@ts-ignore
     global.fetch = mockFetch;
 
     // Mocking useAuth to return a mocked token
+    //@ts-ignore
     (useAuth as vi.Mock).mockReturnValue({
       getToken: mockGetToken,
     });
 
     // Mocking useQueryClient to return a dummy object
     const invalidateQueries = vi.fn();
+    //@ts-ignore
     (useQueryClient as vi.Mock).mockReturnValue({
       invalidateQueries,
     });
 
     const mockUseMutation = vi.fn().mockImplementation(({ mutationFn }) => {
       return {
-        mutateAsync: () => mutationFn({ id: 1, data: { foo: 'bar' } }),
+        mutateAsync: () => mutationFn({ foo: 'bar' }),
       };
     });
-
+    //@ts-ignore
     (useMutation as vi.Mock).mockImplementation(mockUseMutation);
 
     const { result } = renderHook(() =>
-      useUpdateMutation({
+      useCreateMutation({
         resource: 'test-resource',
       }),
     );
@@ -119,7 +128,7 @@ describe('useUpdateMutation Hook', () => {
       act(async () => {
         await result.current.mutateAsync();
       }),
-    ).rejects.toThrow('Failed to update resource');
+    ).rejects.toThrow('Failed to create resource');
 
     // Ensure the queries were not invalidated
     expect(invalidateQueries).not.toHaveBeenCalled();

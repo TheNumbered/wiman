@@ -4,33 +4,6 @@ import multer from 'multer';
 import process from 'process';
 import IssueReport from '../models/issue-report-model.js';
 dotenv.config({ path: '.env.local' });
-// Sample data for testing, Please remove
-const buildings = [
-  {
-    id: 'building1',
-    name: 'Chemistry Building',
-    rooms: [
-      { id: 'room1', name: 'Room 1' },
-      { id: 'room2', name: 'Room 2' },
-    ],
-  },
-  {
-    id: 'Law Building',
-    name: 'Law Building',
-    rooms: [
-      { id: 'room3', name: 'Room 3' },
-      { id: 'room4', name: 'Room 4' },
-    ],
-  },
-  {
-    id: 'MSL',
-    name: 'MSL',
-    rooms: [
-      { id: 'Lab3', name: 'Lab3' },
-      { id: 'room4', name: 'Room 4' },
-    ],
-  },
-];
 
 // Configure multer storage
 const storage = multer.memoryStorage(); // or use diskStorage if you want to save to disk
@@ -172,8 +145,4 @@ export const closeIssueReport = async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
-};
-
-export const getBuildings = async (req, res) => {
-  res.json(buildings);
 };

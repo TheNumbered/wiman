@@ -9,6 +9,12 @@ vi.mock('@clerk/clerk-react', () => ({
   useAuth: vi.fn(),
 }));
 
+vi.mock('./global-provider', () => ({
+  useGlobal: {
+    showToast: vi.fn(),
+  },
+}));
+
 // Mocking useQuery
 vi.mock('@tanstack/react-query', () => ({
   useQuery: vi.fn(),

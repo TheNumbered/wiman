@@ -42,9 +42,12 @@ export type Rooms = {
 };
 
 export type Users = {
-  id: number;
-  name: string;
-  email: string;
+  userId: string;
+  fullName?: string;
+  profileUrl?: string;
+  role: 'user' | 'admin' | 'maintenance';
+  blocked: boolean;
+  createdAt: Date | string;
 };
 
 export type BookingsInput = {
@@ -91,7 +94,10 @@ export type RoomsInput = {
 };
 
 export type UsersInput = {
-  id?: number;
-  name: string;
-  email: string;
+  userId?: string;
+  fullName?: string;
+  profileUrl?: string;
+  role: 'user' | 'admin' | 'maintenance';
+  blocked: boolean;
+  createdAt: Date | string;
 };

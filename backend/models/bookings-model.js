@@ -2,6 +2,12 @@ import db from '../config/db.js';
 import { toCamelCase } from '../utils/case-converters.js';
 
 class Booking {
+  // Get all bookings
+  static async getAllBookings() {
+    const [rows] = await db.query('SELECT * FROM bookings');
+    return rows.map(toCamelCase);
+  }
+
   // Get active bookings for a user
   static async getActiveBookingsByUserId(userId) {
     const [rows] = await db.query(
