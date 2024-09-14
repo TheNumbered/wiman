@@ -2,7 +2,7 @@ import { Venue } from '@/interfaces';
 import { Box, Button, TextField, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import VenueCard from './venue-card';
 import Logo from '/LOGO.png';
 
@@ -65,7 +65,6 @@ const venues: Venue[] = [
 
 const Searchings: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
   const isDesktop = useMediaQuery('(min-width:1024px)');
@@ -113,9 +112,9 @@ const Searchings: React.FC = () => {
     setSearchTerm(filter);
   };
 
-  const handleBookingsClick = () => {
-    navigate('/bookings');
-  };
+  // const handleBookingsClick = () => {
+  //   navigate('/bookings');
+  // };
 
   return (
     <Box sx={{ padding: 3 }}>

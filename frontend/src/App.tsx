@@ -7,7 +7,6 @@ import Searchings from './pages/home/searching';
 import MaintenanceDashboard from './pages/maintenance-staff/dashboard';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
-import BookVenueForm from './pages/venue-booking/book-venue-form';
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded, userId } = useAuth();
