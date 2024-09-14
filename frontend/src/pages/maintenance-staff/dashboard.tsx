@@ -1,5 +1,3 @@
-import AsideNav from '@/components/aside-nav';
-import BottomNav from '@/components/bottom-nav';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import Issues from './maintenance-reports-layout';

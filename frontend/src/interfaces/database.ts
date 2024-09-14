@@ -1,14 +1,3 @@
-export type Venue = {
-    venueId: string;
-    capacity: number;
-    campusName: string;
-    type: string;
-    buildingName: string;
-    amenities: string[];
-    pictures: string[];
-  }
-
-
 export type Bookings = {
     bookingId: number;
     userId: string;
@@ -52,29 +41,14 @@ export type Rooms = {
     amenities: any;
 }
 
-export type Rooms = {
-  roomId: string;
-  buildingId: number;
-  capacity: number;
-  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
-  amenities: any;
-};
-
 export type Users = {
-<<<<<<< HEAD
-    id: number;
-    name: string;
-    email: string;
+    userId: string;
+    fullName?: string;
+    profileUrl?: string;
+    role: 'user' | 'admin' | 'maintenance';
+    blocked: boolean;
+    createdAt: Date | string;
 }
-=======
-  userId: string;
-  fullName?: string;
-  profileUrl?: string;
-  role: 'user' | 'admin' | 'maintenance';
-  blocked: boolean;
-  createdAt: Date | string;
-};
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
 
 export type BookingsInput = {
     bookingId?: number;
@@ -119,29 +93,12 @@ export type RoomsInput = {
     amenities: any;
 }
 
-<<<<<<< HEAD
 export type UsersInput = {
-    id?: number;
-    name: string;
-    email: string;
+    userId?: string;
+    fullName?: string;
+    profileUrl?: string;
+    role: 'user' | 'admin' | 'maintenance';
+    blocked: boolean;
+    createdAt: Date | string;
 }
-  
 
-=======
-export type RoomsInput = {
-  roomId?: string;
-  buildingId: number;
-  capacity: number;
-  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
-  amenities: any;
-};
-
-export type UsersInput = {
-  userId?: string;
-  fullName?: string;
-  profileUrl?: string;
-  role: 'user' | 'admin' | 'maintenance';
-  blocked: boolean;
-  createdAt: Date | string;
-};
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480

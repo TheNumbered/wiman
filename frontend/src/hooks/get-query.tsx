@@ -3,15 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useGlobal } from './global-provider';
 const ourApiBaseUrl = import.meta.env.VITE_API_URL;
 
-<<<<<<< HEAD
-export const useGetQuery = <T,>({
-  resource,
-  baseURL,
-  bearerToken,
-}: {
-=======
 interface QueryOptions {
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
   resource: string;
   baseURL?: string;
   bearerToken?: string;

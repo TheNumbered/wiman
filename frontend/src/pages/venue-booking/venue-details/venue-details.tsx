@@ -1,4 +1,3 @@
-import Sidemenu from '@/components/side-menu';
 import { useGetQuery } from '@/hooks';
 import theme from '@/theme';
 import DefaultAmenityIcon from '@mui/icons-material/CheckCircleOutline';
@@ -110,143 +109,140 @@ const RoomDetails: React.FC = () => {
   };
 
   return (
-    <Box display="flex">
-      <Sidemenu />
-      <Box component="main" sx={{ flex: 1, p: 3, bgcolor: 'background.default', ml: 30 }}>
-        <Box mb={3}>
-          <TextField fullWidth label="Search for a Venue" variant="outlined" />
-        </Box>
+    <Box component="main" sx={{ flex: 1, p: 3, bgcolor: 'background.default' }}>
+      <Box mb={3}>
+        <TextField fullWidth label="Search for a Venue" variant="outlined" />
+      </Box>
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <FacilityCard>
-              <Typography variant="h6" gutterBottom>
-                Venue Details
-              </Typography>
-              {loading ? (
-                <Typography>Loading venue data...</Typography>
-              ) : error ? (
-                <Typography color="error">{error}</Typography>
-              ) : venueData ? (
-                <>
-                  <Box
-                    sx={{
-                      border: 2,
-                      borderColor: theme.palette.background.default,
-                      height: 235,
-                      mb: 2,
-                      backgroundImage: `url(${venue.pictures[0] || 'https://via.placeholder.com/500'})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                  <Typography variant="body1">
-                    <strong>Building Name:</strong> {venueData.buildingName}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Venue Code:</strong> {venueData.venueId}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Venue Size:</strong> {venueData.capacity} seats
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Type:</strong> {venueData.type}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Location:</strong> {venueData.campusName}
-                  </Typography>
-                  <Typography color="text.secondary">Status: Available</Typography>
-                </>
-              ) : (
-                <Typography>No venue data available.</Typography>
-              )}
-            </FacilityCard>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <FacilityCard>
-              <Typography variant="h6" gutterBottom>
-                Reservations
-              </Typography>
-              <Calendar onDateSelect={handleDateSelect} reservationsData={reservations} />
-              <Box mt={2}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <FacilityCard>
+            <Typography variant="h6" gutterBottom>
+              Venue Details
+            </Typography>
+            {loading ? (
+              <Typography>Loading venue data...</Typography>
+            ) : error ? (
+              <Typography color="error">{error}</Typography>
+            ) : venueData ? (
+              <>
+                <Box
+                  sx={{
+                    border: 2,
+                    borderColor: theme.palette.background.default,
+                    height: 235,
+                    mb: 2,
+                    backgroundImage: `url(${venue.pictures[0] || 'https://via.placeholder.com/500'})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                />
                 <Typography variant="body1">
-                  <strong>
-                    Reservations for{' '}
-                    {selectedDate ? format(new Date(selectedDate), 'MMMM d, yyyy') : '...'}:
-                  </strong>
+                  <strong>Building Name:</strong> {venueData.buildingName}
                 </Typography>
-                {reservationsForSelectedDate.length > 0 ? (
-                  reservationsForSelectedDate.map((reservation: any, index: number) => (
-                    <Box key={index}>
-                      <Typography variant="body2">
-                        <strong>{reservation.event_name}</strong> at {reservation.time}
-                      </Typography>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    No reservations for this day.
-                  </Typography>
-                )}
-              </Box>
-            </FacilityCard>
-          </Grid>
+                <Typography variant="body1">
+                  <strong>Venue Code:</strong> {venueData.venueId}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Venue Size:</strong> {venueData.capacity} seats
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Type:</strong> {venueData.type}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Location:</strong> {venueData.campusName}
+                </Typography>
+                <Typography color="text.secondary">Status: Available</Typography>
+              </>
+            ) : (
+              <Typography>No venue data available.</Typography>
+            )}
+          </FacilityCard>
         </Grid>
 
-        <Box mt={3}>
-          <Typography variant="h6" gutterBottom>
-            Property Amenities
-          </Typography>
-          <Grid container spacing={2}>
-            {venue.amenities.length > 0 ? (
-              venue.amenities.map((amenity: string, index: number) => (
-                <Grid item xs={6} md={3} key={index}>
-                  <FacilityCard sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ mr: 2 }}>
-                      {amenityIcons[amenity] || <DefaultAmenityIcon color="primary" />}
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {amenity}
-                    </Typography>
-                  </FacilityCard>
-                </Grid>
-              ))
-            ) : (
-              <Typography color="text.secondary">No amenities available.</Typography>
-            )}
-          </Grid>
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{ px: 4, py: 1.5, mr: 2 }}
-              onClick={() => window.history.back()}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              color="secondary"
-              sx={{ px: 4, py: 1.5 }}
-              onClick={handleOpenModal}
-            >
-              Book
-            </Button>
-          </Box>
-          <Dialog open={openBookingModal} onClose={handleCloseModal} fullWidth maxWidth="md">
-            <DialogTitle>
-              <Typography style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '16px' }}>
-                Book a Venue
+        <Grid item xs={12} md={6}>
+          <FacilityCard>
+            <Typography variant="h6" gutterBottom>
+              Reservations
+            </Typography>
+            <Calendar onDateSelect={handleDateSelect} reservationsData={reservations} />
+            <Box mt={2}>
+              <Typography variant="body1">
+                <strong>
+                  Reservations for{' '}
+                  {selectedDate ? format(new Date(selectedDate), 'MMMM d, yyyy') : '...'}:
+                </strong>
               </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <QuickBookVenueForm onClose={handleCloseModal} />
-            </DialogContent>
-          </Dialog>
+              {reservationsForSelectedDate.length > 0 ? (
+                reservationsForSelectedDate.map((reservation: any, index: number) => (
+                  <Box key={index}>
+                    <Typography variant="body2">
+                      <strong>{reservation.event_name}</strong> at {reservation.time}
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  No reservations for this day.
+                </Typography>
+              )}
+            </Box>
+          </FacilityCard>
+        </Grid>
+      </Grid>
+
+      <Box mt={3}>
+        <Typography variant="h6" gutterBottom>
+          Property Amenities
+        </Typography>
+        <Grid container spacing={2}>
+          {venue.amenities.length > 0 ? (
+            venue.amenities.map((amenity: string, index: number) => (
+              <Grid item xs={6} md={3} key={index}>
+                <FacilityCard sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ mr: 2 }}>
+                    {amenityIcons[amenity] || <DefaultAmenityIcon color="primary" />}
+                  </Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {amenity}
+                  </Typography>
+                </FacilityCard>
+              </Grid>
+            ))
+          ) : (
+            <Typography color="text.secondary">No amenities available.</Typography>
+          )}
+        </Grid>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            sx={{ px: 4, py: 1.5, mr: 2 }}
+            onClick={() => window.history.back()}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            sx={{ px: 4, py: 1.5 }}
+            onClick={handleOpenModal}
+          >
+            Book
+          </Button>
         </Box>
+        <Dialog open={openBookingModal} onClose={handleCloseModal} fullWidth maxWidth="md">
+          <DialogTitle>
+            <Typography style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '16px' }}>
+              Book a Venue
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <QuickBookVenueForm onClose={handleCloseModal} />
+          </DialogContent>
+        </Dialog>
       </Box>
     </Box>
   );

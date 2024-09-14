@@ -61,6 +61,17 @@ class Booking {
     const [rows] = await db.query('SELECT status FROM bookings WHERE booking_id = ?', [id]);
     return rows[0].status;
   }
+
+  // Confirm a booking
+  static async confirmBooking(id) {
+    const [result] = await db.query(
+      `UPDATE bookings 
+       SET status = 'confirmed' 
+       WHERE booking_id = ? AND status = 'pending'`,
+      [id],
+    );
+    return result.affectedRows; // Returns the number of rows updated
+  }
 }
 
 export default Booking;

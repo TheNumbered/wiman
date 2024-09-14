@@ -34,7 +34,7 @@ export const useUpdateMutation = ({
 
   return useMutation({
     //@ts-ignore
-    mutationFn: async (variables: { id: string | number; data: Record<string, any> }) => {
+    mutationFn: async (variables: { id: string | number; data?: Record<string, any> }) => {
       const { id, data } = variables;
       // @ts-ignore
       return fetch(`${baseUrlToUse}/${resource}/${id}`, {

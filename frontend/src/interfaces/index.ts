@@ -1,17 +1,12 @@
 export * from './database';
 
 export interface Venue {
-  venueId: number;
+  venueId: string;
   capacity: number;
-  code: string;
-  campus: string;
+  campusName: string;
   type: string;
-  name: string;
+  buildingName: string;
   amenities: string[];
-  location: {
-    lat: number;
-    lng: number;
-  };
   pictures: string[];
 }
 

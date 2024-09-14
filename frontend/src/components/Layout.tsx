@@ -14,10 +14,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Box component={'section'} bgcolor={'background.paper'} px={4}>
         {<SideBar />}
       </Box>
-      <Box component={'section'}>
-        <Box ml={1} mr={6} py={4}>
-          {children}
-        </Box>
+      <Box
+        component={'section'}
+        sx={{
+          background: '#fff',
+          width: '-webkit-fill-available',
+          overflowY: 'hidden',
+          ml: { md: 1 }, // Margin-left only on large screens and up
+          pr: { md: 2 }, // Padding-right only on large screens and up
+          py: { md: 4 },
+        }}
+      >
+        {children}
       </Box>
     </Box>
   );

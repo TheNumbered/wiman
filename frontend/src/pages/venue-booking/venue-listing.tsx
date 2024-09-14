@@ -1,3 +1,4 @@
+import { Venue } from '@/interfaces';
 import {
   Alert,
   Card,
@@ -10,7 +11,6 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Venue } from '@/interfaces/database';
 
 const RoomsList: React.FC = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
@@ -65,7 +65,11 @@ const RoomsList: React.FC = () => {
       <Grid container spacing={2}>
         {venues.map((venue) => (
           <Grid item key={venue.venueId} xs={12} sm={6} md={4}>
-            <Link to={`/venue/${venue.venueId}`} style={{ textDecoration: 'none' }} state={{ venue }}>
+            <Link
+              to={`/venue/${venue.venueId}`}
+              style={{ textDecoration: 'none' }}
+              state={{ venue }}
+            >
               <Card>
                 <CardMedia
                   component="img"

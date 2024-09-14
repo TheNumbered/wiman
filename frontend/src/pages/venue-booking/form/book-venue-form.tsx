@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Paper, Typography, Box } from '@mui/material';
-import EventDetails from './event-details';
-import EventDateTime from './event-date-time';
-import EventFrequency from './event-frequency';
-import VenueSelection from './venue-selection';
-import FormButtons from './form-buttons';
-import { format } from 'date-fns';
-import { useUser } from '@clerk/clerk-react';
 import { useCreateMutation, useGetQuery } from '@/hooks';
-import { Venue } from '@/interfaces/database';
-import { ad } from 'vitest/dist/chunks/reporters.C_zwCd4j.js';
+import { Venue } from '@/interfaces';
+import { Box, Paper, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import EventDateTime from './event-date-time';
+import EventDetails from './event-details';
+import EventFrequency from './event-frequency';
+import FormButtons from './form-buttons';
+import VenueSelection from './venue-selection';
 
 export const BookVenueForm: React.FC = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
@@ -30,24 +27,22 @@ export const BookVenueForm: React.FC = () => {
   const [filteredVenuesByBuilding, setFilteredVenuesByBuilding] = useState<Venue[]>([]);
   const [filteredVenuesByCapacity, setFilteredVenuesByCapacity] = useState<Venue[]>([]);
 
-
-  const {data} = useGetQuery({
+  const { data } = useGetQuery({
     resource: 'api/venues',
-  })
+  });
 
   const mutation = useCreateMutation({
     resource: 'api/bookings',
     invalidateKeys: ['bookings'],
   });
-  
+
   useEffect(() => {
     if (data) {
       //@ts-ignore
       setVenues(data);
     }
-  }
-  , [data]);
-  
+  }, [data]);
+
   const filterVenuesByCategory = (category: string) => {
     return venues.filter((venue) => venue.type === category);
   };
@@ -57,18 +52,24 @@ export const BookVenueForm: React.FC = () => {
       return filteredVenuesByCategory.filter((venue) => venue.buildingName === building);
     }
     return [];
-  };  
+  };
 
   const filterVenuesByCapacity = (capacity: number) => {
     let filteredVenues: Venue[] = [];
-    if(capacity === 50){
+    if (capacity === 50) {
       filteredVenues = filteredVenuesByCategory.filter((venue) => venue.capacity <= 50);
-    } else if(capacity === 100){
-      filteredVenues = filteredVenuesByCategory.filter((venue) => venue.capacity > 50 && venue.capacity <= 100);
-    } else if(capacity === 200){
-      filteredVenues = filteredVenuesByCategory.filter((venue) => venue.capacity > 100 && venue.capacity <= 200);
-    } else if(capacity === 300){
-      filteredVenues = filteredVenuesByCategory.filter((venue) => venue.capacity > 200 && venue.capacity <= 300);
+    } else if (capacity === 100) {
+      filteredVenues = filteredVenuesByCategory.filter(
+        (venue) => venue.capacity > 50 && venue.capacity <= 100,
+      );
+    } else if (capacity === 200) {
+      filteredVenues = filteredVenuesByCategory.filter(
+        (venue) => venue.capacity > 100 && venue.capacity <= 200,
+      );
+    } else if (capacity === 300) {
+      filteredVenues = filteredVenuesByCategory.filter(
+        (venue) => venue.capacity > 200 && venue.capacity <= 300,
+      );
     }
     return filteredVenues;
   };
@@ -76,24 +77,24 @@ export const BookVenueForm: React.FC = () => {
   useEffect(() => {
     setFilteredVenuesByCategory(filterVenuesByCategory(category));
   }, [category]);
-  
+
   useEffect(() => {
-    console.log("Filtered venues by category:", filteredVenuesByCategory);
-    console.log("Building selected:", building);
+    console.log('Filtered venues by category:', filteredVenuesByCategory);
+    console.log('Building selected:', building);
     const result = filterVenuesByBuilding(building);
-    console.log("Filtered venues by building:", result);
+    console.log('Filtered venues by building:', result);
     setFilteredVenuesByBuilding(result);
   }, [building, filteredVenuesByCategory]);
-   
+
   useEffect(() => {
     setFilteredVenuesByCapacity(filterVenuesByCapacity(capacity));
   }, [capacity]);
 
-  const handleSubmit = async (event:any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const adjustedRepeatFrequency = repeatFrequency === 'once' ? 'none' : selectedDay;
-    
+
     const formData = {
       date: eventDate,
       eventName,
@@ -104,7 +105,7 @@ export const BookVenueForm: React.FC = () => {
       repeatFrequency: adjustedRepeatFrequency,
       repeatUntil: repeatFrequency === 'every' ? repeatUntil : null,
     };
-    
+
     try {
       await mutation.mutateAsync(formData);
       console.log('Booking successfully created');
@@ -119,19 +120,19 @@ export const BookVenueForm: React.FC = () => {
 
   return (
     <Box
-    sx={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      sx={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
     >
-      <Paper 
-        sx={{ padding: 4, maxWidth: 1300, width: '100%', height: '100%', overflow: 'auto' }}
-      >
+      <Paper sx={{ padding: 4, maxWidth: 1300, width: '100%', height: '100%', overflow: 'auto' }}>
         <Typography variant="h5" gutterBottom>
-           Book Venue
+          Book Venue
         </Typography>
-        <EventDetails
-          category={category}
-          setCategory={setCategory}
-          setEventName={setEventName}
-        />
+        <EventDetails category={category} setCategory={setCategory} setEventName={setEventName} />
         <EventDateTime
           setEventDate={setEventDate}
           setStartTime={setStartTime}
@@ -160,14 +161,10 @@ export const BookVenueForm: React.FC = () => {
           setSelectedRoom={setSelectedRoom}
           filterVenuesByBuilding={filterVenuesByBuilding}
         />
-        <FormButtons 
-          handleSubmit={handleSubmit} 
-          isSubmitting={isSubmitting}
-        />
+        <FormButtons handleSubmit={handleSubmit} isSubmitting={isSubmitting} />
       </Paper>
-
     </Box>
-    );
+  );
 };
 
 export default BookVenueForm;

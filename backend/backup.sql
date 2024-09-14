@@ -160,7 +160,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('user_a1b2c3d4e5f6','Alice Smith','https://example.com/profile/user_a1b2c3d4e5f6','user',0,'2024-09-14 08:50:53'),('user_g7h8i9j0k1l2','Bob Johnson','https://example.com/profile/user_g7h8i9j0k1l2','user',1,'2024-09-14 08:50:53'),('user_m3n4o5p6q7r8','Charlie Brown','https://example.com/profile/user_m3n4o5p6q7r8','admin',0,'2024-09-14 08:50:53'),('user_s9t0u1v2w3x4','Dana White','https://example.com/profile/user_s9t0u1v2w3x4','user',0,'2024-09-14 08:50:53'),('user_y5z6a7b8c9d0','Eve Davis','https://example.com/profile/user_y5z6a7b8c9d0','user',1,'2024-09-14 08:50:53'),('user_z1y2x3w4v5u6','Frank Maintenance','https://example.com/profile/user_z1y2x3w4v5u6','maintenance',0,'2024-09-14 09:03:35');
+INSERT INTO `users` VALUES ('user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','Dana White','https://example.com/profile/user_s9t0u1v2w3x4','admin',0,'2024-09-14 08:50:53'),('user_a1b2c3d4e5f6','Alice Smith','https://example.com/profile/user_a1b2c3d4e5f6','admin',0,'2024-09-14 08:50:53'),('user_g7h8i9j0k1l2','Bob Johnson','https://example.com/profile/user_g7h8i9j0k1l2','maintenance',0,'2024-09-14 08:50:53'),('user_m3n4o5p6q7r8','Charlie Brown','https://example.com/profile/user_m3n4o5p6q7r8','user',0,'2024-09-14 08:50:53'),('user_y5z6a7b8c9d0','Eve Davis','https://example.com/profile/user_y5z6a7b8c9d0','admin',1,'2024-09-14 08:50:53'),('user_z1y2x3w4v5u6','Frank Maintenance','https://example.com/profile/user_z1y2x3w4v5u6','maintenance',1,'2024-09-14 09:03:35');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -173,8 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< HEAD
--- Dump completed on 2024-09-13 16:16:05
-=======
--- Dump completed on 2024-09-14 11:03:50
->>>>>>> 71525938d0135bf94f0922f8b4d147a80aa72480
+-- Dump completed on 2024-09-14 19:45:07
