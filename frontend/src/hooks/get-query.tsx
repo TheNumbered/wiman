@@ -2,7 +2,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 const ourApiBaseUrl = import.meta.env.VITE_API_URL;
 
-export const useGetQuery = ({
+export const useGetQuery = <T,>({
   resource,
   baseURL,
   bearerToken,
@@ -15,7 +15,7 @@ export const useGetQuery = ({
 
   const baseUrlToUse = baseURL || ourApiBaseUrl;
 
-  return useQuery({
+  return useQuery<T>({
     queryKey: [resource],
     queryFn: async () =>
       fetch(`${baseUrlToUse}/${resource}`, {

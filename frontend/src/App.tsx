@@ -8,7 +8,10 @@ import MaintenanceDashboard from './pages/maintenance-staff/dashboard';
 import Issues from './pages/maintenance-staff/maintenance-issues';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
-import BookVenueForm from './pages/venue-booking/book-venue-form';
+import { QuickBookVenueForm } from './pages/venue-booking/form/quick-book-venue-form';
+import RoomDetails from './pages/venue-booking/venue-details/venue-details';
+import RoomsList from './pages/venue-booking/venue-listing';
+import { BookVenueForm } from './pages/venue-booking/form/book-venue-form';
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded, userId } = useAuth();
@@ -39,18 +42,20 @@ const App: React.FC = () => {
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/maintenance" element={<MaintenanceDashboard />} />
-            <Route path="/book" element={<BookVenueForm />} />
             <Route path="/test" element={<Issues />} />
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/searchings" element={<Searchings />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/venues" element={<RoomsList />} />
+            <Route path="/venue/:id" element={<RoomDetails />} />
+            <Route path="/venue/booking" element={<BookVenueForm />} />
+            <Route path="dd" element={<RoomDetails/>} />
           </Route>
         )}
         <Route
           path="/"
           element={isSignedIn ? <Navigate to={'/dashboard'} /> : <Navigate to={'/sign-in'} />}
         />
-        <Route path="*" element={<>No Route Found</>} />
       </Routes>
     </BrowserRouter>
   );

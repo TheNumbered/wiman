@@ -13,18 +13,20 @@ import {
   subMonths,
 } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import theme from '../../theme';
+import theme from '../../../theme';
 
 interface CalendarProps {
   onDateSelect: (date: Date) => void;
-  //@ts-ignore
-  reservationsData: Record<string, Reservation[]>; // Add this prop
+  reservationsData: Record<string, any>;
 }
 
 const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+
+  
+  // Call onDateSelect when selectedDate changes
   useEffect(() => {
     onDateSelect(selectedDate);
   }, [selectedDate, onDateSelect]);
@@ -56,7 +58,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) =
           <Typography variant="body2" align="center">
             {format(addDays(startDate, i), dateFormat).substring(0, 3)}
           </Typography>
-        </Grid>,
+        </Grid>
       );
     }
 
@@ -96,8 +98,8 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) =
                   ? isSameDay(day, selectedDate)
                     ? 'primary.main'
                     : isBooked
-                      ? theme.palette.secondary.main
-                      : theme.palette.background.default
+                    ? theme.palette.secondary.main
+                    : theme.palette.background.default
                   : 'text.disabled',
                 color: isSameDay(day, selectedDate) || isBooked ? 'white' : 'text.primary',
                 borderRadius: '50%',
@@ -106,14 +108,14 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) =
             >
               {format(day, 'd')}
             </Box>
-          </Grid>,
+          </Grid>
         );
         day = addDays(day, 1);
       }
       rows.push(
         <Grid container justifyContent="center" key={day.toISOString()}>
           {days}
-        </Grid>,
+        </Grid>
       );
       days = [];
     }
