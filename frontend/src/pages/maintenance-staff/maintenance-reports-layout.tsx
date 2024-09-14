@@ -65,7 +65,7 @@ const CardDetails = ({
   >
     {useMediaQuery(useTheme().breakpoints.down('md')) && (
       <Button
-        sx={{ margin: '1rem', width: '100%', height: '2rem' }}
+        sx={{ margin: '1rem', width: '-webkit-fill-available', height: '2rem' }}
         onClick={onPrev}
         variant="text"
         disableElevation
@@ -100,7 +100,7 @@ const FormView = ({
     }}
   >
     <Button
-      sx={{ marginLeft: '1rem', width: '100%' }}
+      sx={{ marginLeft: '1rem', width: '-webkit-fill-available' }}
       onClick={onPrev}
       variant="text"
       disableElevation
@@ -129,7 +129,7 @@ export default function Issues() {
   };
 
   return (
-    <Container sx={{ background: '#fff', width: '-webkit-fill-available', pt: { xs: 4, md: 0 } }}>
+    <Container sx={{ background: '#fff', width: '-webkit-fill-available', pt: { xs: 2, md: 0 } }}>
       <div style={{ display: 'flex' }}>
         {view === 'list' && (
           <>

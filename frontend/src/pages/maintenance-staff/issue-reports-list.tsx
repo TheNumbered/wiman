@@ -1,5 +1,6 @@
 import ErrorView from '@/components/error-view';
 import TimeAgo from '@/components/time-ago';
+import { Issue } from '@/interfaces';
 import { DoneOutlineRounded, NavigateNext, ReportProblem, Timelapse } from '@mui/icons-material';
 import {
   Box,
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState } from 'react';
-import { useGetQuery } from '../../hooks/get-query'; // Adjust the path as per your project structure
+import { useGetQuery } from '../../hooks/get-query';
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -57,7 +58,7 @@ const getBorderColorByStatus = (status: string) => {
 };
 
 const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
-  const { data, isLoading, isError, error } = useGetQuery({
+  const { data, isLoading, isError, error } = useGetQuery<Issue[]>({
     resource: 'api/issue-reports',
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -84,7 +85,7 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
     setAnchorEl(null);
   };
 
-  const filteredData = data?.filter((issue: any) => {
+  const filteredData = (data ?? []).filter((issue) => {
     const matchesSearch = issue.issue_description.toLowerCase().includes(searchQuery);
     const matchesStatus = statusFilter ? issue.status === statusFilter : true;
     return matchesSearch && matchesStatus;
@@ -131,7 +132,7 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
   return (
     <Container>
       <Breadcrumbs
-        style={{ marginBottom: '1rem' }}
+        sx={{ marginBottom: '1rem', mt: { xs: 2, md: 0 } }}
         separator={<NavigateNext fontSize="small" />}
         aria-label="breadcrumb"
       >

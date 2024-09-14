@@ -1,4 +1,5 @@
 import AutohideSnackbar from '@/components/snackbar';
+import { IssueReport } from '@/interfaces';
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useUpdateMutation } from '../../hooks'; // Import your updateMutation hook
-import { useGetQuery } from '../../hooks/get-query'; // Adjust the import based on your project structure
+import { useGetQuery } from '../../hooks/get-query';
 
 type SnackbarType = 'error' | 'success' | 'info' | 'warning';
 
@@ -24,7 +25,7 @@ const SingleIssueReport = ({
   onReviewButtonClick: () => void;
   onSetBackButtonClick: () => void;
 }) => {
-  const { data, isLoading, isError, error } = useGetQuery({
+  const { data, isLoading, isError, error } = useGetQuery<IssueReport[]>({
     resource: `api/single-issue-report/${id}`,
   });
 
@@ -83,6 +84,15 @@ const SingleIssueReport = ({
     );
   }
 
+  // Add a check to ensure `data` is defined and has items
+  if (!data || data.length === 0) {
+    return (
+      <Box sx={{ width: '100%', padding: '1rem' }}>
+        <Typography>No data available</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', padding: '0 1rem 2rem' }}>
       <img
@@ -97,14 +107,14 @@ const SingleIssueReport = ({
             component="h2"
             sx={{ fontWeight: 'bold', color: '#000', lineHeight: '0.9' }}
           >
-            {data ? data[0].room_id : 'No Title Available'}
+            {data[0].room_id || 'No Title Available'}
           </Typography>
-          <Typography>{data ? data[0].room_id : 'No Location Available'}</Typography>
+          <Typography>{data[0].room_id || 'No Location Available'}</Typography>
           <Box my={1}>
             <Typography color="black" variant="h6">
               Problem Description
             </Typography>
-            <Typography>{data ? data[0].issue_description : 'No description provided.'}</Typography>
+            <Typography>{data[0].issue_description || 'No description provided.'}</Typography>
             <Typography color="black" variant="h6">
               Resolution Log
             </Typography>
@@ -186,7 +196,7 @@ const SingleIssueReport = ({
         <DialogTitle>Report Issue As Resolved</DialogTitle>
         <DialogContent>
           <Typography sx={{ color: '#999' }}>
-            You are about to report this issue as resolved to the admin. Are you Sure this issue has
+            You are about to report this issue as resolved to the admin. Are you sure this issue has
             been resolved as expected and the venue is ready for public use?
           </Typography>
         </DialogContent>

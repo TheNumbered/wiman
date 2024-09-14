@@ -1,5 +1,6 @@
 import AsideNav from '@/components/aside-nav';
 import BottomNav from '@/components/bottom-nav';
+import { scrollbarStyles } from '@/theme';
 import { KeyboardArrowLeftRounded } from '@mui/icons-material';
 import { Box, Grid2, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
@@ -36,6 +37,9 @@ const Bookings = () => {
             margin: '1rem',
             flex: '1',
             height: '100vh',
+            overflow: 'scroll',
+            pb: 14,
+            ...scrollbarStyles,
           }}
         >
           <IssueReporting />
@@ -80,7 +84,7 @@ const Dashboard: React.FC = () => {
       >
         {!isSmallScreen && (
           <Grid2
-            size={3}
+            size={{ md: 3, sm: 0 }}
             component={'section'}
             bgcolor={'background.paper'}
             sx={{ px: { md: 4 }, height: '100vh', overflow: 'hidden' }}
@@ -96,6 +100,7 @@ const Dashboard: React.FC = () => {
               pr: { md: 2 }, // Padding-right only on large screens and up
               py: { md: 4 },
               height: '100vh',
+              width: { xs: '100vw', md: 'unset' },
               overflowY: 'scroll',
             }}
           >

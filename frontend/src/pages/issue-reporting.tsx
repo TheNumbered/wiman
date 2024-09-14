@@ -18,6 +18,12 @@ interface Room {
   name: string;
 }
 
+interface Building {
+  id: string;
+  name: string;
+  rooms: Room[];
+}
+
 type SnackbarType = 'error' | 'success' | 'info' | 'warning';
 
 const IssueReporting: React.FC = () => {
@@ -43,7 +49,7 @@ const IssueReporting: React.FC = () => {
     isLoading,
     isError,
     error,
-  } = useGetQuery({
+  } = useGetQuery<Building[]>({
     resource: 'api/buildings',
   });
 
@@ -67,7 +73,8 @@ const IssueReporting: React.FC = () => {
     const buildingId = event.target.value as string;
     setSelectedBuilding(buildingId);
 
-    const selectedBuilding = buildings.find((b: { id: string }) => b.id === buildingId);
+    // Ensure buildings is not undefined
+    const selectedBuilding = buildings?.find((b) => b.id === buildingId);
     setRooms(selectedBuilding ? selectedBuilding.rooms : []);
     setSelectedRoom(''); // Reset room selection when building changes
     setErrors((prev) => ({ ...prev, building: '' })); // Clear building error
@@ -175,7 +182,7 @@ const IssueReporting: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container component={'article'}>
       <Typography variant="h4" my={4} gutterBottom>
         Reporting
       </Typography>
@@ -197,7 +204,7 @@ const IssueReporting: React.FC = () => {
             helperText={errors.building}
           >
             <option value="" disabled></option>
-            {buildings.length > 0 ? (
+            {buildings && buildings.length > 0 ? (
               buildings.map((building: { id: string; name: string }) => (
                 <option key={building.id} value={building.id}>
                   {building.name}

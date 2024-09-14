@@ -15,7 +15,7 @@ const OtherApps = () => <div>Other Wits Apps Component</div>;
 
 const MaintenanceDashboard: React.FC = () => {
   const [selectedPage, setSelectedPage] = React.useState<number>(0);
-  const isSmallScreen = useMediaQuery(useTheme().breakpoints.up('sm'));
+  const isLargeScreen = useMediaQuery(useTheme().breakpoints.up('sm'));
   const renderSelectedPage = () => {
     switch (selectedPage) {
       case 0:
@@ -43,7 +43,7 @@ const MaintenanceDashboard: React.FC = () => {
         sx={{ background: '#fff', maxWidth: '100vw', overflowX: 'hidden' }}
       >
         <Box component={'section'} bgcolor={'background.paper'} sx={{ pl: { md: 4 } }}>
-          {isSmallScreen && <AsideNav onSelect={setSelectedPage} />}
+          {isLargeScreen && <AsideNav onSelect={setSelectedPage} />}
         </Box>
         <Box
           component={'section'}
@@ -59,7 +59,7 @@ const MaintenanceDashboard: React.FC = () => {
           {/* DESKTOP SECTION */}
           {renderSelectedPage()}
         </Box>
-        {!isSmallScreen && <BottomNav />}
+        {!isLargeScreen && <BottomNav onSelect={setSelectedPage} />}
       </Box>
     </>
   );

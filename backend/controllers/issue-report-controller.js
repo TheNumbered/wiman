@@ -141,7 +141,8 @@ export const createIssueReport = async (req, res) => {
         image_url = await uploadToAzureBlob(req.file);
       }
 
-      let reported_by = 'some_user'; // Replace with getUserID
+      let reported_by = req.auth?.userId || 'test_user'; // Replace with getUserID
+      console.log(reported_by);
       let room_id = building + room; // Concatenate building and room for room_id
       // Save the issue report
       await IssueReport.createIssueReport(room_id, reported_by, description, image_url);

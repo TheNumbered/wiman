@@ -2,6 +2,8 @@ import axios from 'axios';
 import db from '../config/db.js';
 import { expandRepeats } from '../utils/expand-repeats.js';
 
+import process from 'process';
+
 // Mocked building information to use in case of an error
 const mockBuildingInfo = {
   1: {
@@ -49,6 +51,7 @@ class Venue {
 
         return response.data;
       } catch (err) {
+        console.log(err);
         return (
           mockBuildingInfo[buildingId] || {
             campusName: 'Unknown Campus',
