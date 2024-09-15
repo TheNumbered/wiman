@@ -14,7 +14,9 @@ const EventDateTime: React.FC<EventDateTimeProps> = ({
 }) => {
   return (
     <Box sx={{ marginBottom: 3 }}>
-      <InputLabel shrink>When is your event? <span style={{ color: 'red' }}>*</span></InputLabel>
+      <InputLabel shrink>
+        When is your event? <span style={{ color: 'red' }}>*</span>
+      </InputLabel>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <InputLabel shrink>

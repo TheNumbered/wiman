@@ -73,8 +73,8 @@ const VenueSelection: React.FC<VenueSelectionProps> = ({
               variant="outlined"
               fullWidth
               required
-              value={selectedRoom}  // No need for || '' since the initial value is already an empty string
-              onChange={(e) => setSelectedRoom(e.target.value as string)}  // Ensure it's treated as a string
+              value={selectedRoom} // No need for || '' since the initial value is already an empty string
+              onChange={(e) => setSelectedRoom(e.target.value as string)} // Ensure it's treated as a string
             >
               <MenuItem disabled>Choose Venue</MenuItem>
               {filteredVenuesByCapacity.map((venue) => (
@@ -119,10 +119,12 @@ const VenueSelection: React.FC<VenueSelectionProps> = ({
             <Select
               variant="outlined"
               fullWidth
-              value={selectedRoom}  // Use selectedRoom as a string
-              onChange={(e) => setSelectedRoom(e.target.value as string)}  // Ensure it's treated as a string
+              value={selectedRoom} // Use selectedRoom as a string
+              onChange={(e) => setSelectedRoom(e.target.value as string)} // Ensure it's treated as a string
             >
-              <MenuItem value="" disabled>Choose Venue</MenuItem>
+              <MenuItem value="" disabled>
+                Choose Venue
+              </MenuItem>
               {filteredVenuesByBuilding.map((venue) => (
                 <MenuItem key={venue.venueId} value={venue.venueId}>
                   {venue.venueId} has {venue.capacity} seats

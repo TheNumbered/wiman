@@ -7,11 +7,7 @@ interface EventDetailsProps {
   setEventName: (value: string) => void;
 }
 
-const EventDetails: React.FC<EventDetailsProps> = ({
-  category,
-  setCategory,
-  setEventName,
-}) => {
+const EventDetails: React.FC<EventDetailsProps> = ({ category, setCategory, setEventName }) => {
   return (
     <Box sx={{ marginBottom: 3 }}>
       <InputLabel shrink>

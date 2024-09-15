@@ -19,7 +19,6 @@ export const BookVenueForm: React.FC = () => {
   const [endTime, setEndTime] = useState<string>();
   const [selectedDay, setSelectedDay] = useState<string | null>('');
   const [repeatFrequency, setRepeatFrequency] = useState<string>('once');
-  const [repeatInterval, setRepeatInterval] = useState<number>(0);
   const [repeatUntil, setRepeatUntil] = useState<string | null>('');
   const [selectedRoom, setSelectedRoom] = useState<string>('');
   const [venueSelection, setVenueSelection] = useState<string>('chooseForMe');

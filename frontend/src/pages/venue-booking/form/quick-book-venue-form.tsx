@@ -22,7 +22,7 @@ interface QuickBookVenueFormProps {
 
 export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose }) => {
   const [frequency, setFrequency] = useState<string>('once'); // only 'once' or 'every'
-  const [repeatInterval, setRepeatInterval] = useState<string>(''); 
+  const [repeatInterval, setRepeatInterval] = useState<string>('');
   const [selectedRoom, setSelectedRoom] = useState<Venue>();
   const [repeatUntil, setRepeatUntil] = useState<string | null>('');
   const [eventDate, setEventDate] = useState<string>('');
@@ -85,8 +85,7 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
     };
 
     console.log('formData:', formData);
-    console.log("selectedRoom", selectedRoom);
-    
+    console.log('selectedRoom', selectedRoom);
 
     try {
       await mutation.mutateAsync(formData);
@@ -205,7 +204,12 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-          <Button variant="outlined" color="primary" sx={{ px: 4, py: 1.5, mr: 2 }} onClick={onClose}>
+          <Button
+            variant="outlined"
+            color="primary"
+            sx={{ px: 4, py: 1.5, mr: 2 }}
+            onClick={onClose}
+          >
             Cancel
           </Button>
 

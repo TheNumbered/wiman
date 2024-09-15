@@ -16,7 +16,7 @@ import SignUpPage from './pages/sign-up';
 import { BookVenueForm } from './pages/venue-booking/form/book-venue-form';
 import RoomDetails from './pages/venue-booking/venue-details/venue-details';
 import RoomsList from './pages/venue-booking/venue-listing';
-import Dashboard from './pages/venue-details';
+import VenueDetails from './pages/venue-details';
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded, userId } = useAuth();
@@ -50,20 +50,24 @@ const App: React.FC = () => {
               </Layout>
             }
           >
-            <Route path="/dashboard" element={<Dashboard />} />
+            {/* Khare */}
+            <Route path="/dashboard" element={<HomePage />} />
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/searchings" element={<Searchings />} />
-            <Route path="/home" element={<HomePage />} />
+            {/* Theo */}
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/manage-users" element={<UserBanManagement />} />
             <Route path="/admin/role-change" element={<RoleChangeRequests />} />
             <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
+            {/* Daniel */}
+            <Route path="/activity" element={<NotificationList />} />
+            {/* Sisekelo */}
             <Route path="/venues" element={<RoomsList />} />
             <Route path="/venue/:id" element={<RoomDetails />} />
             <Route path="/venue/booking" element={<BookVenueForm />} />
-            <Route path="/activity" element={<NotificationList />} />
-            <Route path="dd" element={<RoomDetails />} />
+            {/* Karabo */}
             <Route path="/issues" element={<Issues />} />
+            <Route path="/venue-details" element={<VenueDetails />} />
           </Route>
         )}
 

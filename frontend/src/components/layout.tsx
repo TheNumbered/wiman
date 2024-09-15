@@ -11,7 +11,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       component={'main'}
       sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden', background: '#fff' }}
     >
-      <Box component={'section'} bgcolor={'background.paper'} px={4}>
+      <Box
+        component={'section'}
+        bgcolor={'background.paper'}
+        sx={{
+          px: { xs: 0, md: 4 }, // Padding on x-axis
+        }}
+      >
         {<SideBar />}
       </Box>
       <Box

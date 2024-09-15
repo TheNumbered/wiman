@@ -17,7 +17,7 @@ export const userMenuItems = [
   {
     label: 'Activity',
     icon: <NotificationsOutlined />,
-    route: '/searchings',
+    route: '/activity',
   },
 ];
 

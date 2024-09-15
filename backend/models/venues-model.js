@@ -49,7 +49,7 @@ class Venue {
         });
 
         return response.data;
-      } catch (err) {
+      } catch {
         return (
           mockBuildingInfo[buildingId] || {
             campusName: 'Unknown Campus',

@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BookingCard from './card';
 
 const BookingPage: React.FC = () => {
@@ -25,28 +25,6 @@ const BookingPage: React.FC = () => {
     resource: 'api/user/bookings/past',
   });
 
-  if (activeBookings) {
-    if (searchTerm) {
-      const filtered = activeBookings.filter((booking) =>
-        booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-      setFilteredBookings(filtered);
-    } else {
-      setFilteredBookings(activeBookings);
-    }
-  }
-
-  if (pastBookings) {
-    if (searchTerm) {
-      const filtered = pastBookings.filter((booking) =>
-        booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-      setFilteredBookingsPast(filtered);
-    } else {
-      setFilteredBookingsPast(pastBookings);
-    }
-  }
-
   const { mutate: cancelBooking } = useUpdateMutation({
     resource: 'api/bookings/cancel',
     invalidateKeys: ['api/user/bookings/active', 'api/user/bookings/past'],
@@ -60,6 +38,30 @@ const BookingPage: React.FC = () => {
     console.log('Rebooking booking with ID:', id);
     // TODO: Implement rebooking logic
   };
+
+  useEffect(() => {
+    if (activeBookings) {
+      if (searchTerm) {
+        const filtered = activeBookings.filter((booking) =>
+          booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+        setFilteredBookings(filtered);
+      } else {
+        setFilteredBookings(activeBookings);
+      }
+    }
+
+    if (pastBookings) {
+      if (searchTerm) {
+        const filtered = pastBookings.filter((booking) =>
+          booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+        setFilteredBookingsPast(filtered);
+      } else {
+        setFilteredBookingsPast(pastBookings);
+      }
+    }
+  }, [activeBookings, pastBookings, searchTerm]);
 
   return (
     <Container>
