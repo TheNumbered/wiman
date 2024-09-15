@@ -7,11 +7,15 @@ interface IssueFixReportingProps {
   issue_id: string;
 }
 
+type SnackbarType = 'error' | 'success' | 'info' | 'warning';
+
 const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const inputRef2 = React.useRef<HTMLInputElement>(null);
+  const [snackbarType, setSnackBarType] = useState<SnackbarType>('info');
+  const [description, setDescription] = useState<string>('');
+  const [fixRequirements, setFixRequirements] = useState<string>('');
+  const [errors, setErrors] = useState<{ description?: string; fixRequirements?: string }>({});
 
   const updateIssueMutation = useUpdateMutation({
     resource: 'api/add-issue-setback-report',
@@ -19,23 +23,33 @@ const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) =
   });
 
   const clearFormEntries = () => {
-    setOpenSnackbar(true);
-    if (inputRef.current) {
-      inputRef.current.value = ''; // Clear the input value directly
+    setDescription('');
+    setFixRequirements('');
+    setErrors({}); // Clear validation errors
+  };
+
+  const validateForm = () => {
+    const newErrors: { description?: string; fixRequirements?: string } = {};
+    if (!description) {
+      newErrors.description = 'Set Back Description is required.';
     }
-    if (inputRef2.current) {
-      inputRef2.current.value = ''; // Clear the input value directly
+    if (!fixRequirements) {
+      newErrors.fixRequirements = 'Requirements to fix is required.';
     }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    if (!validateForm()) {
+      return; // If validation fails, do not proceed
+    }
 
     const data = {
-      setback: formData.get('description') as string,
-      new_fix_requirements: formData.get('fix-requirements') as string,
+      setback: description,
+      new_fix_requirements: fixRequirements,
     };
 
     updateIssueMutation.mutate(
@@ -45,13 +59,25 @@ const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) =
           console.log('Issue updated:', responseData);
           clearFormEntries();
           setSnackbarMessage(responseData.message || 'Issue updated successfully.');
+          setSnackBarType('success');
+          setOpenSnackbar(true);
         },
         onError: (error) => {
           console.error('Error updating issue:', error);
           setSnackbarMessage('Failed to update the issue.');
+          setSnackBarType('error');
+          setOpenSnackbar(true);
         },
       },
     );
+  };
+
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+  };
+
+  const handleFixRequirementsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFixRequirements(event.target.value);
   };
 
   const handleCloseSnackbar = () => {
@@ -60,31 +86,47 @@ const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) =
 
   return (
     <Container>
-      <Typography variant="h4" my={4} gutterBottom>
+      <Typography variant="h4" sx={{ my: { xs: 2 } }} gutterBottom>
         Set Back Report
       </Typography>
-      <Box ml={2} component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <TextField
-            label="Set Back Description"
-            variant="outlined"
-            name="description"
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-            inputRef={inputRef}
-          />
-          <TextField
-            label="Requirements to fix"
-            variant="outlined"
-            name="fix-requirements"
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-            inputRef={inputRef2}
-          />
+      <Box
+        sx={{ ml: { md: 2 } }}
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <Grid container>
+          <Grid item xs={12}>
+            <TextField
+              label="Set Back Description"
+              variant="outlined"
+              name="description"
+              fullWidth
+              multiline
+              rows={4}
+              margin="normal"
+              value={description}
+              onChange={handleDescriptionChange}
+              error={!!errors.description}
+              helperText={errors.description}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Requirements to fix"
+              variant="outlined"
+              name="fix-requirements"
+              fullWidth
+              multiline
+              rows={4}
+              margin="normal"
+              value={fixRequirements}
+              onChange={handleFixRequirementsChange}
+              error={!!errors.fixRequirements}
+              helperText={errors.fixRequirements}
+            />
+          </Grid>
           <Grid item xs={12} mt={2}>
             <Button type="submit" variant="contained" color="primary">
               Submit
@@ -96,7 +138,7 @@ const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) =
         message={snackbarMessage}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
-        severity={'success'}
+        severity={snackbarType}
       />
     </Container>
   );

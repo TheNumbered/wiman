@@ -1,5 +1,5 @@
 import { useGetQuery } from '@/hooks';
-import { Notification } from '@/interfaces';
+import { Notifications } from '@/interfaces';
 import { Divider, Typography } from '@mui/material';
 import React from 'react';
 import NotificationItem from './item';
@@ -9,7 +9,7 @@ const NotificationList: React.FC = () => {
     data: notificationsData,
     isLoading,
     isError,
-  } = useGetQuery({
+  } = useGetQuery<Notifications[]>({
     resource: `api/notifications`,
   });
 
@@ -21,7 +21,7 @@ const NotificationList: React.FC = () => {
     return <div>Error fetching notifications</div>;
   }
 
-  const notifications: Notification[] = notificationsData || [];
+  const notifications: Notifications[] = notificationsData || [];
 
   const unseenNotifications = notifications.filter((notifications) => !notifications.isRead);
   const seenNotifications = notifications.filter((notification) => notification.isRead);
@@ -32,7 +32,7 @@ const NotificationList: React.FC = () => {
         Notifications
       </Typography>
       {unseenNotifications.map((notification) => (
-        <NotificationItem key={notification.id} notification={notification} />
+        <NotificationItem key={notification.notificationId} notification={notification} />
       ))}
 
       <Divider style={{ margin: '20px 0' }} />
@@ -41,7 +41,7 @@ const NotificationList: React.FC = () => {
         Seen Notifications
       </Typography>
       {seenNotifications.map((notification) => (
-        <NotificationItem key={notification.id} notification={notification} />
+        <NotificationItem key={notification.notificationId} notification={notification} />
       ))}
     </div>
   );

@@ -1,22 +1,27 @@
-// Define the Notification interface
-export interface Notification {
-  id: string;
-  userId: string;
-  code: string;
-  message: string;
-  date?: Date;
-  isRead?: boolean;
+export * from './database';
+
+export interface Venue {
+  venueId: string;
+  capacity: number;
+  campusName: string;
+  type: string;
+  buildingName: string;
+  amenities: string[];
+  pictures: string[];
 }
 
-export interface Booking {
-  id: number;
-  userId: string;
-  date: string; // Date of the booking (YYYY-MM-DD)
-  startTime: string; // Start time (HH:MM:SS)
-  endTime: string; // End time (HH:MM:SS)
-  venueId: number;
-  status: 'active' | 'cancelled' | 'inactive'; // Booking status
-  reasonForCancellation?: string;
-  repeatFrequency?: 'none' | 'daily' | 'weekly' | 'monthly';
-  purpose: string;
+export interface Issue {
+  issue_id: string;
+  issue_description: string;
+  room_id: string;
+  status: string;
+  reported_date: string;
+}
+
+export interface IssueReport {
+  image_url: string;
+  room_id: string;
+  issue_description: string;
+  status: 'Reported' | 'In Progress' | 'Resolved';
+  resolution_log: string | null;
 }

@@ -16,7 +16,10 @@ class Notification {
   }
 
   static async markAsRead(id) {
-    const [result] = await db.query('UPDATE notifications SET is_read = TRUE WHERE id = ?', [id]);
+    const [result] = await db.query(
+      'UPDATE notifications SET is_read = TRUE WHERE notification_id = ?',
+      [id],
+    );
     return result.affectedRows; // Returns the number of rows updated
   }
 }

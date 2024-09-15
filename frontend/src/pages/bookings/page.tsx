@@ -1,5 +1,6 @@
 import { useGetQuery, useUpdateMutation } from '@/hooks';
-import { Booking } from '@/interfaces';
+import { Bookings } from '@/interfaces';
+import { scrollbarStyles } from '@/theme';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
@@ -10,29 +11,25 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BookingCard from './card';
 
 const BookingPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filteredBookings, setFilteredBookings] = useState<Bookings[]>([]);
+  const [filteredBookingsPast, setFilteredBookingsPast] = useState<Bookings[]>([]);
 
-  const { data: activeBookings } = useGetQuery({
+  const { data: activeBookings } = useGetQuery<Bookings[]>({
     resource: 'api/user/bookings/active',
   });
-  const { data: pastBookings } = useGetQuery({
+  const { data: pastBookings } = useGetQuery<Bookings[]>({
     resource: 'api/user/bookings/past',
   });
+
   const { mutate: cancelBooking } = useUpdateMutation({
     resource: 'api/bookings/cancel',
     invalidateKeys: ['api/user/bookings/active', 'api/user/bookings/past'],
   });
-
-  const filterBookings = (bookings: Booking[]) => {
-    if (!searchTerm) return bookings;
-    return bookings.filter((booking) =>
-      booking.purpose.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-  };
 
   const handleCancelBooking = (id: number) => {
     cancelBooking({ id: id, data: {} });
@@ -43,8 +40,39 @@ const BookingPage: React.FC = () => {
     // TODO: Implement rebooking logic
   };
 
+  useEffect(() => {
+    if (activeBookings) {
+      if (searchTerm) {
+        const filtered = activeBookings.filter((booking) =>
+          booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+        setFilteredBookings(filtered);
+      } else {
+        setFilteredBookings(activeBookings);
+      }
+    }
+
+    if (pastBookings) {
+      if (searchTerm) {
+        const filtered = pastBookings.filter((booking) =>
+          booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+        setFilteredBookingsPast(filtered);
+      } else {
+        setFilteredBookingsPast(pastBookings);
+      }
+    }
+  }, [activeBookings, pastBookings, searchTerm]);
+
   return (
-    <Container>
+    <Container
+      sx={{
+        overflowY: 'scroll',
+        height: '100vh',
+        pb: 3,
+        ...scrollbarStyles,
+      }}
+    >
       {/* Search Field */}
       <Box sx={{ mb: 3 }}>
         <TextField
@@ -70,35 +98,31 @@ const BookingPage: React.FC = () => {
       </Typography>
 
       {/* Active Bookings */}
-      {activeBookings?.length > 0 && (
-        <>
-          {filterBookings(activeBookings).map((booking, index) => (
-            <BookingCard
-              key={index}
-              booking={booking}
-              onCancelBooking={() => handleCancelBooking(booking.id)}
-            />
-          ))}
-          <Divider sx={{ my: 3 }} />
-        </>
-      )}
+      <>
+        {filteredBookings?.map((booking, index) => (
+          <BookingCard
+            key={index}
+            booking={booking}
+            onCancelBooking={() => handleCancelBooking(booking.bookingId)}
+          />
+        ))}
+        <Divider sx={{ my: 3 }} />
+      </>
 
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Past bookings
       </Typography>
 
       {/* Past Bookings */}
-      {pastBookings?.length > 0 && (
-        <>
-          {filterBookings(pastBookings).map((booking, index) => (
-            <BookingCard
-              key={index}
-              booking={booking}
-              onRebooking={() => handleRebooking(booking.id)}
-            />
-          ))}
-        </>
-      )}
+      <>
+        {filteredBookingsPast?.map((booking, index) => (
+          <BookingCard
+            key={index}
+            booking={booking}
+            onRebooking={() => handleRebooking(booking.bookingId)}
+          />
+        ))}
+      </>
     </Container>
   );
 };
