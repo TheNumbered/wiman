@@ -4,6 +4,7 @@ import { useUser } from '@clerk/clerk-react';
 import {
   Box,
   Button,
+  FormControlLabel,
   Grid,
   InputLabel,
   MenuItem,
@@ -11,7 +12,6 @@ import {
   RadioGroup,
   Select,
   TextField,
-  FormControlLabel,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -30,7 +30,6 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
   const location = useLocation();
 
   const { venue } = location.state as any;
-  console.log('venue:', venue);
 
   useEffect(() => {
     if (venue) {
@@ -56,9 +55,11 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
     setEventDate(event.target.value);
   };
 
-  const mutation = useCreateMutation({
+  const { mutate: createBooking } = useCreateMutation({
     resource: 'api/bookings',
-    invalidateKeys: ['bookings'],
+    invalidateKeys: ['api/venues'],
+    onSuccessMessage: 'Booking created successfully',
+    onSucessCallback: onClose,
   });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,16 +85,7 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
       venueId,
     };
 
-    console.log('formData:', formData);
-    console.log('selectedRoom', selectedRoom);
-
-    try {
-      await mutation.mutateAsync(formData);
-      console.log('Booking successfully created');
-      onClose(); // Close the modal after successful booking
-    } catch (error) {
-      console.log(error);
-    }
+    createBooking(formData);
   };
 
   return (

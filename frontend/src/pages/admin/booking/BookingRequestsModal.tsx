@@ -79,7 +79,7 @@ const PendingBookings: React.FC<{
                 color="error"
                 onClick={() => handleOpen(booking.bookingId)}
               >
-                Delete
+                Reject
               </Button>
             </Box>
           </Paper>

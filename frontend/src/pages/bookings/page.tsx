@@ -1,5 +1,6 @@
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Bookings } from '@/interfaces';
+import { scrollbarStyles } from '@/theme';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
@@ -64,7 +65,14 @@ const BookingPage: React.FC = () => {
   }, [activeBookings, pastBookings, searchTerm]);
 
   return (
-    <Container>
+    <Container
+      sx={{
+        overflowY: 'scroll',
+        height: '100vh',
+        pb: 3,
+        ...scrollbarStyles,
+      }}
+    >
       {/* Search Field */}
       <Box sx={{ mb: 3 }}>
         <TextField

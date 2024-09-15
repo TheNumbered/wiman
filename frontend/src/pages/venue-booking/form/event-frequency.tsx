@@ -11,39 +11,38 @@ import {
 import React from 'react';
 
 interface EventFrequencyProps {
-  frequency: string;
-  setRepeatFrequency: (value: string) => void;
-  repeatInterval: number | '';
+  repeatOption: string;
+  setRepeatOption: (value: string) => void;
   repeatUntil: string | null;
   setRepeatUntil: (value: string | null) => void;
-  selectedDay: string | null;
-  setSelectedDay: (value: string | null) => void;
+  selectedFrequency: string | null;
+  setSelectedFrequency: (value: string | null) => void;
 }
 
 const EventFrequency: React.FC<EventFrequencyProps> = ({
-  frequency,
-  setRepeatFrequency,
+  repeatOption,
+  setRepeatOption,
   repeatUntil,
   setRepeatUntil,
-  selectedDay,
-  setSelectedDay,
+  selectedFrequency,
+  setSelectedFrequency,
 }) => {
   return (
     <Box sx={{ marginBottom: 3 }}>
       <InputLabel shrink>Frequency</InputLabel>
       <RadioGroup
         row
-        value={frequency}
-        onChange={(e) => setRepeatFrequency(e.target.value)}
+        value={repeatOption}
+        onChange={(e) => setRepeatOption(e.target.value)}
         name="frequency"
       >
         <FormControlLabel value="once" control={<Radio />} label="Only once" />
         <FormControlLabel value="every" control={<Radio />} label="Every" />
-        {frequency === 'every' && (
+        {repeatOption === 'every' && (
           <>
             <Select
-              value={selectedDay}
-              onChange={(e) => setSelectedDay(e.target.value)}
+              value={selectedFrequency}
+              onChange={(e) => setSelectedFrequency(e.target.value)}
               variant="outlined"
               sx={{ width: '150px', mx: 1, height: '55px', mt: 2 }}
             >
@@ -57,7 +56,7 @@ const EventFrequency: React.FC<EventFrequencyProps> = ({
           </>
         )}
       </RadioGroup>
-      {frequency === 'every' && (
+      {repeatOption === 'every' && (
         <Box sx={{ marginTop: 2 }}>
           <InputLabel shrink>Repeat until</InputLabel>
           <TextField

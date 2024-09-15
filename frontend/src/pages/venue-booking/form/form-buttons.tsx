@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress } from '@mui/material';
 import React from 'react';
 
 interface FormButtonsProps {
-  handleSubmit: () => void;
+  handleSubmit: (event: any) => Promise<void>;
   isSubmitting: boolean;
 }
 

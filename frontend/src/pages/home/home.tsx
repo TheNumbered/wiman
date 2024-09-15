@@ -1,5 +1,15 @@
+import { scrollbarStyles } from '@/theme';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, Grid, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Searchings from './searching';
@@ -26,7 +36,14 @@ const HomePage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Container
+      sx={{
+        padding: 3,
+        overflowY: 'scroll',
+        height: '100vh',
+        ...scrollbarStyles,
+      }}
+    >
       {isMobile ? (
         <>
           <Box
@@ -123,7 +140,7 @@ const HomePage: React.FC = () => {
       ) : (
         <Searchings />
       )}
-    </Box>
+    </Container>
   );
 };
 

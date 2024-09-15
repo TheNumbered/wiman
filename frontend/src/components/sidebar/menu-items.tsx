@@ -9,6 +9,7 @@ import {
   HomeOutlined,
   KeyboardReturnOutlined,
   NotificationsOutlined,
+  PanTool,
 } from '@mui/icons-material';
 
 export const userMenuItems = [
@@ -28,6 +29,10 @@ export const adminMenuItems = [
   { label: 'Manage Bookings', icon: <EventAvailableOutlined />, route: '/admin/manage-bookings' },
 ];
 
+export const maintenanceMenuItems = [
+  { label: 'Home', icon: <HomeOutlined />, route: '/dashboard' },
+  { label: 'Issues', icon: <PanTool />, route: '/maintenance/issues' },
+];
 export const adminSecondaryMenuItems = [
   {
     label: 'Dark Mode',

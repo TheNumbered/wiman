@@ -37,7 +37,6 @@ export const createBooking = async (req, res) => {
   try {
     const { date, startTime, endTime, venueId, eventName, repeatFrequency, repeatUntil } = req.body;
     let userId = req.auth?.userId || 'api_user';
-    console.log(userId, date, startTime, endTime, venueId, eventName, repeatFrequency, repeatUntil);
 
     if (!date || !startTime || !endTime || !eventName || !venueId) {
       return res.status(400).json({ error: 'Required fields are missing' });

@@ -66,7 +66,7 @@ const App: React.FC = () => {
             <Route path="/venue/:id" element={<RoomDetails />} />
             <Route path="/venue/booking" element={<BookVenueForm />} />
             {/* Karabo */}
-            <Route path="/issues" element={<Issues />} />
+            <Route path="/maintenance/issues" element={<Issues />} />
             <Route path="/venue-details" element={<VenueDetails />} />
           </Route>
         )}

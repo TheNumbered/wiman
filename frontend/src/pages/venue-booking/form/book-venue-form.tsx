@@ -9,7 +9,6 @@ import FormButtons from './form-buttons';
 import VenueSelection from './venue-selection';
 
 export const BookVenueForm: React.FC = () => {
-  const [venues, setVenues] = useState<Venue[]>([]);
   const [category, setCategory] = useState<string>('');
   const [building, setBuilding] = useState<string>('');
   const [capacity, setCapacity] = useState<number>(0);
@@ -17,8 +16,8 @@ export const BookVenueForm: React.FC = () => {
   const [eventDate, setEventDate] = useState<string>('');
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>();
-  const [selectedDay, setSelectedDay] = useState<string | null>('');
-  const [repeatFrequency, setRepeatFrequency] = useState<string>('once');
+  const [selectedFrequency, setSelectedFrequency] = useState<string | null>('none');
+  const [repeatOption, setRepeatOption] = useState<string>('once');
   const [repeatUntil, setRepeatUntil] = useState<string | null>('');
   const [selectedRoom, setSelectedRoom] = useState<string>('');
   const [venueSelection, setVenueSelection] = useState<string>('chooseForMe');
@@ -26,21 +25,16 @@ export const BookVenueForm: React.FC = () => {
   const [filteredVenuesByBuilding, setFilteredVenuesByBuilding] = useState<Venue[]>([]);
   const [filteredVenuesByCapacity, setFilteredVenuesByCapacity] = useState<Venue[]>([]);
 
-  const { data } = useGetQuery({
+  const { data: venuesData } = useGetQuery<Venue[]>({
     resource: 'api/venues',
   });
+  const venues = venuesData || [];
 
-  const mutation = useCreateMutation({
+  const { mutate: createBooking } = useCreateMutation({
     resource: 'api/bookings',
-    invalidateKeys: ['bookings'],
+    invalidateKeys: ['api/bookings'],
+    onSuccessMessage: 'Booking created successfully',
   });
-
-  useEffect(() => {
-    if (data) {
-      //@ts-ignore
-      setVenues(data);
-    }
-  }, [data]);
 
   const filterVenuesByCategory = (category: string) => {
     return venues.filter((venue) => venue.type === category);
@@ -78,10 +72,10 @@ export const BookVenueForm: React.FC = () => {
   }, [category]);
 
   useEffect(() => {
-    console.log('Filtered venues by category:', filteredVenuesByCategory);
-    console.log('Building selected:', building);
+    // console.log('Filtered venues by category:', filteredVenuesByCategory);
+    // console.log('Building selected:', building);
     const result = filterVenuesByBuilding(building);
-    console.log('Filtered venues by building:', result);
+    // console.log('Filtered venues by building:', result);
     setFilteredVenuesByBuilding(result);
   }, [building, filteredVenuesByCategory]);
 
@@ -92,7 +86,7 @@ export const BookVenueForm: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
-    const adjustedRepeatFrequency = repeatFrequency === 'once' ? 'none' : selectedDay;
+    const adjustedRepeatFrequency = repeatOption === 'once' ? 'none' : selectedFrequency;
 
     const formData = {
       date: eventDate,
@@ -102,17 +96,10 @@ export const BookVenueForm: React.FC = () => {
       endTime,
       venueId: selectedRoom,
       repeatFrequency: adjustedRepeatFrequency,
-      repeatUntil: repeatFrequency === 'every' ? repeatUntil : null,
+      repeatUntil: repeatOption === 'every' ? repeatUntil : null,
     };
 
-    try {
-      await mutation.mutateAsync(formData);
-      console.log('Booking successfully created');
-    } catch (error) {
-      console.log(error);
-    }
-
-    console.log('Form data:', formData);
+    createBooking(formData);
   };
 
   const isSubmitting = false;
@@ -138,13 +125,12 @@ export const BookVenueForm: React.FC = () => {
           setEndTime={setEndTime}
         />
         <EventFrequency
-          frequency={repeatFrequency}
-          setRepeatFrequency={setRepeatFrequency}
-          repeatInterval={repeatInterval}
           repeatUntil={repeatUntil}
           setRepeatUntil={setRepeatUntil}
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
+          selectedFrequency={selectedFrequency}
+          setSelectedFrequency={setSelectedFrequency}
+          repeatOption={repeatOption}
+          setRepeatOption={setRepeatOption}
         />
         <VenueSelection
           venueSelection={venueSelection}

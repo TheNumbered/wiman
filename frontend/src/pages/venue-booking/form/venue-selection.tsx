@@ -1,4 +1,4 @@
-import { Venue } from '@/interfaces/database';
+import { Venue } from '@/interfaces';
 import { Box, InputLabel, MenuItem, Select, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React from 'react';
 

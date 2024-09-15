@@ -4,7 +4,7 @@ export type Bookings = {
   date: Date | string;
   startTime: any;
   endTime: any;
-  venueId: number;
+  venueId: string;
   status: 'pending' | 'cancelled' | 'confirmed';
   reasonForCancellation?: string;
   repeatFrequency: 'none' | 'daily' | 'weekly' | 'monthly';
@@ -56,7 +56,7 @@ export type BookingsInput = {
   date: Date | string;
   startTime: any;
   endTime: any;
-  venueId: number;
+  venueId: string;
   status: 'pending' | 'cancelled' | 'confirmed';
   reasonForCancellation?: string;
   repeatFrequency: 'none' | 'daily' | 'weekly' | 'monthly';

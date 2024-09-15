@@ -25,7 +25,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         sx={{
           background: '#fff',
           width: '-webkit-fill-available',
-          overflowY: 'hidden',
+          overflowY: 'scroll',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
           ml: { md: 1 }, // Margin-left only on large screens and up
           pr: { md: 2 }, // Padding-right only on large screens and up
           py: { md: 4 },

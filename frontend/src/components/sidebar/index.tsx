@@ -1,4 +1,5 @@
 import { useGetQuery } from '@/hooks';
+import { Users } from '@/interfaces';
 import { AccountCircleOutlined } from '@mui/icons-material';
 import {
   BottomNavigation,
@@ -14,6 +15,7 @@ import SidebarItem from './item';
 import {
   adminMenuItems,
   adminSecondaryMenuItems,
+  maintenanceMenuItems,
   profileMenuItems,
   userMenuItems,
 } from './menu-items';
@@ -28,12 +30,16 @@ interface SidebarItemProps {
 const SideBar: React.FC = () => {
   const [value, setValue] = useState(0);
   const isMobile = useMediaQuery('(max-width: 600px)');
-  const { data: user } = useGetQuery<{ role: string }>({
+  const { data: user } = useGetQuery<{ role: Users['role'] }>({
     resource: 'api/user/role',
   });
   const userRole = user?.role;
   const primaryMenuItems: SidebarItemProps[] =
-    userRole === 'admin' ? adminMenuItems : userMenuItems;
+    userRole === 'admin'
+      ? adminMenuItems
+      : userRole === 'maintenance'
+        ? maintenanceMenuItems
+        : userMenuItems;
   const secondaryMenuItems: SidebarItemProps[] =
     userRole === 'admin' ? adminSecondaryMenuItems : profileMenuItems;
 

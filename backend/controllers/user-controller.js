@@ -12,8 +12,14 @@ export const getUsers = async (req, res) => {
 
 export const getUserRole = async (req, res) => {
   try {
-    const id = req.auth.userId;
-    const role = await User.getRole(id);
+    const { userId: id, userFullName, userProfileUrl } = req.auth.claims;
+    let role = await User.getRole(id);
+
+    if (!role) {
+      await User.createUser(id, userFullName, userProfileUrl);
+      role = 'user';
+    }
+
     res.json({ role });
   } catch (err) {
     res.status(500).send(err.message);

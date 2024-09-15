@@ -6,6 +6,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardMedia,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -116,16 +117,16 @@ const VenueCard: React.FC<Venue> = ({ name, campus, capacity, pictures }) => {
     <Card
       sx={{
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
+        // border: '1px solid rgba(0, 0, 0, 0.1)',
         borderRadius: '15px',
         overflow: 'hidden',
         position: 'relative',
         textAlign: 'left',
         width: '300px',
-        margin: '20px',
+        //margin: '20px',
       }}
     >
-      <Box
+      <CardMedia
         component="img"
         height="180"
         src={pictures[0]}
@@ -179,17 +180,18 @@ const VenueCard: React.FC<Venue> = ({ name, campus, capacity, pictures }) => {
             <Button
               disabled={!isAvailable}
               sx={{
-                borderRadius: '30px',
-                padding: '10px 20px',
-                textTransform: 'none',
-                fontWeight: 'bold',
-                fontSize: '16px',
+                borderRadius: '10px',
+                // padding: '10px 20px',
+                // textTransform: 'none',
+                // fontWeight: 'bold',
+                // fontSize: '16px',
                 backgroundColor: isAvailable ? '#ff9800' : '#e0e0e0',
                 color: '#fff',
                 '&:hover': {
                   backgroundColor: isAvailable ? '#f57c00' : '#c0c0c0',
                 },
               }}
+              size="small"
             >
               {isAvailable ? 'Book' : 'Unavailable'}
             </Button>
