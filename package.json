@@ -7,7 +7,7 @@
     "backend": "cd backend && pnpm dev",
     "lint": "cd backend && eslint . --fix && cd ../frontend && eslint ./src --fix",
     "test": "vitest --run",
-    "coverage": "vitest run --coverage",
+    "coverage": "vitest run --coverage --coverage.all=false --coverage.exclude=**/**models/**",
     "prepare": "husky",
     "commitmsg": "commitlint -E HUSKY_GIT_PARAMS --no-install"
   },

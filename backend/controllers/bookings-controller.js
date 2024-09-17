@@ -6,7 +6,7 @@ export const getAllBookings = async (req, res) => {
     const bookings = await Booking.getAllBookings();
     res.json(bookings);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 

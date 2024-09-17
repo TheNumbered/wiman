@@ -39,3 +39,20 @@ export const authAdmin = async (req, res, next) => {
     }
   });
 };
+
+export const authMaintenance = async (req, res, next) => {
+  await authUser(req, res, async () => {
+    try {
+      const id = req.auth.userId;
+      const [rows] = await db.query('SELECT role FROM users WHERE user_id = ? AND blocked = 0', [
+        id,
+      ]);
+      if (rows.length === 0 || rows[0].role !== 'maintenance') {
+        return res.status(403).json({ message: 'Unauthorized' });
+      }
+      next();
+    } catch (err) {
+      next(err);
+    }
+  });
+};

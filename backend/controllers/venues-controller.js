@@ -14,7 +14,7 @@ export const getVenues = async (req, res) => {
     // Return the filtered venues
     res.json(venues);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -25,6 +25,6 @@ export const getVenueReservations = async (req, res) => {
     const reservations = await Venue.getVenueReservations(venueId);
     res.json(reservations);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
