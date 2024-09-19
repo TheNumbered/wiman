@@ -9,7 +9,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <Box
       component={'main'}
-      sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden', background: '#fff' }}
+      sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden', marginBottom: '3rem', background: '#fff' }}
     >
       <Box
         component={'section'}
