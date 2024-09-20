@@ -7,7 +7,7 @@ export const getRecurringDates = (
 ) => {
   const reservations: Record<string, boolean> = {};
 
-  let currentDate = typeof startDate === 'string' ? parseISO(startDate) : startDate;
+  const currentDate = typeof startDate === 'string' ? parseISO(startDate) : startDate;
   const repeatUntil = repeatUntilDate ? parseISO(repeatUntilDate.toString()) : null;
 
   reservations[format(currentDate, 'yyyy-MM-dd')] = true;
