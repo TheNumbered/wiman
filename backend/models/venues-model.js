@@ -8,15 +8,18 @@ const mockBuildingInfo = {
   1: {
     campusName: 'West Campus',
     buildingName: 'Commerce, Law & Management',
-    pictures: ['https://example.com/images/clm37_1.jpg', 'https://example.com/images/clm37_2.jpg'],
+    location: {
+      lat: 37.7749,
+      lng: -122.4194,
+    },
   },
   2: {
     campusName: 'East Campus',
     buildingName: 'Engineering Building',
-    pictures: [
-      'https://example.com/images/engg01_1.jpg',
-      'https://example.com/images/engg01_2.jpg',
-    ],
+    location: {
+      lat: 37.7749,
+      lng: -122.4194,
+    },
   },
 };
 
@@ -54,7 +57,6 @@ class Venue {
           mockBuildingInfo[buildingId] || {
             campusName: 'Unknown Campus',
             buildingName: 'Unknown Building',
-            pictures: [],
           }
         );
       }
@@ -69,10 +71,12 @@ class Venue {
             venueId: room.room_id,
             capacity: room.capacity,
             campusName: buildingInfo.campusName,
-            type: room.type,
             buildingName: buildingInfo.buildingName,
+            imageUrl: room.image_url,
+            type: room.type,
+            status: room.status,
             amenities: room.amenities,
-            pictures: buildingInfo.pictures,
+            location: buildingInfo.location,
           };
         }
         return null;

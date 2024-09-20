@@ -13,8 +13,7 @@ app.use((req, res, next) => {
   next();
 });
 app.get('/bookings', BookingController.getAllBookings);
-app.get('/bookings/active', BookingController.getActiveBookings);
-app.get('/bookings/past', BookingController.getPastBookings);
+app.get('/user/bookings', BookingController.getUserBookings);
 app.post('/bookings', BookingController.createBooking);
 app.get('/bookings/:id/status', BookingController.getBookingStatus);
 app.put('/bookings/:id/cancel', BookingController.cancelBooking);
@@ -38,32 +37,17 @@ describe('Booking Controller', () => {
     ]);
   });
 
-  it('should fetch active bookings for authenticated user', async () => {
-    Booking.getActiveBookingsByUserId = vi
+  it('should fetch bookings for authenticated user', async () => {
+    Booking.getBookingsByUserId = vi
       .fn()
       .mockResolvedValue([
         { id: 2, eventName: 'Active Event', venueId: 'venue2', date: '2023-10-01' },
       ]);
 
-    const response = await request(app).get('/bookings/active');
+    const response = await request(app).get('/user/bookings');
     expect(response.status).toBe(200);
     expect(response.body).toEqual([
       { id: 2, eventName: 'Active Event', venueId: 'venue2', date: '2023-10-01' },
-    ]);
-  });
-
-  it('should fetch past bookings for authenticated user', async () => {
-    Booking.getPastBookingsByUserId = vi
-      .fn()
-      .mockResolvedValue([
-        { id: 3, eventName: 'Past Event', venueId: 'venue3', date: '2023-08-01' },
-      ]);
-
-    const response = await request(app).get('/bookings/past');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual([
-      { id: 3, eventName: 'Past Event', venueId: 'venue3', date: '2023-08-01' },
     ]);
   });
 

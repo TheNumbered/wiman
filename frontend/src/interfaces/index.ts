@@ -7,7 +7,11 @@ export interface Venue {
   type: string;
   buildingName: string;
   amenities: string[];
-  pictures: string[];
+  imageUrl?: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface Issue {

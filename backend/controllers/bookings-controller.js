@@ -10,22 +10,16 @@ export const getAllBookings = async (req, res) => {
   }
 };
 
-// Get active bookings
-export const getActiveBookings = async (req, res) => {
+// Get bookings
+export const getUserBookings = async (req, res) => {
   try {
     const { userId } = req.auth;
-    const bookings = await Booking.getActiveBookingsByUserId(userId);
-    res.json(bookings);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    const bookings = await Booking.getBookingsByUserId(userId);
 
-// Get past bookings
-export const getPastBookings = async (req, res) => {
-  try {
-    const { userId } = req.auth;
-    const bookings = await Booking.getPastBookingsByUserId(userId);
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ error: 'No bookings found for this user' });
+    }
+
     res.json(bookings);
   } catch (err) {
     res.status(500).json({ error: err.message });

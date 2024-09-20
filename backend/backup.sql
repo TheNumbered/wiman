@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.39, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: wiman
 -- ------------------------------------------------------
--- Server version	8.0.39
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -57,14 +57,14 @@ DROP TABLE IF EXISTS `maintenance`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `maintenance` (
   `issue_id` int NOT NULL AUTO_INCREMENT,
-  `room_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `room_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reported_by` int DEFAULT NULL,
-  `issue_description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('Reported','In Progress','Resolved') COLLATE utf8mb4_general_ci NOT NULL,
+  `issue_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `status` enum('Reported','In Progress','Resolved') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `reported_date` datetime NOT NULL,
   `resolved_date` datetime DEFAULT NULL,
-  `resolution_log` text COLLATE utf8mb4_general_ci,
-  `image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `resolution_log` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`issue_id`),
   KEY `idx_status_reported_date` (`status`,`reported_date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -160,7 +160,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','DANIEL NGOBE','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybE1vSEVWZzY2YnNUamFUekZOTlVBT2E4a0UifQ','admin',0,'2024-09-15 15:09:27'),('user_a1b2c3d4e5f6','Alice Smith','https://example.com/profile/user_a1b2c3d4e5f6','admin',1,'2024-09-14 08:50:53'),('user_g7h8i9j0k1l2','Bob Johnson','https://example.com/profile/user_g7h8i9j0k1l2','admin',1,'2024-09-14 08:50:53'),('user_m3n4o5p6q7r8','Charlie Brown','https://example.com/profile/user_m3n4o5p6q7r8','user',0,'2024-09-14 08:50:53'),('user_y5z6a7b8c9d0','Eve Davis','https://example.com/profile/user_y5z6a7b8c9d0','admin',1,'2024-09-14 08:50:53'),('user_z1y2x3w4v5u6','Frank Maintenance','https://example.com/profile/user_z1y2x3w4v5u6','maintenance',1,'2024-09-14 09:03:35');
+INSERT INTO `users` VALUES ('user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','DANIEL NGOBE','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybE1vSEVWZzY2YnNUamFUekZOTlVBT2E4a0UifQ','admin',0,'2024-09-15 15:09:27'),('user_2lWc50uyVxUCkCbogUMSltscpCf','Kharendwe Negota','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybFdjNTBRYVo1ajZSOUtSd2J4YjhMbDRva1EifQ','user',0,'2024-09-19 08:24:05'),('user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Kharendwe Negota','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybUNWcWxkS0FCeU42R2REUEVYY05tTTA3TjAifQ','user',0,'2024-09-19 08:24:46'),('user_a1b2c3d4e5f6','Alice Smith','https://example.com/profile/user_a1b2c3d4e5f6','admin',1,'2024-09-14 08:50:53'),('user_g7h8i9j0k1l2','Bob Johnson','https://example.com/profile/user_g7h8i9j0k1l2','admin',1,'2024-09-14 08:50:53'),('user_m3n4o5p6q7r8','Charlie Brown','https://example.com/profile/user_m3n4o5p6q7r8','user',0,'2024-09-14 08:50:53'),('user_y5z6a7b8c9d0','Eve Davis','https://example.com/profile/user_y5z6a7b8c9d0','admin',1,'2024-09-14 08:50:53'),('user_z1y2x3w4v5u6','Frank Maintenance','https://example.com/profile/user_z1y2x3w4v5u6','maintenance',1,'2024-09-14 09:03:35');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -173,4 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-15 17:11:32
+-- Dump completed on 2024-09-19 10:51:32

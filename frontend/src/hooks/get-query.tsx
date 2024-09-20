@@ -24,7 +24,9 @@ export const useGetQuery = <T,>({ resource, baseURL, bearerToken }: QueryOptions
         },
       }).then((response) => {
         if (!response.ok) {
-          showToast('Failed to fetch data', 'error');
+          if (response.status === 401) {
+            showToast('Unauthorized', 'error');
+          }
           throw new Error('Failed to fetch data');
         }
         return response.json();

@@ -132,7 +132,7 @@ const RoomDetails: React.FC = () => {
                     borderColor: theme.palette.background.default,
                     height: 235,
                     mb: 2,
-                    backgroundImage: `url(${venue.pictures[0] || 'https://via.placeholder.com/500'})`,
+                    backgroundImage: `url(${venue.imageUrl ?? 'https://via.placeholder.com/500'})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}

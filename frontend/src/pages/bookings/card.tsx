@@ -7,9 +7,15 @@ interface BookingCardProps {
   booking: Bookings;
   onCancelBooking?: () => void;
   onRebooking?: () => void;
+  onSelectCard?: (booking: Bookings) => void;
 }
 
-const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onRebooking }) => {
+const BookingCard: React.FC<BookingCardProps> = ({
+  booking,
+  onCancelBooking,
+  onRebooking,
+  onSelectCard,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,29 +26,31 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
     setAnchorEl(null);
   };
 
-  const getCancellationReason = () => {
-    switch (booking.reasonForCancellation) {
-      case 'user':
-        return 'You cancelled';
-      case 'maintenance':
-        return 'Maintenance issues';
-      case 'safety':
-        return 'Safety issues';
-      default:
-        return '';
-    }
-  };
+  const isPastDate = new Date(booking.date) < new Date();
+  const isCancelled =
+    booking.status === 'cancelled' || (booking.status === 'pending' && isPastDate);
 
-  const pastDate = new Date(booking.date) < new Date();
+  const status =
+    booking.status === 'pending' && isPastDate ? 'Not Confirmed In Time' : booking.status;
 
   // Determine colors based on status
-  const cardBackgroundColor =
-    booking.status === 'cancelled' ? '#ffebee' : pastDate ? '#e0e0e0' : '#fff7e8';
-  const borderColor = booking.status === 'cancelled' ? '#ffcccb' : pastDate ? '#bdbdbd' : '#1565c0'; // Light version for cancelled and inactive
-  const dateColor = booking.status === 'cancelled' || pastDate ? '#9e9e9e' : '#1565c0'; // Gray color for past bookings
+  const cardBackgroundColor = isCancelled
+    ? '#ffebee'
+    : booking.status === 'confirmed'
+      ? '#fff7e8'
+      : '#e0e0e0';
+  const borderColor = isCancelled
+    ? '#ffcccb'
+    : booking.status === 'confirmed'
+      ? '#1565c0'
+      : '#bdbdbd';
+  const dateColor = isCancelled ? '#9e9e9e' : '#1565c0';
 
   return (
-    <div style={{ display: 'flex', width: '100%' }}>
+    <div
+      style={{ display: 'flex', width: '100%' }}
+      onClick={() => onSelectCard && onSelectCard(booking)}
+    >
       {/* Date Section */}
       <Box
         sx={{
@@ -53,7 +61,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
           minWidth: 60,
           px: 1,
           fontWeight: 'bold',
-          color: dateColor, // Gray color for past bookings
+          color: dateColor,
         }}
       >
         <Typography variant="body2" fontWeight="bold">
@@ -70,7 +78,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
           flex: 1,
           mb: 2,
           backgroundColor: cardBackgroundColor,
-          opacity: booking.status === 'cancelled' ? 0.7 : 1,
+          opacity: booking.status == 'pending' ? 0.7 : 1,
           borderLeft: `5px solid ${borderColor}`, // Light version of card color for the left border
           padding: 0,
           borderRadius: 3,
@@ -82,12 +90,14 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
             {booking.eventName}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            VENUE LOCATION
+            {booking.venueId}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            {booking.status === 'cancelled' || booking.status === 'pending'
-              ? `${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)} ${getCancellationReason()}`
-              : booking.startTime}
+            {booking.status === 'cancelled'
+              ? `${status.charAt(0).toUpperCase() + status.slice(1)} : ${booking.reasonForCancellation ?? 'No reason provided'}`
+              : booking.status == 'pending' && isPastDate
+                ? `${status.charAt(0).toUpperCase() + status.slice(1)}`
+                : `${booking.startTime.slice(0, 5)} - ${booking.endTime.slice(0, 5)}`}
           </Typography>
         </CardContent>
 
@@ -104,16 +114,6 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
 
         {/* Dropdown Menu */}
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-          <MenuItem disabled>
-            <Typography variant="body2">
-              Status: {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-            </Typography>
-          </MenuItem>
-          {booking.status === 'cancelled' && booking.reasonForCancellation && (
-            <MenuItem disabled>
-              <Typography variant="body2">Reason: {getCancellationReason()}</Typography>
-            </MenuItem>
-          )}
           {booking.status === 'cancelled' && onRebooking && (
             <MenuItem onClick={onRebooking}>
               <Typography variant="body2" color="primary">
@@ -121,20 +121,22 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, onCancelBooking, onR
               </Typography>
             </MenuItem>
           )}
-          {new Date(booking.date) < new Date() && onRebooking && (
+          {booking.status == 'pending' && isPastDate && onRebooking && (
             <MenuItem onClick={onRebooking}>
               <Typography variant="body2" color="primary">
                 Rebook
               </Typography>
             </MenuItem>
           )}
-          {booking.status !== 'cancelled' && pastDate && onCancelBooking && (
-            <MenuItem onClick={onCancelBooking}>
-              <Typography variant="body2" color="error">
-                Cancel Booking
-              </Typography>
-            </MenuItem>
-          )}
+          {booking.status !== 'cancelled' &&
+            !(booking.status == 'pending' && isPastDate) &&
+            onCancelBooking && (
+              <MenuItem onClick={onCancelBooking}>
+                <Typography variant="body2" color="error">
+                  Cancel Booking
+                </Typography>
+              </MenuItem>
+            )}
         </Menu>
       </Card>
     </div>

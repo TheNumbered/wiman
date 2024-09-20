@@ -97,21 +97,7 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Venue"
-                  },
-                  "example": [
-                    {
-                      "venueId": "CLM201",
-                      "capacity": 0,
-                      "campusName": "West Campus",
-                      "type": "Lecture Theatre",
-                      "buildingName": "Commerce, Law & Management",
-                      "amenities": ["projector", "whiteboard"],
-                      "pictures": [
-                        "https://example.com/images/clm37_1.jpg",
-                        "https://example.com/images/clm37_2.jpg"
-                      ]
-                    }
-                  ]
+                  }
                 }
               }
             }
@@ -197,7 +183,7 @@
         "x-swagger-router-controller": "Venues"
       }
     },
-    "/user/bookings/active": {
+    "/user/bookings": {
       "get": {
         "summary": "Get active bookings",
         "security": [
@@ -219,32 +205,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/user/bookings/past": {
-      "get": {
-        "summary": "Get past bookings",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "tags": ["User"],
-        "responses": {
-          "200": {
-            "description": "List of past bookings",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Booking"
-                  }
-                }
-              }
-            }
           },
           "404": {
             "description": "No past bookings found",
@@ -255,7 +215,46 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "No past bookings found"
+                      "example": "No bookings found for this user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/role": {
+      "get": {
+        "summary": "Get user role",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "User role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRole"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User role not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User role not found"
                     }
                   }
                 }
@@ -791,93 +790,32 @@
         ]
       }
     },
-    "/admin/schedule": {
-      "post": {
-        "tags": ["Admin"],
-        "summary": "Update academic schedule",
-        "description": "Update the academic schedule in the system to ensure classroom availability.",
-        "operationId": "adminSchedulePOST",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/ScheduleUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "Schedule updated"
-          },
-          "400": {
-            "description": "Invalid file format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "The uploaded file format is not supported"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Admin"
-      }
-    },
-    "/admin/reports": {
+    "/admin/bookings": {
       "get": {
         "tags": ["Admin"],
-        "summary": "Generate usage reports",
-        "description": "Generate reports on room usage, booking trends, and maintenance issues.",
-        "operationId": "adminReportsGET",
-        "parameters": [
-          {
-            "name": "reportType",
-            "in": "query",
-            "description": "Type of report (e.g., usage, booking, maintenance)",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Get all bookings",
+        "description": "Retrieve all bookings in the system.",
+        "operationId": "getAllBookings",
         "responses": {
           "200": {
-            "description": "Report generated",
+            "description": "List of all bookings",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Report"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid report type",
+          "403": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "The report type provided is invalid"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -891,38 +829,32 @@
         "x-swagger-router-controller": "Admin"
       }
     },
-    "/admin/blackout-periods": {
-      "post": {
+    "/admin/users": {
+      "get": {
         "tags": ["Admin"],
-        "summary": "Set blackout periods for venues",
-        "description": "Set blackout periods for specific venues during maintenance or renovations.",
-        "operationId": "adminBlackout_periodsPOST",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BlackoutPeriod"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Get all users",
+        "description": "Retrieve all users in the system.",
+        "operationId": "getUsers",
         "responses": {
-          "204": {
-            "description": "Blackout period set"
-          },
-          "400": {
-            "description": "Invalid request",
+          "200": {
+            "description": "List of all users",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "The request contains invalid parameters"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
                   }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -936,51 +868,202 @@
         "x-swagger-router-controller": "Admin"
       }
     },
-    "/admin/users/{userId}/ban": {
-      "post": {
+    "/admin/bookings/approve/{id}": {
+      "put": {
         "tags": ["Admin"],
-        "summary": "Ban a user",
-        "description": "Ban a user from the system based on behavior or violation of terms.",
-        "operationId": "adminUsersUserIdBanPOST",
+        "summary": "Approve a booking",
+        "description": "Approve a pending booking by its ID.",
+        "operationId": "confirmBooking",
         "parameters": [
           {
-            "name": "userId",
+            "name": "id",
             "in": "path",
-            "description": "ID of the user",
+            "description": "Booking ID",
             "required": true,
-            "style": "simple",
-            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BanUser"
+        "responses": {
+          "204": {
+            "description": "Booking approved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking Approved"
+                    }
+                  }
+                }
               }
             }
           },
-          "required": true
+          "404": {
+            "description": "Booking not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/bookings/cancel/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Cancel a booking",
+        "description": "Cancel a booking by its ID.",
+        "operationId": "cancelBooking",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Booking ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "204": {
-            "description": "User banned"
+            "description": "Booking canceled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking canceled"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Booking not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/toggle-ban/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Toggle user's ban status",
+        "description": "Ban or unban a user based on the current status.",
+        "operationId": "toggleBanStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User ban status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User banned"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "User not found",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User with the given ID was not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/update-role/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update a user's role",
+        "description": "Update a user's role (e.g., admin, user, maintenance).",
+        "operationId": "updateUserRole",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "User role updated"
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1016,16 +1099,43 @@
             }
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "enum": ["LECTURE", "TUTORIAL", "LAB", "MEETING"]
           },
           "capacity": {
             "type": "integer"
           },
-          "pictures": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "imageUrl": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["AVAILABLE", "UNDER-MAINTENANCE"]
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
             }
+          }
+        },
+        "example": {
+          "venueId": "LAB1D",
+          "capacity": 20,
+          "campusName": "East Campus",
+          "buildingName": "Engineering Building",
+          "imageUrl": "/venue-images/conferenceRoom.jpg",
+          "type": "LAB",
+          "status": "AVAILABLE",
+          "amenities": ["computer", "projector"],
+          "location": {
+            "lat": 37.7749,
+            "lng": -122.4194
           }
         }
       },
@@ -1227,66 +1337,46 @@
         },
         "required": ["notificationId", "code", "message", "date", "isRead"]
       },
-      "ScheduleUpdate": {
+      "User": {
         "type": "object",
         "properties": {
-          "scheduleFile": {
+          "userId": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "profileUrl": {
+            "type": "string"
+          },
+          "role": {
             "type": "string",
-            "format": "binary"
-          }
-        }
-      },
-      "Report": {
-        "type": "object",
-        "properties": {
-          "reportId": {
-            "type": "string"
+            "enum": ["user", "admin", "maintenance"]
           },
-          "reportType": {
-            "type": "string"
+          "blocked": {
+            "type": "boolean"
           },
-          "generatedOn": {
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           }
         }
       },
-      "BlackoutPeriod": {
+      "UserRole": {
         "type": "object",
         "properties": {
-          "venueId": {
-            "type": "string"
-          },
-          "startDate": {
+          "role": {
             "type": "string",
-            "format": "date"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "time"
-          },
-          "reason": {
-            "type": "string"
+            "enum": ["user", "admin", "maintenance"]
           }
         }
       },
-      "BanUser": {
+      "Error": {
         "type": "object",
         "properties": {
-          "reason": {
-            "type": "string"
-          },
-          "duration": {
+          "error": {
             "type": "string",
-            "description": "Duration of the ban (e.g., 30 days)"
+            "example": "Resource not found or invalid operation"
           }
         }
       }
