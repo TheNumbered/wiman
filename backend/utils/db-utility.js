@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import { exec } from 'child_process';
 import dotenv from 'dotenv';
 import fs from 'fs';
@@ -239,3 +240,5 @@ if (action && env) {
     'Invalid usage. Please provide "dump" or "restore" as action and "local" or "server" as environment.',
   );
 }
+
+/* v8 ignore stop */

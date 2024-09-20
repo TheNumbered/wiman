@@ -1,7 +1,6 @@
 import { useGetQuery } from '@/hooks';
 import { Venue } from '@/interfaces';
-import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
-import { styled } from '@mui/system';
+import { Box, Button, Card, CardContent, Grid, styled, TextField, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 

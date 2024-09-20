@@ -23,7 +23,7 @@ export const createNotification = async (req, res) => {
 
     // Validate required fields
     if (!userId || !code || !message) {
-      return res.status(400).json({ error: 'Invalid input' });
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     await Notification.createNotification(userId, code, message);

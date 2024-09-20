@@ -6,7 +6,7 @@ export const getUsers = async (req, res) => {
     const users = await User.getUsersExceptCurrent(id);
     res.json(users);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -22,7 +22,7 @@ export const getUserRole = async (req, res) => {
 
     res.json({ role });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -33,7 +33,7 @@ export const toggleBanStatus = async (req, res) => {
     await User.toggleBanStatus(id, blocked);
     res.json({ message: 'User banned status updated successfully' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -41,11 +41,11 @@ export const updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
     const { id } = req.params;
-    if (!role) return res.status(400).send('Missing role parameter');
+    if (!role) return res.status(400).json({ error: 'Missing role parameter' });
 
     await User.updateRole(id, role);
     res.json({ message: 'User role updated successfully' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ error: err.message });
   }
 };

@@ -9,13 +9,14 @@ import RoleChangeRequests from './pages/admin/user-management/role-change';
 import UserBanManagement from './pages/admin/user-management/user-ban';
 import BookingPage from './pages/bookings/page';
 import HomePage from './pages/home/home';
+import MobileSearch from './pages/home/mobile-search';
 import Searchings from './pages/home/searching';
 import Issues from './pages/maintenance-staff/maintenance-reports-layout';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 import { BookVenueForm } from './pages/venue-booking/form/book-venue-form';
 import RoomDetails from './pages/venue-booking/venue-details/venue-details';
-import MobileSearch from './pages/home/mobile-search';
+import RoomsList from './pages/venue-booking/venue-listing';
 import VenueDetails from './pages/venue-details';
 
 const App: React.FC = () => {
@@ -23,7 +24,8 @@ const App: React.FC = () => {
   const { data: user } = useGetQuery<{ role: string }>({
     resource: 'api/user/role',
   });
-  
+
+  console.log(user?.role);
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
@@ -66,6 +68,24 @@ const App: React.FC = () => {
             <Route path="/venue/booking" element={<BookVenueForm />} />
             <Route path="/activity" element={<NotificationList />} />
             <Route path="/mobile/search" element={<MobileSearch />} />
+            {/* Karabo */}
+            <Route path="/maintenance/issues" element={<Issues />} />
+            <Route path="/venue-details" element={<VenueDetails />} />
+            {/* Khare */}
+            <Route path="/dashboard" element={<HomePage />} />
+            <Route path="/bookings" element={<BookingPage />} />
+            <Route path="/searchings" element={<Searchings />} />
+            {/* Theo */}
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/manage-users" element={<UserBanManagement />} />
+            <Route path="/admin/role-change" element={<RoleChangeRequests />} />
+            <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
+            {/* Daniel */}
+            <Route path="/activity" element={<NotificationList />} />
+            {/* Sisekelo */}
+            <Route path="/venues" element={<RoomsList />} />
+            <Route path="/venue/:id" element={<RoomDetails />} />
+            <Route path="/venue/booking" element={<BookVenueForm />} />
             {/* Karabo */}
             <Route path="/maintenance/issues" element={<Issues />} />
             <Route path="/venue-details" element={<VenueDetails />} />

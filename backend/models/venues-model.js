@@ -116,7 +116,4 @@ class Venue {
     return reservations;
   }
 }
-
-//get reservations for a venue have status pending
-
 export default Venue;
