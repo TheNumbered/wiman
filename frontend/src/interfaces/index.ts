@@ -8,6 +8,7 @@ export interface Venue {
   buildingName: string;
   amenities: string[];
   imageUrl?: string;
+  status: 'AVAILABLE' | 'UNDER-MANTAINANCE';
   location: {
     lat: number;
     lng: number;

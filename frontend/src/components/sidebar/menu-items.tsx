@@ -37,16 +37,10 @@ export const adminSecondaryMenuItems = [
   {
     label: 'Dark Mode',
     icon: <DarkModeOutlined />,
-    onClick: () => {
-      console.log('Dark Mode');
-    },
   },
   {
     label: 'Log Out',
     icon: <KeyboardReturnOutlined />,
-    onClick: () => {
-      console.log('Log Out');
-    },
   },
 ];
 
@@ -54,29 +48,17 @@ export const profileMenuItems = [
   {
     label: 'Dark Mode',
     icon: <DarkModeOutlined />,
-    onClick: () => {
-      console.log('Dark Mode');
-    },
   },
   {
     label: 'Clear History',
     icon: <DeleteOutline />,
-    onClick: () => {
-      console.log('Clear History');
-    },
   },
   {
     label: 'Other Wits Apps',
     icon: <FastForwardOutlined />,
-    onClick: () => {
-      console.log('Other Wits Apps');
-    },
   },
   {
     label: 'Log Out',
     icon: <KeyboardReturnOutlined />,
-    onClick: () => {
-      console.log('Log Out');
-    },
   },
 ];

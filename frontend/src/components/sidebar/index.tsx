@@ -1,5 +1,7 @@
 import { useGetQuery } from '@/hooks';
 import { Users } from '@/interfaces';
+import { useColorMode } from '@/theme-provider';
+import { useAuth } from '@clerk/clerk-react';
 import { AccountCircleOutlined } from '@mui/icons-material';
 import {
   BottomNavigation,
@@ -23,13 +25,14 @@ import {
 interface SidebarItemProps {
   icon: React.ReactNode;
   label: string;
-  onClick?: () => void;
   route?: string;
 }
 
 const SideBar: React.FC = () => {
   const [value, setValue] = useState(0);
-  const isMobile = useMediaQuery('(max-width: 600px)');
+  const { toggleColorMode } = useColorMode();
+  const { signOut, userId } = useAuth();
+  const isMobile = useMediaQuery('(max-width: 800px)');
   const { data: user } = useGetQuery<{ role: Users['role'] }>({
     resource: 'api/user/role',
   });
@@ -43,9 +46,25 @@ const SideBar: React.FC = () => {
   const secondaryMenuItems: SidebarItemProps[] =
     userRole === 'admin' ? adminSecondaryMenuItems : profileMenuItems;
 
+  if (userId) {
+    localStorage.setItem('onesignalUserId', userId);
+    if (user?.role) {
+      localStorage.setItem('onesignalUserRole', user.role);
+    }
+  }
+
   const navigate = useNavigate();
   const handleNavigate = (route: string) => {
     navigate(route);
+  };
+
+  const handleProfileMenuClick = (label: string) => {
+    if (label === 'Dark Mode') {
+      toggleColorMode();
+    }
+    if (label === 'Log Out') {
+      signOut();
+    }
   };
 
   return (
@@ -71,7 +90,7 @@ const SideBar: React.FC = () => {
                 label={item.label}
                 onClick={() => {
                   if (item.route) handleNavigate(item.route);
-                  if (item.onClick) item.onClick();
+                  if (!item.route) handleProfileMenuClick(item.label);
                 }}
               />
             ))}
@@ -85,7 +104,7 @@ const SideBar: React.FC = () => {
                 label={item.label}
                 onClick={() => {
                   if (item.route) handleNavigate(item.route);
-                  if (item.onClick) item.onClick();
+                  if (!item.route) handleProfileMenuClick(item.label);
                 }}
               />
             ))}
@@ -97,7 +116,8 @@ const SideBar: React.FC = () => {
           onChange={(__, newValue) => {
             setValue(newValue);
             if (primaryMenuItems[newValue].route) handleNavigate(primaryMenuItems[newValue].route);
-            if (primaryMenuItems[newValue].onClick) primaryMenuItems[newValue].onClick();
+            if (!primaryMenuItems[newValue].route)
+              handleProfileMenuClick(primaryMenuItems[newValue].label);
           }}
           sx={{
             position: 'fixed',

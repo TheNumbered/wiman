@@ -81,7 +81,8 @@ const HomeDesktop: React.FC = () => {
           searchTerm === '' ||
           room.buildingName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           room.campusName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          room.type.toLowerCase().includes(searchTerm.toLowerCase()),
+          room.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          room.status.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
     );
   }, [searchTerm, venues]);

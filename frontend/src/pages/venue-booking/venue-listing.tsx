@@ -74,7 +74,7 @@ const RoomsList: React.FC = () => {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={venue.pictures[0] || 'https://via.placeholder.com/140'}
+                  image={venue?.imageUrl || 'https://via.placeholder.com/140'}
                   alt={`Room ${venue.venueId}`}
                 />
                 <CardContent>

@@ -2,7 +2,6 @@ import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Layout from './components/layout';
 import NotificationList from './components/notifications/list';
-import { useGetQuery } from './hooks';
 import BookingRequestsModal from './pages/admin/booking/BookingRequestsModal';
 import AdminDashboard from './pages/admin/dashboard';
 import RoleChangeRequests from './pages/admin/user-management/role-change';
@@ -19,21 +18,10 @@ import RoomDetails from './pages/venue-booking/venue-details/venue-details';
 import VenueDetails from './pages/venue-details';
 
 const App: React.FC = () => {
-  const { isSignedIn, isLoaded, userId } = useAuth();
-  const { data: user } = useGetQuery<{ role: string }>({
-    resource: 'api/user/role',
-  });
+  const { isSignedIn, isLoaded } = useAuth();
 
-  console.log(user?.role);
   if (!isLoaded) {
     return <div>Loading...</div>;
-  }
-
-  if (isSignedIn && userId) {
-    localStorage.setItem('onesignalUserId', userId);
-    if (user?.role) {
-      localStorage.setItem('onesignalUserRole', user.role); // user | admin | mantainer
-    }
   }
 
   return (

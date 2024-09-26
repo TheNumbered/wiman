@@ -1,5 +1,4 @@
 import { useGetQuery } from '@/hooks';
-import theme from '@/theme';
 import DefaultAmenityIcon from '@mui/icons-material/CheckCircleOutline';
 import {
   Box,
@@ -9,8 +8,8 @@ import {
   DialogTitle,
   Grid,
   Paper,
-  TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
@@ -107,13 +106,9 @@ const RoomDetails: React.FC = () => {
   const handleCloseModal = () => {
     setOpenBookingModal(false);
   };
-
+  const theme = useTheme();
   return (
     <Box component="main" sx={{ flex: 1, p: 3, bgcolor: 'background.default' }}>
-      <Box mb={3}>
-        <TextField fullWidth label="Search for a Venue" variant="outlined" />
-      </Box>
-
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <FacilityCard>
