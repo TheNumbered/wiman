@@ -204,7 +204,7 @@ const RoomDetails: React.FC = () => {
         </Typography>
         <Grid container spacing={2}>
           {venue.amenities.length > 0 ? (
-            venue.amenities.map((amenity: string, index: number) => (
+            JSON.parse(venue.amenities).map((amenity: string, index: number) => (
               <Grid item xs={6} md={3} key={index}>
                 <FacilityCard sx={{ display: 'flex', alignItems: 'center' }}>
                   <Box sx={{ mr: 2 }}>

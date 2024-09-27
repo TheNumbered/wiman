@@ -1,10 +1,12 @@
+import ImageUploadButton from '@/components/image-upload-button';
 import { useCreateMutation } from '@/hooks';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 const IssueReportForm: React.FC = () => {
   const [venueId, setVenueId] = useState('');
   const [description, setDescription] = useState('');
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ venueId?: string; description?: string }>({});
 
@@ -41,18 +43,27 @@ const IssueReportForm: React.FC = () => {
     if (selectedImage) {
       formData.append('image', selectedImage);
     }
-
+    // formData.forEach((element) => {
+    //   console.log(element);
+    // });
     createIssueMutation.mutate(formData);
     // Optionally reset the form after submission
-    setVenueId('');
-    setDescription('');
-    setSelectedImage(null);
+    // setVenueId('');
+    // setDescription('');
+    // setSelectedImage(null);
+    // setImagePreview(null);
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      setSelectedImage(files[0]);
+  const handleImageSelect = (file: File | null) => {
+    setSelectedImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
     }
   };
 
@@ -88,11 +99,17 @@ const IssueReportForm: React.FC = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <Button variant="contained" component="label">
-            Upload Image
-            <input type="file" hidden accept="image/*" onChange={handleImageChange} />
-          </Button>
-          {selectedImage && <Typography variant="caption">{selectedImage.name}</Typography>}
+          <ImageUploadButton onImageSelect={handleImageSelect} />
+          {imagePreview && (
+            <Box mt={2}>
+              <Typography variant="subtitle1">Selected Image:</Typography>
+              <img
+                src={imagePreview}
+                alt="Selected"
+                style={{ maxWidth: '100%', height: 'auto', width: '40rem' }}
+              />
+            </Box>
+          )}
         </Grid>
 
         <Grid item xs={12}>

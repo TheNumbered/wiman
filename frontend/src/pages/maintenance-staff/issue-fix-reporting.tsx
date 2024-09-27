@@ -20,7 +20,7 @@ const IssueFixReporting: React.FC<IssueFixReportingProps> = ({ issueId }) => {
 
   const updateIssueMutation = useUpdateMutation({
     resource: 'api/maintenance/issue-report',
-    invalidateKeys: ['api/maintenance/issue-reports'],
+    invalidateKeys: ['api/maintenance/issue-reports', `api/maintenance/issue-reports/${issueId}`],
   });
 
   const clearFormEntries = () => {

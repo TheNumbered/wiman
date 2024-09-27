@@ -11,7 +11,6 @@ const theme = (mode: 'dark' | 'light') =>
         main: '#f99326', // Gold
       },
       background: {
-        // default: '#F5F5F5', // Light Gray Background
         default: '#fff',
       },
       error: {

@@ -34,6 +34,7 @@ export const authAdmin = async (req, res, next) => {
         return res.status(403).json({ message: 'Unauthorized' });
       }
       next();
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       next(new Error('Unauthorized'));
     }
@@ -51,6 +52,7 @@ export const authMaintenance = async (req, res, next) => {
         return res.status(403).json({ message: 'Unauthorized' });
       }
       next();
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       next(new Error('Unauthorized'));
     }

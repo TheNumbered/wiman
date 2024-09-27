@@ -101,6 +101,7 @@ export const createIssueReport = async (req, res) => {
       }
 
       let reported_by = req.auth?.userId;
+
       // Save the issue report
       await IssueReport.createIssueReport(venueId, reported_by, description, image_url);
 

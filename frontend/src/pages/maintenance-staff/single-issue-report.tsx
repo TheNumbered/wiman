@@ -36,7 +36,7 @@ const SingleIssueReport = ({
 
   const updateIssueMutation = useUpdateMutation({
     resource: 'api/maintenance/issue-report',
-    invalidateKeys: ['api/maintenance/issue-reports'],
+    invalidateKeys: ['api/maintenance/issue-reports', `api/maintenance/issue-reports/${id}`],
   });
 
   const handleCloseDialog = () => {

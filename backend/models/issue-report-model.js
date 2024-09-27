@@ -14,7 +14,7 @@ class IssueReport {
 
   static async createIssueReport(venue_id, reported_by, issue_description, image_url) {
     const [result] = await db.query(
-      'INSERT INTO maintenance (venue_id, reported_by, issue_description, status, reported_date, image_url) VALUES (?, ?, ?, "Reported", NOW(), ?)',
+      'INSERT INTO maintenance (venue_id, reported_by, issue_description, reported_date, image_url, status) VALUES (?, ?, ?, NOW(), ?, "Reported")',
       [venue_id, reported_by, issue_description, image_url],
     );
     return result.insertId;
