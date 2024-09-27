@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import BookingCard from './card';
+import { useNavigate } from 'react-router-dom';
 
 interface BookingsListProps {
   onSelectCard: (booking: Bookings) => void;
@@ -37,9 +38,10 @@ const BookingsList: React.FC<BookingsListProps> = ({ onSelectCard }) => {
     console.log('Canceling booking with ID:', id);
   };
 
-  const handleRebooking = (id: number) => {
-    console.log('Rebooking booking with ID:', id);
-    // TODO: Implement rebooking logic
+  const navigate = useNavigate();
+
+  const handleRebooking = () => {
+    navigate(`/dashboard`);
   };
 
   useEffect(() => {
@@ -137,7 +139,7 @@ const BookingsList: React.FC<BookingsListProps> = ({ onSelectCard }) => {
             booking={booking}
             onSelectCard={onSelectCard}
             onCancelBooking={() => handleCancelBooking(booking.bookingId)}
-            onRebooking={() => handleRebooking(booking.bookingId)}
+            onRebooking={() => handleRebooking()}
           />
         ))}
         <Divider sx={{ my: 3 }} />

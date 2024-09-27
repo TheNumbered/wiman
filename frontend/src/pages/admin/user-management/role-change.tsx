@@ -1,3 +1,4 @@
+import { ErrorNotification } from '@/components/ErrorNotification';
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Users } from '@/interfaces';
 import {
@@ -54,6 +55,15 @@ const RoleChangeRequests: React.FC = () => {
         <CircularProgress />
       </Paper>
     );
+
+  if (isError) {
+    return (
+      <ErrorNotification
+        errorMessage="Failed to load notifications"
+        onRetry={() => location.reload()}
+      ></ErrorNotification>
+    );
+  }
 
   return (
     <Paper sx={{ p: 4, maxWidth: '900px', margin: '0 auto' }}>

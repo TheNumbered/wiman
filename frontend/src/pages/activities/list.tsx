@@ -1,3 +1,5 @@
+import { ErrorNotification } from '@/components/ErrorNotification';
+import { LoadingIndicator } from '@/components/LoadingIndicator';
 import { useGetQuery } from '@/hooks';
 import { Notifications } from '@/interfaces';
 import { Divider, Typography } from '@mui/material';
@@ -14,11 +16,16 @@ const NotificationList: React.FC = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingIndicator></LoadingIndicator>;
   }
 
   if (isError) {
-    return <div>Error fetching notifications</div>;
+    return (
+      <ErrorNotification
+        errorMessage="Failed to load notifications"
+        onRetry={() => location.reload()}
+      ></ErrorNotification>
+    );
   }
 
   const notifications: Notifications[] = notificationsData || [];

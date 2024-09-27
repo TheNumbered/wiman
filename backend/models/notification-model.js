@@ -3,7 +3,10 @@ import { toCamelCase } from '../utils/case-converters.js';
 
 class Notification {
   static async getNotificationsByUserId(user_id) {
-    const [rows] = await db.query('SELECT * FROM notifications WHERE user_id = ?', [user_id]);
+    const [rows] = await db.query(
+      'SELECT * FROM notifications WHERE user_id = ? ORDER BY date DESC',
+      [user_id],
+    );
     return rows.map(toCamelCase);
   }
 

@@ -1,3 +1,5 @@
+import { ErrorNotification } from '@/components/ErrorNotification';
+import { LoadingIndicator } from '@/components/LoadingIndicator';
 import { useGetQuery } from '@/hooks';
 import DefaultAmenityIcon from '@mui/icons-material/CheckCircleOutline';
 import {
@@ -124,9 +126,12 @@ const RoomDetails: React.FC = () => {
               Venue Details
             </Typography>
             {loading ? (
-              <Typography>Loading venue data...</Typography>
+              <LoadingIndicator />
             ) : error ? (
-              <Typography color="error">{error}</Typography>
+              <ErrorNotification
+                errorMessage="Failed to load venue data"
+                onRetry={() => window.location.reload()}
+              />
             ) : venueData ? (
               <>
                 <Box

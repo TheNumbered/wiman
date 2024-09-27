@@ -1,6 +1,9 @@
 import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { ErrorNotification } from './components/ErrorNotification';
 import Layout from './components/layout';
+import { LoadingIndicator } from './components/LoadingIndicator';
+import { useGetQuery } from './hooks';
 import NotificationList from './pages/activities/list';
 import BookingRequestsModal from './pages/admin/booking/BookingRequestsModal';
 import AdminDashboard from './pages/admin/dashboard';
@@ -15,11 +18,31 @@ import SignUpPage from './pages/sign-up';
 import { BookVenueForm } from './pages/venue-booking/form/book-venue-form';
 import RoomDetails from './pages/venue-booking/venue-details/venue-details';
 
+interface User {
+  blocked: number;
+  role: string;
+}
+
 const App: React.FC = () => {
   const { isSignedIn, isLoaded } = useAuth();
+  const {
+    data: user,
+    isError,
+    isLoading,
+  } = useGetQuery<User>({
+    resource: 'api/user/role',
+  });
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <LoadingIndicator />;
+  }
+
+  if (isError) {
+    return <ErrorNotification errorMessage="Failed to get user" onRetry={() => location.reload} />;
+  }
+
+  if (isLoading) {
+    return <LoadingIndicator />;
   }
 
   return (
@@ -28,7 +51,7 @@ const App: React.FC = () => {
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
 
-        {isSignedIn && (
+        {isSignedIn && user?.blocked === 0 && (
           <Route
             element={
               <Layout>

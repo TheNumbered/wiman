@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Typography,
 } from '@mui/material';
+import { ErrorNotification } from '@/components/ErrorNotification';
 
 interface BookingsDetailsProps {
   booking: Bookings;
@@ -33,7 +34,12 @@ const BookingsDetails: React.FC<BookingsDetailsProps> = ({ booking }) => {
   });
 
   if (isError) {
-    return <Alert severity="error">Error loading venues</Alert>;
+    return (
+      <ErrorNotification
+        errorMessage="Failed to load venues"
+        onRetry={() => location.reload()}
+      ></ErrorNotification>
+    );
   }
 
   if (isLoading || !venues) {

@@ -91,6 +91,7 @@ class Venue {
       SELECT date, event_name, start_time, end_time, repeat_frequency, repeat_until
       FROM bookings
       WHERE venue_id = ?
+      AND status = 'confirmed'
       ORDER BY date, start_time;
     `;
 
