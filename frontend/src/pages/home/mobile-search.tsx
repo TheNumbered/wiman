@@ -4,66 +4,6 @@ import { Box, Button, Card, CardContent, Grid, styled, TextField, Typography } f
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-// interface Venue {
-//   id: number;
-//   name: string;
-//   location: string;
-//   capacity: number;
-//   status: 'Available' | 'Booked' | 'Under Maintenance' | 'Notable';
-//   image: string;
-// }
-
-// const venues: Venue[] = [
-//   {
-//     id: 1,
-//     name: 'Flower Hall',
-//     location: 'West Campus, Braamfontein',
-//     capacity: 1000,
-//     status: 'Under Maintenance',
-//     image: 'https://placehold.co/80x80',
-//   },
-//   {
-//     id: 2,
-//     name: 'Law Library',
-//     location: 'Oliver Schreiner, West Campus',
-//     capacity: 100,
-//     status: 'Available',
-//     image: 'https://placehold.co/80x80',
-//   },
-//   {
-//     id: 3,
-//     name: 'Wits Arm Building',
-//     location: 'West Campus, Braamfontein',
-//     capacity: 250,
-//     status: 'Notable',
-//     image: 'https://placehold.co/80x80',
-//   },
-//   {
-//     id: 4,
-//     name: 'Amphitheatre',
-//     location: 'East Campus, Braamfontein',
-//     capacity: 700,
-//     status: 'Available',
-//     image: 'https://placehold.co/80x80',
-//   },
-//   {
-//     id: 5,
-//     name: 'Anglo American Digital Dome',
-//     location: 'East Campus, Braamfontein',
-//     capacity: 75,
-//     status: 'Available',
-//     image: 'https://placehold.co/80x80',
-//   },
-//   {
-//     id: 6,
-//     name: 'WSS Physics Lab',
-//     location: 'West Campus, Braamfontein',
-//     capacity: 350,
-//     status: 'Under Maintenance',
-//     image: 'https://placehold.co/80x80',
-//   },
-// ];
-
 const filterButtons = [
   { label: 'All', value: '' },
   { label: 'Available', value: 'Available' },
@@ -184,7 +124,7 @@ const MobileSearch: React.FC = () => {
               <Card>
                 <CardContent sx={{ display: 'flex', alignItems: 'flex-start' }}>
                   <img
-                    src={venue.pictures[0]}
+                    src={venue.imageUrl}
                     alt={venue.buildingName}
                     style={{ width: 80, height: 80, marginRight: 16, borderRadius: 15 }}
                   />

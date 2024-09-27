@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.39, for Win64 (x86_64)
 --
 -- Host: localhost    Database: wiman
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.0.39
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,7 +35,7 @@ CREATE TABLE `bookings` (
   `event_name` varchar(255) NOT NULL,
   `repeat_until` date DEFAULT NULL,
   PRIMARY KEY (`booking_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,9 +44,35 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (1,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','10:00:00','12:00:00','1','confirmed',NULL,'none','Team Meeting',NULL),(2,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','14:00:00','16:00:00','2','cancelled','I Dont Like you','none','Project Discussion',NULL),(3,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','09:00:00','11:00:00','3','pending',NULL,'weekly','Workshop',NULL),(4,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','13:00:00','15:00:00','4','pending','Maintenance issue','none','Event Setup',NULL),(5,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-19','08:00:00','10:00:00','5','pending',NULL,'monthly','Team Planning',NULL),(6,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','11:00:00','13:00:00','2','pending',NULL,'daily','Training Session',NULL),(7,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','09:00:00','11:00:00','1','pending','admin','none','Conference Meeting',NULL),(8,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-11','13:00:00','15:00:00','2','pending','admin','none','Team Training',NULL),(9,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-22','08:00:00','10:00:00','3','pending','admin','weekly','Project Discussion',NULL),(10,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-11','11:00:00','13:00:00','4','pending',NULL,'none','Workshop',NULL),(11,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-24','15:00:00','17:00:00','5','pending','admin','monthly','Planning Session',NULL),(12,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-25','10:00:00','12:00:00','6','pending','admin','none','Client Meeting',NULL),(13,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-26','14:00:00','16:00:00','7','pending',NULL,'daily','Daily Stand-up',NULL),(14,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-27','09:30:00','11:30:00','8','pending','Technical issues','none','Product Demo',NULL),(15,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-28','13:15:00','15:15:00','9','pending',NULL,'none','Strategy Meeting',NULL),(16,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-29','16:00:00','18:00:00','10','pending',NULL,'weekly','Training Session',NULL),(17,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-30','08:45:00','10:45:00','11','pending','Venue unavailable','monthly','Board Meeting',NULL),(18,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-01','11:00:00','13:00:00','12','pending',NULL,'none','Team Building',NULL),(19,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-02','10:30:00','12:30:00','13','pending',NULL,'none','Review Session',NULL),(20,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-03','14:30:00','16:30:00','14','pending',NULL,'none','Client Presentation',NULL),(21,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-04','09:00:00','11:00:00','15','pending','Personal reasons','none','Interview',NULL),(22,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-05','12:00:00','14:00:00','16','pending',NULL,'monthly','Marketing Workshop',NULL),(23,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-06','15:00:00','17:00:00','17','pending',NULL,'weekly','Sales Training',NULL),(24,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-07','07:30:00','09:30:00','18','pending','Health issues','none','Morning Briefing',NULL),(25,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-08','13:45:00','15:45:00','19','pending',NULL,'none','Budget Planning',NULL),(26,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-09','10:15:00','12:15:00','20','pending',NULL,'none','Product Launch Meeting',NULL),(27,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-16','18:00:00','19:00:00','LAB1D','pending',NULL,'none','Test',NULL),(28,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-16','17:03:00','19:03:00','LT2B','pending',NULL,'none','Testing',NULL),(29,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-16','18:08:00','19:08:00','TUT1C','pending',NULL,'none','Onoth',NULL),(30,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-24','18:11:00','20:11:00','TUT1C','pending',NULL,'none','New',NULL),(31,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-16','18:14:00','18:14:00','LAB1D','pending',NULL,'none','Test Booking',NULL),(32,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-16','19:27:00','19:28:00','LAB1D','pending',NULL,'none','Test Create',NULL);
+INSERT INTO `bookings` VALUES (33,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-19','10:45:00','12:15:00','LAB1D','cancelled',NULL,'weekly','Math Lecture','2024-11-30'),(34,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-11','15:11:00','20:19:00','LAB1D','confirmed',NULL,'none','Event 307','2024-11-01'),(35,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-26','14:57:00','20:39:00','LT1A','pending',NULL,'none','Event 112',NULL),(36,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-09-25','13:54:00','22:31:00','LT2B','cancelled','Another Reason','weekly','Event 288','2024-12-12'),(37,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-06','11:15:00','21:25:00','MTG1E','cancelled','User cancelled','none','Event 139',NULL),(38,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-20','12:27:00','20:01:00','LAB1D','confirmed','User cancelled','weekly','Event 849','2024-11-06'),(39,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-02','13:34:00','19:28:00','TUT1C','cancelled','User cancelled','monthly','Event 506',NULL),(40,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-15','13:57:00','20:33:00','LT2B','cancelled',NULL,'none','Event 866',NULL),(41,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-17','11:51:00','20:26:00','LT1A','confirmed',NULL,'weekly','Event 350',NULL),(42,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','2024-10-02','14:20:00','21:24:00','MTG1E','confirmed',NULL,'monthly','Event 969',NULL),(43,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','2024-09-27','13:01:00','15:01:00','LAB1D','cancelled','Unknown Reason','none','Test',NULL);
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_booking_status_update` AFTER UPDATE ON `bookings` FOR EACH ROW BEGIN
+    
+    IF OLD.status <> NEW.status THEN
+        
+        INSERT INTO notifications (user_id, message, date, is_read, route)
+        VALUES (NEW.user_id, 
+                CONCAT('Your booking for "', NEW.event_name, '" at Venue ', NEW.venue_id, ' has been ', NEW.status), 
+                NOW(), 
+                0, 
+                '/bookings/'); 
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `maintenance`
@@ -57,17 +83,17 @@ DROP TABLE IF EXISTS `maintenance`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `maintenance` (
   `issue_id` int NOT NULL AUTO_INCREMENT,
-  `room_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reported_by` int DEFAULT NULL,
-  `issue_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('Reported','In Progress','Resolved') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `venue_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `reported_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `issue_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `reported_date` datetime NOT NULL,
   `resolved_date` datetime DEFAULT NULL,
-  `resolution_log` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `resolution_log` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `status` enum('Reported','In Progress','Resolved') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`issue_id`),
-  KEY `idx_status_reported_date` (`status`,`reported_date`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `idx_status_reported_date` (`reported_date`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,9 +102,77 @@ CREATE TABLE `maintenance` (
 
 LOCK TABLES `maintenance` WRITE;
 /*!40000 ALTER TABLE `maintenance` DISABLE KEYS */;
-INSERT INTO `maintenance` VALUES (1,'101A',1,'Leaking faucet in the bathroom','Reported','2024-09-01 09:00:00',NULL,'{\"Problem Class\":\"Major Issue\",\"Requirements To Fix\":\"It needs money!\",\"Set Back\":\"\"}','https://example.com/image1.jpg'),(2,'202B',2,'Air conditioning not working','In Progress','2024-09-02 11:15:00',NULL,'{\"Problem Class\":\"Security\",\"Requirements To Fix\":\"New Door\",\"Set Back\":\"Door cannot hold a door lock anymore\"}','https://example.com/image2.jpg'),(3,'303C',3,'Broken window in the living room','Resolved','2024-08-25 14:30:00','2024-08-26 09:00:00','{\n        \"Problem Class\": \"Structural\",\n        \"Requirements To Fix\": \"Window replacement\",\n        \"Set Back\": \"Delivery of new window delayed\"\n    }','https://example.com/image3.jpg'),(4,'404D',4,'Clogged kitchen sink','Reported','2024-09-03 16:45:00',NULL,NULL,'https://example.com/image4.jpg'),(5,'505E',5,'Noisy air vent','In Progress','2024-09-04 10:00:00',NULL,NULL,'https://example.com/image5.jpg'),(6,'606F',6,'Malfunctioning door lock','Resolved','2024-08-29 12:00:00','2024-08-30 08:30:00','{\n        \"Problem Class\": \"Security\",\n        \"Requirements To Fix\": \"Replace door lock\",\n        \"Set Back\": \"None\"\n    }','https://example.com/image6.jpg'),(7,'707G',7,'Water leakage from ceiling','Reported','2024-09-05 08:15:00',NULL,'{\"Problem Class\":\"Major Issue\",\"Requirements To Fix\":\"Needs money\",\"Set Back\":\"\"}','https://example.com/image7.jpg'),(8,'808H',8,'Power outage in room','Resolved','2024-08-24 19:00:00','2024-08-24 21:00:00','{\n        \"Problem Class\": \"Electrical\",\n        \"Requirements To Fix\": \"Repair electrical circuit\",\n        \"Set Back\": \"Delayed access to power supply\"\n    }','https://example.com/image8.jpg'),(9,'909I',9,'Broken tiles in bathroom','Reported','2024-09-06 13:30:00',NULL,NULL,'https://example.com/image9.jpg'),(10,'1001J',10,'Heating system not working','In Progress','2024-09-07 10:45:00',NULL,NULL,'https://example.com/image10.jpg');
+INSERT INTO `maintenance` VALUES (22,'MTG1E','user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Lighting malfunction in the meeting room','2024-09-27 00:16:57',NULL,NULL,NULL,'Resolved'),(23,'MTG1E','user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Lighting malfunction in the meeting room','2024-09-27 07:59:07',NULL,'{\"Problem Class\":\"Minor Issue\",\"Requirements To Fix\":\"Testing\",\"Set Back\":\"\"}',NULL,'Resolved'),(24,'LT1A','user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Test','2024-09-27 11:23:28',NULL,'{\"Problem Class\":\"Major Issue\",\"Requirements To Fix\":\"Relly Expensive\",\"Set Back\":\"New Setback\"}',NULL,'Resolved');
 /*!40000 ALTER TABLE `maintenance` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_maintenance_issue_insert` AFTER INSERT ON `maintenance` FOR EACH ROW BEGIN
+    
+    INSERT INTO notifications (user_id, message, date, is_read, route)
+    SELECT user_id, 
+           CONCAT('New maintenance issue reported for Venue ID: ', NEW.venue_id, ' - ', NEW.issue_description), 
+           NOW(), 
+           0, 
+           '/maintenance/'
+    FROM users
+    WHERE role = 'maintenance';
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_maintenance_status_update` AFTER UPDATE ON `maintenance` FOR EACH ROW BEGIN
+    
+    IF OLD.status != NEW.status THEN
+
+        
+        INSERT INTO notifications (user_id, message, date, is_read, route)
+        VALUES (
+            NEW.reported_by, 
+            CONCAT('The status of your maintenance issue (Venue ID: ', NEW.venue_id, ') has been updated to ', NEW.status), 
+            NOW(), 
+            0, 
+            '/maintenance/' 
+        );
+
+        
+        IF NEW.status = 'In Progress' THEN
+            
+            UPDATE rooms 
+            SET under_maintenance = 1
+            WHERE room_id = NEW.venue_id;
+        ELSEIF NEW.status = 'Resolved' THEN
+            
+            UPDATE rooms 
+            SET under_maintenance = 0
+            WHERE room_id = NEW.venue_id;
+        END IF;
+
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `notifications`
@@ -90,13 +184,13 @@ DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
   `notification_id` int NOT NULL AUTO_INCREMENT,
   `user_id` varchar(50) NOT NULL,
-  `code` varchar(50) NOT NULL,
   `message` text NOT NULL,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `is_read` tinyint(1) DEFAULT '0',
+  `route` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`notification_id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +199,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (1,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','booking','Your booking is confirmed for September 17, 2024.','2024-09-10 09:08:58',0),(2,'user2','maintenance','The venue you booked is scheduled for maintenance on the day of your event.','2024-09-10 09:08:58',1),(3,'user3','cancel_booking','Your booking for September 16, 2024 was cancelled.','2024-09-10 09:08:58',0),(4,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','booking','Your booking is confirmed for October 5, 2024.','2024-09-10 09:08:58',0),(5,'user4','maintenance','Your venue has been marked for maintenance on October 12, 2024.','2024-09-10 09:08:58',0);
+INSERT INTO `notifications` VALUES (22,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','New maintenance issue reported for Venue ID: MTG1E - Lighting malfunction in the meeting room','2024-09-26 22:16:57',1,'/maintenance/'),(23,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','New maintenance issue reported for Venue ID: MTG1E - Lighting malfunction in the meeting room','2024-09-26 22:16:57',1,'/maintenance/'),(29,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','New maintenance issue reported for Venue ID: MTG1E - Lighting malfunction in the meeting room','2024-09-27 05:59:07',1,'/maintenance/'),(30,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','New maintenance issue reported for Venue ID: MTG1E - Lighting malfunction in the meeting room','2024-09-27 05:59:07',1,'/maintenance/'),(32,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','The status of your maintenance issue (Venue ID: MTG1E) has been updated to Resolved','2024-09-27 07:39:21',1,'/maintenance/'),(33,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','The status of your maintenance issue (Venue ID: MTG1E) has been updated to In Progress','2024-09-27 07:45:44',1,'/maintenance/'),(34,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','Your role has been changed from maintenance to admin','2024-09-27 07:47:34',1,'/profile'),(35,'user_2lWc50uyVxUCkCbogUMSltscpCf','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(36,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Your role has been changed from maintenance to admin','2024-09-27 07:47:34',0,'/profile'),(37,'user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(38,'user_a1b2c3d4e5f6','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(39,'user_g7h8i9j0k1l2','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(40,'user_m3n4o5p6q7r8','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(41,'user_y5z6a7b8c9d0','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(42,'user_z1y2x3w4v5u6','Your role has been changed from user to admin','2024-09-27 07:47:34',0,'/profile'),(43,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','Your role has been changed from admin to user','2024-09-27 08:13:55',1,'/profile'),(44,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','Your role has been changed from user to maintenance','2024-09-27 09:18:09',1,'/profile'),(45,'user_2lWc50uyVxUCkCbogUMSltscpCf','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(46,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(47,'user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(48,'user_a1b2c3d4e5f6','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(49,'user_g7h8i9j0k1l2','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(50,'user_m3n4o5p6q7r8','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(51,'user_y5z6a7b8c9d0','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(52,'user_z1y2x3w4v5u6','Your role has been changed from admin to maintenance','2024-09-27 09:18:09',0,'/profile'),(53,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','The status of your maintenance issue (Venue ID: MTG1E) has been updated to Resolved','2024-09-27 09:18:49',0,'/maintenance/'),(54,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(55,'user_2lWc50uyVxUCkCbogUMSltscpCf','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(56,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(57,'user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(58,'user_a1b2c3d4e5f6','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(59,'user_g7h8i9j0k1l2','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(60,'user_m3n4o5p6q7r8','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(61,'user_y5z6a7b8c9d0','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(62,'user_z1y2x3w4v5u6','Your role has been changed from maintenance to admin','2024-09-27 09:20:14',0,'/profile'),(63,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(64,'user_2lWc50uyVxUCkCbogUMSltscpCf','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(65,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(66,'user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(67,'user_a1b2c3d4e5f6','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(68,'user_g7h8i9j0k1l2','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(69,'user_m3n4o5p6q7r8','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(70,'user_y5z6a7b8c9d0','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(71,'user_z1y2x3w4v5u6','Your role has been changed from admin to maintenance','2024-09-27 09:21:10',0,'/profile'),(72,'user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(73,'user_2lWc50uyVxUCkCbogUMSltscpCf','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(74,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(75,'user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(76,'user_a1b2c3d4e5f6','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(77,'user_g7h8i9j0k1l2','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(78,'user_m3n4o5p6q7r8','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(79,'user_y5z6a7b8c9d0','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(80,'user_z1y2x3w4v5u6','New maintenance issue reported for Venue ID: LT1A - Test','2024-09-27 09:23:28',0,'/maintenance/'),(87,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','The status of your maintenance issue (Venue ID: LT1A) has been updated to In Progress','2024-09-27 09:24:25',0,'/maintenance/'),(88,'user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','The status of your maintenance issue (Venue ID: LT1A) has been updated to Resolved','2024-09-27 09:25:36',0,'/maintenance/');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,6 +216,8 @@ CREATE TABLE `rooms` (
   `capacity` int NOT NULL,
   `type` enum('LECTURE','TUTORIAL','LAB','MEETING') NOT NULL,
   `amenities` json NOT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `under_maintenance` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -132,7 +228,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
-INSERT INTO `rooms` VALUES ('LAB1D',2,20,'LAB','[\"computer\", \"projector\"]'),('LT1A',1,100,'LECTURE','[\"projector\", \"whiteboard\"]'),('LT2B',1,80,'LECTURE','[\"projector\"]'),('MTG1E',3,10,'MEETING','[\"conference phone\", \"whiteboard\"]'),('TUT1C',2,40,'TUTORIAL','[\"whiteboard\"]');
+INSERT INTO `rooms` VALUES ('LAB1D',2,20,'LAB','[\"computer\", \"projector\"]','https://wits100.wits.ac.za/media/wits-university/centenary/timeline/timeline%201983_1.JPG',0),('LT1A',1,100,'LECTURE','[\"projector\", \"whiteboard\"]','/venue-images/conferenceRoom.jpg',0),('LT2B',1,80,'LECTURE','[\"projector\"]','/venue-images/conferenceRoom.jpg',0),('MTG1E',3,10,'MEETING','[\"whiteboard\"]','/venue-images/conferenceRoom.jpg',0),('TUT1C',2,40,'TUTORIAL','[\"whiteboard\"]','https://wits100.wits.ac.za/media/wits-university/centenary/timeline/timeline%201983_1.JPG',0);
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,9 +256,35 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','DANIEL NGOBE','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybE1vSEVWZzY2YnNUamFUekZOTlVBT2E4a0UifQ','admin',0,'2024-09-15 15:09:27'),('user_2lWc50uyVxUCkCbogUMSltscpCf','Kharendwe Negota','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybFdjNTBRYVo1ajZSOUtSd2J4YjhMbDRva1EifQ','user',0,'2024-09-19 08:24:05'),('user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Kharendwe Negota','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybUNWcWxkS0FCeU42R2REUEVYY05tTTA3TjAifQ','user',0,'2024-09-19 08:24:46'),('user_a1b2c3d4e5f6','Alice Smith','https://example.com/profile/user_a1b2c3d4e5f6','admin',1,'2024-09-14 08:50:53'),('user_g7h8i9j0k1l2','Bob Johnson','https://example.com/profile/user_g7h8i9j0k1l2','admin',1,'2024-09-14 08:50:53'),('user_m3n4o5p6q7r8','Charlie Brown','https://example.com/profile/user_m3n4o5p6q7r8','user',0,'2024-09-14 08:50:53'),('user_y5z6a7b8c9d0','Eve Davis','https://example.com/profile/user_y5z6a7b8c9d0','admin',1,'2024-09-14 08:50:53'),('user_z1y2x3w4v5u6','Frank Maintenance','https://example.com/profile/user_z1y2x3w4v5u6','maintenance',1,'2024-09-14 09:03:35');
+INSERT INTO `users` VALUES ('user_2lMoHCNG7Xg0NnD9ph1eV6aatuP','DANIEL NGOBE','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybE1vSEVWZzY2YnNUamFUekZOTlVBT2E4a0UifQ','maintenance',0,'2024-09-15 15:09:27'),('user_2lWc50uyVxUCkCbogUMSltscpCf','Kharendwe Negota','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybFdjNTBRYVo1ajZSOUtSd2J4YjhMbDRva1EifQ','maintenance',1,'2024-09-19 08:24:05'),('user_2lWYrZYgd0rrYcBy8Pw64HMJtkB','Daniel Ngobe','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybFdZcllTU3ZOU1FFMTI3cWNFSlNmNlVxbmwifQ','maintenance',0,'2024-09-26 09:36:34'),('user_2mCVqjQ4tkRitiUoCZH5BSnlFB5','Kharendwe Negota','https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ybUNWcWxkS0FCeU42R2REUEVYY05tTTA3TjAifQ','maintenance',1,'2024-09-19 08:24:46'),('user_a1b2c3d4e5f6','Alice Smith','https://example.com/profile/user_a1b2c3d4e5f6','maintenance',1,'2024-09-14 08:50:53'),('user_g7h8i9j0k1l2','Bob Johnson','https://example.com/profile/user_g7h8i9j0k1l2','maintenance',0,'2024-09-14 08:50:53'),('user_m3n4o5p6q7r8','Charlie Brown','https://example.com/profile/user_m3n4o5p6q7r8','maintenance',0,'2024-09-14 08:50:53'),('user_y5z6a7b8c9d0','Eve Davis','https://example.com/profile/user_y5z6a7b8c9d0','maintenance',0,'2024-09-14 08:50:53'),('user_z1y2x3w4v5u6','Frank Maintenance','https://example.com/profile/user_z1y2x3w4v5u6','maintenance',0,'2024-09-14 09:03:35');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_role_update` AFTER UPDATE ON `users` FOR EACH ROW BEGIN
+    
+    IF OLD.role <> NEW.role THEN
+        
+        INSERT INTO notifications (user_id, message, date, is_read, route)
+        VALUES (NEW.user_id, 
+                CONCAT('Your role has been changed from ', OLD.role, ' to ', NEW.role), 
+                NOW(), 
+                0, 
+                '/profile'); 
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -173,4 +295,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-19 10:51:32
+-- Dump completed on 2024-09-27 12:04:56

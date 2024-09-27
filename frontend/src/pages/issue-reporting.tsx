@@ -1,266 +1,113 @@
-import ImageUploadButton from '@/components/image-upload-button';
-import AutohideSnackbar from '@/components/snackbar';
-import { useAuth } from '@clerk/clerk-react';
-// import { useCreateMutation } from '@/hooks/create-mutation'; // Adjust the import path accordinglys
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { useCreateMutation } from '@/hooks';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-interface Room {
-  id: string;
-  name: string;
-}
-
-// Sample data for testing, Please remove
-const buildings = [
-  {
-    id: 'building1',
-    name: 'Chemistry Building',
-    rooms: [
-      { id: 'room1', name: 'Room 1' },
-      { id: 'room2', name: 'Room 2' },
-    ],
-  },
-  {
-    id: 'Law Building',
-    name: 'Law Building',
-    rooms: [
-      { id: 'room3', name: 'Room 3' },
-      { id: 'room4', name: 'Room 4' },
-    ],
-  },
-  {
-    id: 'MSL',
-    name: 'MSL',
-    rooms: [
-      { id: 'Lab3', name: 'Lab3' },
-      { id: 'room4', name: 'Room 4' },
-    ],
-  },
-];
-
-const IssueReporting: React.FC = () => {
-  const [selectedBuilding, setSelectedBuilding] = useState<string>('');
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState<string>('');
+const IssueReportForm: React.FC = () => {
+  const [venueId, setVenueId] = useState('');
+  const [description, setDescription] = useState('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState('');
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const [errors, setErrors] = useState({ building: '', room: '', description: '' });
-  const [snackbarType, setSnackBarType] = useState<'success' | 'error'>('success');
+  const [errors, setErrors] = useState<{ venueId?: string; description?: string }>({});
 
-  const { getToken } = useAuth();
+  const createIssueMutation = useCreateMutation({
+    resource: 'api/maintenance/issue-report',
+    contentType: 'empty',
+    onSuccessMessage: 'Issue report created successfully!',
+    invalidateKeys: ['issue-reports'],
+  });
 
-  const handleBuildingChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const buildingId = event.target.value as string;
-    setSelectedBuilding(buildingId);
-
-    // Ensure buildings is not undefined
-    const selectedBuilding = buildings?.find((b) => b.id === buildingId);
-    setRooms(selectedBuilding ? selectedBuilding.rooms : []);
-    setSelectedRoom(''); // Reset room selection when building changes
-    setErrors((prev) => ({ ...prev, building: '' })); // Clear building error
-  };
-
-  const handleRoomChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedRoom(event.target.value as string);
-    setErrors((prev) => ({ ...prev, room: '' })); // Clear room error
-  };
-
-  const handleImageSelect = (file: File | null) => {
-    setSelectedImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
-    }
-  };
-
-  const clearFormEntries = () => {
-    setSelectedBuilding('');
-    setSelectedRoom('');
-    setSelectedImage(null);
-    setImagePreview(null);
-    if (inputRef.current) {
-      inputRef.current.value = ''; // Clear the input value directly
-    }
-  };
-
-  const validateForm = () => {
-    let valid = true;
-    const newErrors = { building: '', room: '', description: '' };
-
-    if (!selectedBuilding) {
-      newErrors.building = 'Please select a building';
-      valid = false;
-    }
-
-    if (!selectedRoom) {
-      newErrors.room = 'Please select a room';
-      valid = false;
-    }
-
-    if (!inputRef.current?.value.trim()) {
-      newErrors.description = 'Description cannot be empty';
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    let hasError = false;
 
-    if (!validateForm()) {
-      return; // Exit if form is invalid
+    // Simple form validation
+    const validationErrors: { venueId?: string; description?: string } = {};
+    if (!venueId) {
+      validationErrors.venueId = 'Venue ID is required';
+      hasError = true;
     }
+    if (!description) {
+      validationErrors.description = 'Description is required';
+      hasError = true;
+    }
+
+    setErrors(validationErrors);
+
+    if (hasError) return;
 
     const formData = new FormData();
-    formData.append('building', selectedBuilding);
-    formData.append('room', selectedRoom);
-    formData.append('description', inputRef.current?.value || '');
+    formData.append('venueId', venueId);
+    formData.append('description', description);
 
     if (selectedImage) {
-      formData.append('image', selectedImage); // Append the image file directly to FormData
+      formData.append('image', selectedImage);
     }
 
-    try {
-      const token = await getToken(); // Get the auth token
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/issue-report`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // Note: 'Content-Type' is not set for FormData; it's set automatically
-        },
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to create issue');
-      }
-
-      console.log('Issue created:', data);
-      clearFormEntries();
-      setSnackBarType('success');
-      setSnackbarMessage(data.message);
-      setOpenSnackbar(true);
-    } catch (error) {
-      setSnackBarType('error');
-      setSnackbarMessage('Failed to submit form');
-      setOpenSnackbar(true);
-      console.error('Error:', error);
-    }
+    createIssueMutation.mutate(formData);
+    // Optionally reset the form after submission
+    setVenueId('');
+    setDescription('');
+    setSelectedImage(null);
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setSelectedImage(files[0]);
+    }
   };
 
   return (
-    <Container component={'article'}>
-      <Typography variant="h4" my={4} gutterBottom>
-        Reporting
-      </Typography>
-      <Box ml={2} component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <TextField
-            label="Building"
-            name="building"
-            select
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={selectedBuilding}
-            onChange={handleBuildingChange}
-            SelectProps={{
-              native: true,
-            }}
-            error={!!errors.building}
-            helperText={errors.building}
-          >
-            <option value="" disabled></option>
-            {buildings?.map((building) => (
-              <option key={building.id} value={building.id}>
-                {building.name}
-              </option>
-            ))}
-          </TextField>
+    <form onSubmit={handleSubmit}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12}>
+          <Typography variant="h6">Report an Issue</Typography>
+        </Grid>
 
+        <Grid item xs={12}>
           <TextField
-            label="Room"
-            name="room"
-            select
-            variant="outlined"
+            label="Venue ID"
             fullWidth
-            margin="normal"
-            value={selectedRoom}
-            onChange={handleRoomChange}
-            SelectProps={{
-              native: true,
-            }}
-            error={!!errors.room}
-            helperText={errors.room}
-            disabled={!selectedBuilding}
-          >
-            <option value="" disabled></option>
-            {rooms?.map((room) => (
-              <option key={room.id} value={room.id}>
-                {room.name}
-              </option>
-            ))}
-          </TextField>
+            value={venueId}
+            onChange={(e) => setVenueId(e.target.value)}
+            error={!!errors.venueId}
+            helperText={errors.venueId || ''}
+          />
+        </Grid>
 
+        <Grid item xs={12}>
           <TextField
             label="Description"
-            variant="outlined"
-            name="description"
             fullWidth
             multiline
             rows={4}
-            margin="normal"
-            inputRef={inputRef}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             error={!!errors.description}
-            helperText={errors.description}
+            helperText={errors.description || ''}
           />
-
-          <Grid>
-            <ImageUploadButton onImageSelect={handleImageSelect} />
-            {imagePreview && (
-              <Box mt={2}>
-                <Typography variant="subtitle1">Selected Image:</Typography>
-                <img
-                  src={imagePreview}
-                  alt="Selected"
-                  style={{ maxWidth: '100%', height: 'auto', width: '40rem' }}
-                />
-              </Box>
-            )}
-          </Grid>
-
-          <Grid item xs={12} mt={2}>
-            <Button type="submit" variant="contained" color="primary">
-              Submit
-            </Button>
-          </Grid>
         </Grid>
-      </Box>
 
-      <AutohideSnackbar
-        message={snackbarMessage}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        severity={snackbarType}
-      />
-    </Container>
+        <Grid item xs={12}>
+          <Button variant="contained" component="label">
+            Upload Image
+            <input type="file" hidden accept="image/*" onChange={handleImageChange} />
+          </Button>
+          {selectedImage && <Typography variant="caption">{selectedImage.name}</Typography>}
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={createIssueMutation.isPending}
+          >
+            {createIssueMutation.isPending ? 'Submitting...' : 'Submit'}
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 
-export default IssueReporting;
+export default IssueReportForm;

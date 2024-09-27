@@ -21,10 +21,9 @@ class User {
       [id, fullName, profileUrl, role],
     );
   }
-
   static async getRole(id) {
-    const [rows] = await db.query('SELECT role FROM users WHERE user_id = ?', [id]);
-    return rows.length > 0 ? rows[0].role : null;
+    const [rows] = await db.query('SELECT role, blocked FROM users WHERE user_id = ?', [id]);
+    return toCamelCase(rows[0]);
   }
 }
 

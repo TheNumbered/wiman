@@ -623,14 +623,14 @@
                       "notificationId": 1,
                       "message": "Your booking has been confirmed",
                       "date": "2024-08-29T04:56:07.000Z",
-                      "code": "booking_confirmed",
+                      "route": "/bookings",
                       "isRead": false
                     },
                     {
                       "notificationId": 2,
                       "message": "Maintenance work is scheduled for tomorrow",
                       "date": "2024-08-28T11:22:45.000Z",
-                      "code": "maintenance_scheduled",
+                      "route": "/maintenance",
                       "isRead": true
                     }
                   ]
@@ -660,76 +660,6 @@
             "BearerAuth": []
           }
         ]
-      },
-      "post": {
-        "tags": ["Notifications"],
-        "summary": "Create a notification",
-        "description": "Create a new notification for a specific user.",
-        "operationId": "createNotificationPOST",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userId": {
-                    "type": "integer",
-                    "description": "ID of the user receiving the notification"
-                  },
-                  "code": {
-                    "type": "string",
-                    "description": "Code identifying the type of notification"
-                  },
-                  "message": {
-                    "type": "string",
-                    "description": "The message content of the notification"
-                  }
-                },
-                "required": ["userId", "code", "message"],
-                "example": {
-                  "userId": 123,
-                  "code": "booking_cancelled",
-                  "message": "Your booking has been cancelled"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Notification created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Notification created"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid input"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/notifications/{notificationId}/read": {
@@ -1108,9 +1038,8 @@
           "imageUrl": {
             "type": "string"
           },
-          "status": {
-            "type": "string",
-            "enum": ["AVAILABLE", "UNDER-MAINTENANCE"]
+          "isUnderMaintenance": {
+            "type": "boolean"
           },
           "location": {
             "type": "object",
@@ -1131,7 +1060,7 @@
           "buildingName": "Engineering Building",
           "imageUrl": "/venue-images/conferenceRoom.jpg",
           "type": "LAB",
-          "status": "AVAILABLE",
+          "isUnderMaintenance": false,
           "amenities": ["computer", "projector"],
           "location": {
             "lat": 37.7749,
@@ -1317,9 +1246,9 @@
             "type": "integer",
             "description": "Unique identifier for the notification"
           },
-          "code": {
+          "route": {
             "type": "string",
-            "description": "Code representing the type or category of the notification"
+            "description": "Route to redirect the user to when the notification is clicked"
           },
           "message": {
             "type": "string",

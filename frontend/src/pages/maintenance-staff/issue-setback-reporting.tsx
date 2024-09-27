@@ -4,12 +4,12 @@ import { Box, Button, Container, Grid, TextField, Typography } from '@mui/materi
 import React, { useState } from 'react';
 
 interface IssueFixReportingProps {
-  issue_id: string;
+  issueId: number;
 }
 
 type SnackbarType = 'error' | 'success' | 'info' | 'warning';
 
-const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) => {
+const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issueId }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackBarType] = useState<SnackbarType>('info');
@@ -18,8 +18,8 @@ const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) =
   const [errors, setErrors] = useState<{ description?: string; fixRequirements?: string }>({});
 
   const updateIssueMutation = useUpdateMutation({
-    resource: 'api/add-issue-setback-report',
-    contentType: 'application/json',
+    resource: 'api/maintenance/issue-report',
+    invalidateKeys: ['api/maintenance/issue-reports'],
   });
 
   const clearFormEntries = () => {
@@ -49,11 +49,11 @@ const IssueSetBackReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) =
 
     const data = {
       setback: description,
-      new_fix_requirements: fixRequirements,
+      newFixRequirements: fixRequirements,
     };
 
     updateIssueMutation.mutate(
-      { id: issue_id, data },
+      { id: issueId + '/add-setback', data },
       {
         onSuccess: (responseData) => {
           console.log('Issue updated:', responseData);

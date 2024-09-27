@@ -1,5 +1,6 @@
 import { useGetQuery } from '@/hooks';
 import { Users } from '@/interfaces';
+import BannedPage from '@/pages/banned';
 import { useColorMode } from '@/theme-provider';
 import { useAuth } from '@clerk/clerk-react';
 import { AccountCircleOutlined } from '@mui/icons-material';
@@ -33,9 +34,18 @@ const SideBar: React.FC = () => {
   const { toggleColorMode } = useColorMode();
   const { signOut, userId } = useAuth();
   const isMobile = useMediaQuery('(max-width: 800px)');
-  const { data: user } = useGetQuery<{ role: Users['role'] }>({
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
   });
+
+  // if (isLoading || isError) return <></>;
+  if (user?.banned) {
+    <BannedPage />;
+  }
   const userRole = user?.role;
   const primaryMenuItems: SidebarItemProps[] =
     userRole === 'admin'

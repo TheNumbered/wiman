@@ -1,6 +1,6 @@
 import ErrorView from '@/components/error-view';
 import TimeAgo from '@/components/time-ago';
-import { Issue } from '@/interfaces';
+import { Maintenance as Issue } from '@/interfaces';
 import { DoneOutlineRounded, NavigateNext, ReportProblem, Timelapse } from '@mui/icons-material';
 import {
   Box,
@@ -57,9 +57,9 @@ const getBorderColorByStatus = (status: string) => {
   }
 };
 
-const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
+const IssueReportsList = ({ onSelect }: { onSelect: (id: number) => void }) => {
   const { data, isLoading, isError, error } = useGetQuery<Issue[]>({
-    resource: 'api/issue-reports',
+    resource: 'api/maintenance/issue-reports',
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null); // For filtering by status
@@ -86,7 +86,7 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
   };
 
   const filteredData = (data ?? []).filter((issue) => {
-    const matchesSearch = issue.issue_description.toLowerCase().includes(searchQuery);
+    const matchesSearch = issue.issueDescription.toLowerCase().includes(searchQuery);
     const matchesStatus = statusFilter ? issue.status === statusFilter : true;
     return matchesSearch && matchesStatus;
   });
@@ -120,7 +120,7 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
       underline="hover"
       key="2"
       color="inherit"
-      href="/material-ui/getting-started/installation/"
+      // href="/material-ui/getting-started/installation/"
     >
       Maintenance Issues
     </Link>,
@@ -195,9 +195,9 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
       )}
       <Box>
         {/* Render filtered issue reports */}
-        {filteredData?.map((issue: any) => (
+        {filteredData?.map((issue: Issue) => (
           <Box
-            key={issue.issue_id}
+            key={issue.issueId}
             sx={{
               mb: 2,
               cursor: 'pointer',
@@ -206,22 +206,22 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
               border: '1px solid #e7e7e7',
               '&:hover': { backgroundColor: '#f5f5f5' },
             }}
-            onClick={() => onSelect(issue.issue_id)}
+            onClick={() => onSelect(issue.issueId)}
           >
             <Box>
               <Box sx={{ display: 'flex' }}>
                 <Typography variant="h6" component="p" color="#777">
-                  #{issue.issue_id} -
+                  #{issue.issueId} -
                 </Typography>
                 <Typography
                   variant="h6"
                   component="p"
                   sx={{ marginLeft: '5px', fontWeight: 'bold' }}
                 >
-                  {issue.issue_description || 'No Title'}
+                  {issue.issueDescription || 'No Title'}
                 </Typography>
               </Box>
-              <Typography>{issue.room_id || 'No Location'}</Typography>
+              <Typography>{issue.venueId || 'No Location'}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '1rem' }}>
               <Box
@@ -241,7 +241,7 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: string) => void }) => {
                 {getStatusIcon(issue.status)}
                 <Typography sx={{ width: 'max-content' }}>{issue.status}</Typography>
               </Box>
-              <TimeAgo timestamp={new Date(issue.reported_date).toLocaleString()} />
+              <TimeAgo timestamp={new Date(issue.reportedDate).toLocaleString()} />
             </Box>
           </Box>
         ))}

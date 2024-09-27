@@ -74,7 +74,7 @@ class Venue {
             buildingName: buildingInfo.buildingName,
             imageUrl: room.image_url,
             type: room.type,
-            status: room.status,
+            isUnderMaintenance: room.is_under_maintenance == 1,
             amenities: room.amenities,
             location: buildingInfo.location,
           };

@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/clerk-react';
-import { Box, Button, Grid, Typography, Avatar } from '@mui/material';
+import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ const HomeMobile: FC = () => {
         </Typography>
         <Avatar
           alt="user-icon"
-          src="https://openui.fly.dev/openui/24x24.svg?text=👤"
+          src={user?.imageUrl ?? 'https://openui.fly.dev/openui/24x24.svg?text=👤'}
           sx={{
             width: 40,
             height: 40,

@@ -50,10 +50,6 @@ const UserBanManagement: React.FC = () => {
 
   return (
     <Paper sx={{ p: 4, maxWidth: '900px', margin: '0 auto' }}>
-      <Typography variant="h4" gutterBottom align="center" color="primary">
-        Ban and Unban Users
-      </Typography>
-
       {/* Search Bar */}
       <TextField
         fullWidth

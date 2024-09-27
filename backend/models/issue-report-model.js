@@ -1,20 +1,21 @@
 import db from '../config/db.js';
+import { toCamelCase } from '../utils/case-converters.js';
 
 class IssueReport {
   static async getAllIssueReports() {
     const [rows] = await db.query('SELECT * FROM maintenance ORDER BY reported_date DESC');
-    return rows;
+    return rows.map(toCamelCase);
   }
 
   static async getIssueReportById(issue_id) {
     const [rows] = await db.query('SELECT * FROM maintenance WHERE issue_id = ?', issue_id);
-    return rows;
+    return toCamelCase(rows[0]);
   }
 
-  static async createIssueReport(room_id, reported_by, issue_description, image_url) {
+  static async createIssueReport(venue_id, reported_by, issue_description, image_url) {
     const [result] = await db.query(
-      'INSERT INTO maintenance (room_id, reported_by, issue_description, status, reported_date, image_url) VALUES (?, ?, ?, "Reported", NOW(), ?)',
-      [room_id, reported_by, issue_description, image_url],
+      'INSERT INTO maintenance (venue_id, reported_by, issue_description, status, reported_date, image_url) VALUES (?, ?, ?, "Reported", NOW(), ?)',
+      [venue_id, reported_by, issue_description, image_url],
     );
     return result.insertId;
   }

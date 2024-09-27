@@ -1,36 +1,17 @@
-import { BlobServiceClient } from '@azure/storage-blob';
-import dotenv from 'dotenv';
 import multer from 'multer';
-import process from 'process';
-import IssueReport from '../models/issue-report-model.js';
-dotenv.config({ path: '.env.local' });
-
 // Configure multer storage
 const storage = multer.memoryStorage(); // or use diskStorage if you want to save to disk
 const upload = multer({ storage });
-const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
-const containerName = process.env.AZURE_BLOB_CONTAINER_NAME;
 
-async function uploadToAzureBlob(file) {
-  const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
-  const containerClient = blobServiceClient.getContainerClient(containerName);
-
-  const blobName = `${Date.now()}-${file.originalname}`;
-  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
-  // Upload file buffer to Azure Blob Storage
-  await blockBlobClient.uploadData(file.buffer);
-
-  // Return the URL of the uploaded image
-  return blockBlobClient.url;
-}
+import IssueReport from '../models/issue-report-model.js';
+import uploadToAzureBlob from '../services/upload-azure-blob.js';
 
 export const getAllIssueReports = async (req, res) => {
   try {
     const issueReports = await IssueReport.getAllIssueReports();
     res.json(issueReports);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send({ error: err.message });
   }
 };
 
@@ -38,9 +19,14 @@ export const getIssueReportById = async (req, res) => {
   try {
     const { id } = req.params;
     const issueReport = await IssueReport.getIssueReportById(id);
+
+    if (!issueReport) {
+      return res.status(404).send({ error: `Issue report with ID: ${id} not found` });
+    }
+
     res.json(issueReport);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send({ error: err.message });
   }
 };
 
@@ -50,7 +36,7 @@ export const addReviewToIssueReportReview = async (req, res) => {
     const { id } = req.params;
 
     // Extract the review and issue_state from the request body
-    const { review, issue_state } = req.body;
+    const { review, issueState } = req.body;
     const target_issue_report = await IssueReport.getIssueReportById(id);
 
     // Check if the issue report exists
@@ -58,13 +44,13 @@ export const addReviewToIssueReportReview = async (req, res) => {
       return res.status(404).send({ message: `Issue report with ID: ${id} not found` });
     }
 
-    const resolution_log = {
-      'Problem Class': issue_state,
+    const resolutionLog = {
+      'Problem Class': issueState,
       'Requirements To Fix': review,
       'Set Back': '',
     };
 
-    await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolution_log));
+    await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolutionLog));
     res.status(200).send({ message: `Review added to issue report with ID: ${id}` });
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -77,19 +63,19 @@ export const addIssueSetBackReport = async (req, res) => {
     const { id } = req.params;
 
     // Extract the review and issue_state from the request body
-    const { setback, new_fix_requirements } = req.body;
+    const { setback, newFixRequirements } = req.body;
     const target_issue_report = await IssueReport.getIssueReportById(id);
 
     // Check if the issue report exists
     if (!target_issue_report) {
       return res.status(404).send({ message: `Issue report with ID: ${id} not found` });
     }
-    const resolution_log = {
-      'Problem Class': JSON.parse(target_issue_report[0]['resolution_log'])['Problem Class'],
-      'Requirements To Fix': new_fix_requirements,
+    const resolutionLog = {
+      'Problem Class': JSON.parse(target_issue_report['resolutionLog'])['Problem Class'],
+      'Requirements To Fix': newFixRequirements,
       'Set Back': setback,
     };
-    await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolution_log));
+    await IssueReport.addReviewToIssueReport(id, JSON.stringify(resolutionLog));
     res
       .status(200)
       .send({ message: `Set Back successfuly reported to issue report with ID: ${id}` });
@@ -106,7 +92,7 @@ export const createIssueReport = async (req, res) => {
       return res.status(500).send(err.message);
     }
     try {
-      const { building, room, description } = req.body;
+      const { venueId, description } = req.body;
       let image_url = null;
       if (req.file) {
         // Process the uploaded image file (e.g., save it to disk or cloud storage)
@@ -114,11 +100,9 @@ export const createIssueReport = async (req, res) => {
         image_url = await uploadToAzureBlob(req.file);
       }
 
-      let reported_by = req.auth?.userId || 'test_user'; // Replace with getUserID
-      console.log(reported_by);
-      let room_id = building + room; // Concatenate building and room for room_id
+      let reported_by = req.auth?.userId;
       // Save the issue report
-      await IssueReport.createIssueReport(room_id, reported_by, description, image_url);
+      await IssueReport.createIssueReport(venueId, reported_by, description, image_url);
 
       res.status(201).send({ message: 'Issue report created' });
     } catch (err) {
@@ -136,11 +120,7 @@ export const closeIssueReport = async (req, res) => {
     if (!target_issue_report) {
       return res.status(404).send({ message: `Issue report with ID: ${id} not found` });
     }
-    await IssueReport.addReviewToIssueReport(
-      id,
-      target_issue_report[0]['resolution_log'],
-      'Resolved',
-    );
+    await IssueReport.addReviewToIssueReport(id, target_issue_report['resolutionLog'], 'Resolved');
     res.status(200).send({ message: `Successfully closed issue report with ID: ${id}` });
   } catch (error) {
     res.status(500).send({ message: error.message });

@@ -26,34 +26,42 @@ const FacilityCard = styled(Paper)(({ theme }) => ({
 const amenityIcons: Record<string, React.ReactElement> = {
   projector: (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/ios/50/video-projector.png"
       alt="Video-Projector"
     />
   ),
   whiteboard: (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/external-Whiteboard-stationery-and-office-equipment-smashingstocks-detailed-outline-smashing-stocks.png"
       alt="Whiteboard"
     />
   ),
   'Wi-Fi': (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/ios-filled/50/wifi--v1.png"
       alt="Wi-Fi"
     />
   ),
   'Air Conditioning': (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/ios/50/air-conditioner.png"
       alt="air-conditioner"
+    />
+  ),
+  computer: (
+    <img
+      width="50"
+      height="50"
+      src="https://img.icons8.com/ios/50/workstation.png"
+      alt="computer"
     />
   ),
 };
@@ -147,7 +155,6 @@ const RoomDetails: React.FC = () => {
                 <Typography variant="body1">
                   <strong>Location:</strong> {venueData.campusName}
                 </Typography>
-                <Typography color="text.secondary">Status: Available</Typography>
               </>
             ) : (
               <Typography>No venue data available.</Typography>

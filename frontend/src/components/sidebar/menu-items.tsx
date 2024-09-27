@@ -25,8 +25,8 @@ export const userMenuItems = [
 export const adminMenuItems = [
   { label: 'Home', icon: <HomeOutlined />, route: '/dashboard' },
   { label: 'Manage Users', icon: <GroupOutlined />, route: '/admin/manage-users' },
-  { label: 'Role Change', icon: <AssessmentOutlined />, route: '/admin/role-change' },
   { label: 'Manage Bookings', icon: <EventAvailableOutlined />, route: '/admin/manage-bookings' },
+  { label: 'Advanced Issues', icon: <AssessmentOutlined />, route: '/admin/issues' },
 ];
 
 export const maintenanceMenuItems = [

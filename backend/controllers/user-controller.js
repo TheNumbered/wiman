@@ -13,14 +13,14 @@ export const getUsers = async (req, res) => {
 export const getUserRole = async (req, res) => {
   try {
     const { userId: id, userFullName, userProfileUrl } = req.auth.claims;
-    let role = await User.getRole(id);
+    let role = await User.getRole(id); // returns { role, blocked }
 
     if (!role) {
       await User.createUser(id, userFullName, userProfileUrl);
-      role = 'user';
+      role = { role: 'user', blocked: false };
     }
 
-    res.json({ role });
+    res.json(role);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

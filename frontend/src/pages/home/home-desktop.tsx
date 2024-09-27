@@ -28,7 +28,7 @@ const SearchInput = styled(TextField)(() => ({
 // Data for filter buttons
 const filterButtons = [
   { label: 'All', value: '' },
-  { label: 'Currently Available', value: 'Available' },
+  // { label: 'Currently Available', value: 'Available' },
   { label: 'Lecture Hall', value: 'Lecture' },
   { label: 'Tutorial Venue', value: 'Tutorial' },
   { label: 'Hall', value: 'Hall' },
@@ -81,8 +81,7 @@ const HomeDesktop: React.FC = () => {
           searchTerm === '' ||
           room.buildingName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           room.campusName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          room.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          room.status.toLowerCase().includes(searchTerm.toLowerCase()),
+          room.type.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
     );
   }, [searchTerm, venues]);

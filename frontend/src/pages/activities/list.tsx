@@ -27,7 +27,7 @@ const NotificationList: React.FC = () => {
   const seenNotifications = notifications.filter((notification) => notification.isRead);
 
   return (
-    <div style={{ margin: '20px' }}>
+    <div style={{ margin: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: 20 }}>
       <Typography variant="h6" style={{ marginBottom: 16 }}>
         Notifications
       </Typography>

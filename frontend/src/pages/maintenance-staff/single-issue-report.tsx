@@ -21,12 +21,12 @@ const SingleIssueReport = ({
   onReviewButtonClick,
   onSetBackButtonClick,
 }: {
-  id: string;
+  id: number;
   onReviewButtonClick: () => void;
   onSetBackButtonClick: () => void;
 }) => {
-  const { data, isLoading, isError, error } = useGetQuery<IssueReport[]>({
-    resource: `api/single-issue-report/${id}`,
+  const { data, isLoading, isError, error } = useGetQuery<IssueReport>({
+    resource: `api/maintenance/issue-reports/${id}`,
   });
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -35,8 +35,8 @@ const SingleIssueReport = ({
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const updateIssueMutation = useUpdateMutation({
-    resource: 'api/close-issue-report',
-    contentType: 'application/json',
+    resource: 'api/maintenance/issue-report',
+    invalidateKeys: ['api/maintenance/issue-reports'],
   });
 
   const handleCloseDialog = () => {
@@ -46,7 +46,7 @@ const SingleIssueReport = ({
   const handleConfirmClose = () => {
     updateIssueMutation.mutate(
       {
-        id: id as string | number,
+        id: id + '/close',
         data: {},
       },
       {
@@ -85,18 +85,17 @@ const SingleIssueReport = ({
   }
 
   // Add a check to ensure `data` is defined and has items
-  if (!data || data.length === 0) {
+  if (!data) {
     return (
       <Box sx={{ width: '100%', padding: '1rem' }}>
         <Typography>No data available</Typography>
       </Box>
     );
   }
-
   return (
     <Box sx={{ width: '100%', padding: '0 1rem 2rem' }}>
       <img
-        src={data[0].image_url ? data[0].image_url : 'https://via.placeholder.com/400'}
+        src={data?.imageUrl ?? 'https://via.placeholder.com/400'}
         alt="issue image"
         style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
       />
@@ -107,22 +106,20 @@ const SingleIssueReport = ({
             component="h2"
             sx={{ fontWeight: 'bold', color: '#000', lineHeight: '0.9' }}
           >
-            {data[0].room_id || 'No Title Available'}
+            {data.venueId || 'No Title Available'}
           </Typography>
-          <Typography>{data[0].room_id || 'No Location Available'}</Typography>
+          <Typography>{data.venueId || 'No Location Available'}</Typography>
           <Box my={1}>
             <Typography color="black" variant="h6">
               Problem Description
             </Typography>
-            <Typography>{data[0].issue_description || 'No description provided.'}</Typography>
+            <Typography>{data.issueDescription || 'No description provided.'}</Typography>
             <Typography color="black" variant="h6">
               Resolution Log
             </Typography>
-            {data[0].status !== 'Reported' ? (
+            {data.status !== 'Reported' ? (
               (() => {
-                const resolutionLog = data[0].resolution_log
-                  ? JSON.parse(data[0].resolution_log)
-                  : null;
+                const resolutionLog = data.resolutionLog ? JSON.parse(data.resolutionLog) : null;
                 return resolutionLog ? (
                   <Box>
                     <Typography sx={{ fontWeight: 'bold' }}>Problem Class</Typography>
@@ -149,7 +146,7 @@ const SingleIssueReport = ({
         </Box>
       </Box>
       {(() => {
-        switch (data[0].status) {
+        switch (data.status) {
           case 'Reported':
             return (
               <Box mt={2}>

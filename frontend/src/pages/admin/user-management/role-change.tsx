@@ -57,10 +57,6 @@ const RoleChangeRequests: React.FC = () => {
 
   return (
     <Paper sx={{ p: 4, maxWidth: '900px', margin: '0 auto' }}>
-      <Typography variant="h4" gutterBottom color="primary" align="center">
-        Change User Roles
-      </Typography>
-
       {isError && (
         <Alert severity="error" sx={{ mb: 2 }}>
           Error fetching users. Please try again later.

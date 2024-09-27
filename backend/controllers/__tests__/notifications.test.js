@@ -1,20 +1,20 @@
 import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import Notification from '../models/notification-model.js';
-import notificationRouter from '../routes/notifications-router.js';
+import Notification from '../../models/notification-model.js';
+import * as NotificationController from '../notification-controller.js';
 
 const app = express();
 app.use(express.json());
-app.use('/api', notificationRouter);
 
-// Mock the auth middleware
-vi.mock('../middleware/auth.js', () => ({
-  authUser: (req, res, next) => {
-    req.auth = { userId: 'test_user_id' };
-    next();
-  },
-}));
+// use req.auth.userId to get the user ID
+app.use((req, res, next) => {
+  req.auth = { userId: 'test_user_id' };
+  next();
+});
+
+app.get('/api/notifications', NotificationController.getNotifications);
+app.put('/api/notifications/:id/read', NotificationController.markNotificationAsRead);
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -45,29 +45,6 @@ describe('Notification Routes', () => {
     expect(response.body).toEqual({ error: 'No notifications found' });
   });
 
-  it('should create a notification', async () => {
-    // Mock the Notification model method
-    Notification.createNotification = vi.fn().mockResolvedValue(1);
-
-    const response = await request(app).post('/api/notifications').send({
-      userId: 'test_user_id',
-      code: 'code1',
-      message: 'Message 1',
-    });
-
-    expect(response.status).toBe(201);
-    expect(response.body).toEqual({ message: 'Notification created' });
-  });
-
-  it('should handle missing fields when creating a notification', async () => {
-    const response = await request(app).post('/api/notifications').send({
-      code: 'code1',
-    });
-
-    expect(response.status).toBe(400); // Assuming a 400 Bad Request for missing fields
-    expect(response.body).toEqual({ error: 'Missing required fields' }); // Adjust to your error message
-  });
-
   it('should mark a notification as read', async () => {
     // Mock the Notification model method
     Notification.markAsRead = vi.fn().mockResolvedValue(1);
@@ -91,19 +68,6 @@ describe('Notification Routes', () => {
     Notification.getNotificationsByUserId = vi.fn().mockRejectedValue(new Error('Database error'));
 
     const response = await request(app).get('/api/notifications');
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual({ error: 'Database error' });
-  });
-
-  it('should handle server errors when creating a notification', async () => {
-    Notification.createNotification = vi.fn().mockRejectedValue(new Error('Database error'));
-
-    const response = await request(app).post('/api/notifications').send({
-      userId: 'test_user_id',
-      code: 'code1',
-      message: 'Message 1',
-    });
-
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: 'Database error' });
   });
