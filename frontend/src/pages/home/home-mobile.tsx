@@ -10,9 +10,17 @@ const HomeMobile: FC = () => {
   const handleBookVenue = () => {
     navigate('/venue/booking');
   };
-  const handleSearch = () => {
-    navigate('/mobile/search');
+
+  const handleSearch = (searchTerm: string) => {
+    navigate('/mobile/search', { state: { searchTerm } });
   };
+
+  const campuses = [
+    { campus: 'Braamfontein', subCampus: 'East Campus' },
+    { campus: 'Braamfontein', subCampus: 'West Campus' },
+    { campus: 'Parktown', subCampus: 'Education Campus' },
+    { campus: 'Parktown', subCampus: 'Health Science Campus' },
+  ];
 
   return (
     <Box
@@ -60,7 +68,7 @@ const HomeMobile: FC = () => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={handleSearch}
+          onClick={() => handleSearch('')}
           sx={{
             borderRadius: '30px',
             padding: '10px 20px',
@@ -78,13 +86,8 @@ const HomeMobile: FC = () => {
       </Typography>
 
       <Grid container spacing={1} width="100%">
-        {[
-          { campus: 'Braamfontein', subCampus: 'East Campus' },
-          { campus: 'Braamfontein', subCampus: 'West Campus' },
-          { campus: 'Parktown', subCampus: 'Education Campus' },
-          { campus: 'Parktown', subCampus: 'Health Science Campus' },
-        ].map((item, index) => (
-          <Grid item xs={6} key={index}>
+        {campuses.map((item, index) => (
+          <Grid item xs={6} key={index} onClick={() => handleSearch(item.subCampus)}>
             <Box
               p={3}
               borderRadius={4}
@@ -96,6 +99,7 @@ const HomeMobile: FC = () => {
               textAlign={'center'}
               sx={{
                 backgroundColor: '#FFE8CB',
+                cursor: 'pointer',
               }}
             >
               <Typography variant="h6" fontWeight="bold" color="text.secondary">
