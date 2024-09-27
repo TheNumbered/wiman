@@ -36,8 +36,8 @@ const SideBar: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 800px)');
   const {
     data: user,
-    isLoading,
-    isError,
+    // isLoading,
+    // isError,
   } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
   });

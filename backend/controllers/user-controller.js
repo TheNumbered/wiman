@@ -15,7 +15,7 @@ export const getUserRole = async (req, res) => {
     const { userId: id, userFullName, userProfileUrl } = req.auth.claims;
     let role = await User.getRole(id); // returns { role, blocked }
 
-    if (!role) {
+    if (!role?.role) {
       await User.createUser(id, userFullName, userProfileUrl);
       role = { role: 'user', blocked: false };
     }
