@@ -35,7 +35,7 @@ export const authAdmin = async (req, res, next) => {
       }
       next();
     } catch (err) {
-      next(err);
+      next(new Error('Unauthorized'));
     }
   });
 };
@@ -52,7 +52,7 @@ export const authMaintenance = async (req, res, next) => {
       }
       next();
     } catch (err) {
-      next(err);
+      next(new Error('Unauthorized'));
     }
   });
 };

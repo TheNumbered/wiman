@@ -1,12 +1,12 @@
 import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import { ErrorNotification } from './components/ErrorNotification';
 import Layout from './components/layout';
 import { LoadingIndicator } from './components/LoadingIndicator';
 import { useGetQuery } from './hooks';
 import NotificationList from './pages/activities/list';
 import BookingRequestsModal from './pages/admin/booking/BookingRequestsModal';
 import AdminDashboard from './pages/admin/dashboard';
+import MaintenanceIssuesPage from './pages/admin/maintanance/page';
 import UserManagement from './pages/admin/user-management/user-management';
 import BookingPage from './pages/bookings/page';
 import HomePage from './pages/home/home';
@@ -25,23 +25,11 @@ interface User {
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded } = useAuth();
-  const {
-    data: user,
-    isError,
-    isLoading,
-  } = useGetQuery<User>({
+  const { data: user } = useGetQuery<User>({
     resource: 'api/user/role',
   });
 
   if (!isLoaded) {
-    return <LoadingIndicator />;
-  }
-
-  if (isError) {
-    return <ErrorNotification errorMessage="Failed to get user" onRetry={() => location.reload} />;
-  }
-
-  if (isLoading) {
     return <LoadingIndicator />;
   }
 
@@ -66,6 +54,7 @@ const App: React.FC = () => {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/manage-users" element={<UserManagement />} />
             <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
+            <Route path="/admin/issues" element={<MaintenanceIssuesPage />} />
             {/* Daniel */}
             <Route path="/activity" element={<NotificationList />} />
             {/* Sisekelo */}

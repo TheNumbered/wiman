@@ -5,11 +5,6 @@ export const getNotifications = async (req, res) => {
   try {
     const { userId } = req.auth;
     const notifications = await Notification.getNotificationsByUserId(userId);
-
-    if (notifications.length === 0) {
-      return res.status(404).json({ error: 'No notifications found' });
-    }
-
     res.status(200).json(notifications);
   } catch (err) {
     res.status(500).json({ error: err.message });

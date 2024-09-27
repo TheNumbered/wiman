@@ -28,3 +28,20 @@ export const getVenueReservations = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateVenue = async (req, res) => {
+  const { id: venueId } = req.params;
+  const { capacity, amenities, underMaintenance } = req.body;
+  try {
+    const updateData = {
+      capacity,
+      amenities: amenities ?? [],
+      underMaintenance: underMaintenance === true || underMaintenance === 1,
+    };
+
+    const result = await Venue.updateRoom(venueId, updateData);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

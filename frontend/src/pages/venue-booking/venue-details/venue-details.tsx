@@ -80,7 +80,7 @@ const RoomDetails: React.FC = () => {
 
   // Fetch reservations data
   const { data, isError, isLoading } = useGetQuery({
-    resource: `api/venues/${venue?.venueId}/reservation`,
+    resource: `api/venues/${venue?.venueId}/reservations`,
   });
 
   // Update reservations when data is fetched

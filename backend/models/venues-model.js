@@ -120,5 +120,34 @@ class Venue {
 
     return reservations;
   }
+
+  static async updateRoom(roomId, updateData) {
+    const { capacity, amenities, underMaintenance } = updateData;
+
+    // Construct the update query
+    const updateQuery = `
+      UPDATE rooms 
+      SET capacity = ?, 
+          amenities = ?, 
+          under_maintenance = ? 
+      WHERE room_id = ?;
+    `;
+    try {
+      const [result] = await db.query(updateQuery, [
+        capacity,
+        JSON.stringify(amenities),
+        underMaintenance ? 1 : 0, // Convert boolean to tinyint
+        roomId,
+      ]);
+
+      if (result.affectedRows === 0) {
+        throw new Error('Room not found or no changes made');
+      }
+
+      return { message: 'Room updated successfully' };
+    } catch (error) {
+      throw new Error(`Failed to update room: ${error.message}`);
+    }
+  }
 }
 export default Venue;

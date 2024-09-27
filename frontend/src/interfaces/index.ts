@@ -15,13 +15,15 @@ export interface Venue {
   };
 }
 
-// export interface Issue {
-//   issue_id: string;
-//   issue_description: string;
-//   room_id: string;
-//   status: string;
-//   reported_date: string;
-// }
+export interface MaintenanceIssue {
+  issueDescription: string;
+  maintenanceImageUrl: string; // updated field
+  resolutionLog: string | null;
+  amenities: string[];
+  underMaintenance: number;
+  capacity: number;
+  venueId: string;
+}
 
 export interface IssueReport {
   imageUrl: string;

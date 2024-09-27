@@ -37,14 +37,6 @@ describe('Notification Routes', () => {
     ]);
   });
 
-  it('should handle no notifications found', async () => {
-    Notification.getNotificationsByUserId = vi.fn().mockResolvedValue([]);
-
-    const response = await request(app).get('/api/notifications');
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'No notifications found' });
-  });
-
   it('should mark a notification as read', async () => {
     // Mock the Notification model method
     Notification.markAsRead = vi.fn().mockResolvedValue(1);
