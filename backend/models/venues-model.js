@@ -119,5 +119,18 @@ class Venue {
 
     return reservations;
   }
+
+  static async updateRooms(venueId, isUnderMaintenance, amenities, capacity) {
+    const query = `
+      UPDATE rooms
+      SET is_under_maintenance = ?,
+          amenities = ?,
+          capacity = ?
+      WHERE room_id = ?;
+    `;
+
+    const [result] = await db.query(query, [isUnderMaintenance, amenities, capacity, venueId]);
+    return result.affectedRows;
+  }
 }
 export default Venue;

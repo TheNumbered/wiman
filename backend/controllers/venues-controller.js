@@ -28,3 +28,18 @@ export const getVenueReservations = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateIssueReport = async (req, res) => {
+  const { id } = req.params;
+  const { resolutionLog, status } = req.body;
+
+  try {
+    const affectedRows = await IssueReport.addReviewToIssueReport(id, resolutionLog, status);
+    if (affectedRows === 0) {
+      return res.status(404).json({ message: 'Issue not found or no changes made' });
+    }
+    res.json({ message: 'Issue updated successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

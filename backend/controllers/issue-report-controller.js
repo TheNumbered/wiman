@@ -126,3 +126,12 @@ export const closeIssueReport = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+export const getIssuesInProgress = async (req, res) => {
+  try {
+    const issuesInProgress = await IssueReport.getIssuesInProgress();
+    res.json(issuesInProgress);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+};

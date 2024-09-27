@@ -27,6 +27,26 @@ class IssueReport {
     );
     return result.insertId;
   }
+  static async getIssuesInProgress() {
+    const [rows] = await db.query(`
+      SELECT 
+    m.resolution_log, 
+    m.venue_id AS room_id, 
+    m.image_url AS maintenance_image_url, 
+    m.issue_description, 
+    r.amenities, 
+    r.under_maintenance
+FROM 
+    maintenance m
+JOIN 
+    rooms r 
+ON 
+    m.venue_id = r.room_id
+WHERE 
+    m.status = 'In Progress';
+    `);
+    return rows.map(toCamelCase);
+  }
 }
 
 export default IssueReport;

@@ -4,6 +4,7 @@ import {
   confirmBooking,
   getAllBookings,
 } from '../controllers/bookings-controller.js';
+import { getIssuesInProgress } from '../controllers/issue-report-controller.js';
 import { getUsers, toggleBanStatus, updateUserRole } from '../controllers/user-controller.js';
 import { authAdmin } from '../middleware/auth.js';
 
@@ -15,5 +16,7 @@ router.put('/admin/bookings/cancel/:id', cancelBooking);
 router.get('/admin/users', getUsers);
 router.put('/admin/toggle-ban/:id', toggleBanStatus);
 router.put('/admin/update-role/:id', updateUserRole);
+router.get('/admin/issues-in-progress', getIssuesInProgress);
+router.put('/admin/update-room/:id', updateRooms);
 
 export default router;
