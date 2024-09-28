@@ -98,10 +98,21 @@ const SingleIssueReport = ({
   }
 
   // Image list (can handle min 1 to max 5 images)
-  const images = data?.imageUrl ? JSON.parse(data.imageUrl) : ['https://via.placeholder.com/400'];
+  let images: string[] = []; // Initialize as an empty array
 
+  try {
+    if (data?.imageUrl) {
+      // Try parsing imageUrl if it's a JSON string
+      images = JSON.parse(data.imageUrl) || [];
+    }
+  } catch (error) {
+    console.log(error);
+    images = [data.imageUrl];
+  }
+
+  // Check if images array is empty before accessing its elements
   if (selectedImage === null) {
-    setSelectedImage(images[0]); // Set the first image as selected if it is null
+    setSelectedImage(images.length > 0 ? images[0] : 'https://via.placeholder.com/400'); // Set the first image as selected if it exists
   }
 
   return (
