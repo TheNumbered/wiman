@@ -7,10 +7,10 @@ import {
   getAllIssueReports,
   getIssueReportById,
 } from '../controllers/issue-report-controller.js';
-import { authRequest } from '../middleware/auth.js';
+import { authMaintenance } from '../middleware/auth.js';
 
 const router = express.Router();
-router.use('/maintenance', authRequest);
+router.use('/maintenance', authMaintenance);
 router.get('/maintenance/issue-reports', getAllIssueReports);
 router.get('/maintenance/issue-reports/:id', getIssueReportById);
 router.post('/maintenance/issue-report', createIssueReport);

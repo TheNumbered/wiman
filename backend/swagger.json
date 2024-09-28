@@ -289,9 +289,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Booking"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking created successfully"
+                    },
+                    "bookingId": {
+                      "type": "integer",
+                      "example": 1
+                    }
                   }
                 }
               }
@@ -1408,7 +1415,7 @@
             "description": "End time of the booking (HH:MM:SS)"
           },
           "venueId": {
-            "type": "integer",
+            "type": "string",
             "description": "ID of the venue for the booking"
           },
           "eventName": {

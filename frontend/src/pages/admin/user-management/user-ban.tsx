@@ -1,6 +1,7 @@
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Users } from '@/interfaces';
 import {
+  Avatar,
   Button,
   CircularProgress,
   Paper,
@@ -69,11 +70,6 @@ const UserBanManagement: React.FC = () => {
                   Name
                 </Typography>
               </TableCell>
-              <TableCell align="left">
-                <Typography variant="h6" color="text.secondary">
-                  Status
-                </Typography>
-              </TableCell>
               <TableCell align="center">
                 <Typography variant="h6" color="text.secondary">
                   Actions
@@ -84,9 +80,18 @@ const UserBanManagement: React.FC = () => {
           <TableBody>
             {filteredUsers?.map((user) => (
               <TableRow key={user.userId}>
-                <TableCell>{user.fullName}</TableCell>
-                <TableCell>{user.blocked ? 'Banned' : 'Active'}</TableCell>
-                <TableCell align="center">
+                <TableCell>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar
+                      src={user.profileUrl}
+                      alt={user.fullName}
+                      sx={{ width: 40, height: 40, mr: 2 }}
+                    />
+                    <Typography variant="body1">{user.fullName}</Typography>
+                  </div>
+                </TableCell>
+
+                <TableCell>
                   <Button
                     variant="contained"
                     sx={{

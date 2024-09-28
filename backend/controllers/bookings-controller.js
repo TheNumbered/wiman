@@ -36,7 +36,7 @@ export const createBooking = async (req, res) => {
       return res.status(400).json({ error: 'Required fields are missing' });
     }
 
-    await Booking.createBooking(
+    const bookingId = await Booking.createBooking(
       userId,
       date,
       startTime,
@@ -46,7 +46,7 @@ export const createBooking = async (req, res) => {
       repeatFrequency,
       repeatUntil,
     );
-    res.status(201).json({ message: 'Booking created' });
+    res.status(201).json({ message: 'Booking created', bookingId });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

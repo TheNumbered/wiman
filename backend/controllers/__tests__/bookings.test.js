@@ -63,7 +63,7 @@ describe('Booking Controller', () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.body).toEqual({ message: 'Booking created' });
+    expect(response.body).toEqual({ message: 'Booking created', bookingId: 1 });
   });
 
   it('should not create a booking with missing fields', async () => {

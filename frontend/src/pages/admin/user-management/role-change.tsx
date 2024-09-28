@@ -3,6 +3,7 @@ import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Users } from '@/interfaces';
 import {
   Alert,
+  Avatar,
   CircularProgress,
   FormControl,
   MenuItem,
@@ -102,7 +103,16 @@ const RoleChangeRequests: React.FC = () => {
           <TableBody>
             {filteredUsers?.map((user) => (
               <TableRow key={user.userId}>
-                <TableCell>{user.fullName}</TableCell>
+                <TableCell>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar
+                      src={user.profileUrl}
+                      alt={user.fullName}
+                      sx={{ width: 40, height: 40, mr: 2 }}
+                    />
+                    <Typography variant="body1">{user.fullName}</Typography>
+                  </div>
+                </TableCell>
                 <TableCell align="right">
                   <FormControl fullWidth>
                     {/* <InputLabel>Role</InputLabel> */}
