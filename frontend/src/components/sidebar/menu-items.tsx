@@ -31,7 +31,7 @@ export const adminMenuItems = [
 
 export const maintenanceMenuItems = [
   { label: 'Home', icon: <HomeOutlined />, route: '/dashboard' },
-  { label: 'Issues', icon: <PanTool />, route: '/maintenance/issues' },
+  { label: 'Issues', icon: <PanTool />, route: '/maintenance' },
 ];
 export const adminSecondaryMenuItems = [
   {

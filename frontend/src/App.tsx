@@ -14,6 +14,7 @@ import BookingPage from './pages/bookings/page';
 import HomePage from './pages/home/home';
 import MobileSearch from './pages/home/mobile-search';
 import IssueReportForm from './pages/issue-reporting';
+import Issues from './pages/maintenance-staff/maintenance-reports-layout';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 import { BookVenueForm } from './pages/venue-booking/form/book-venue-form';
@@ -63,7 +64,7 @@ const App: React.FC = () => {
 
             {user?.role === 'maintenance' && (
               <>
-                <Route path="/maintenance" element={<MaintenanceIssuesPage />} />
+                <Route path="/maintenance" element={<Issues />} />
               </>
             )}
 

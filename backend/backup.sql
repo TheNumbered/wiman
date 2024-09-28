@@ -89,7 +89,7 @@ CREATE TABLE `maintenance` (
   `reported_date` datetime NOT NULL,
   `resolved_date` datetime DEFAULT NULL,
   `resolution_log` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `image_url` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `status` enum('Reported','In Progress','Resolved') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`issue_id`),
   KEY `idx_status_reported_date` (`reported_date`)
