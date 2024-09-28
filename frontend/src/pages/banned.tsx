@@ -1,8 +1,10 @@
-import { Block, Home } from '@mui/icons-material';
+import { useAuth } from '@clerk/clerk-react';
+import { Block, Logout } from '@mui/icons-material';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 
 const BannedPage: React.FC = () => {
+  const { signOut } = useAuth();
   return (
     <Paper
       sx={{
@@ -48,13 +50,13 @@ const BannedPage: React.FC = () => {
         <Button
           variant="contained"
           color="primary"
-          startIcon={<Home />}
+          startIcon={<Logout />}
           sx={{ mt: 3, width: '100%' }}
           onClick={() => {
-            window.location.href = '/';
+            signOut();
           }}
         >
-          Return to Home
+          Return to Sign In
         </Button>
 
         <Button
@@ -62,7 +64,7 @@ const BannedPage: React.FC = () => {
           color="secondary"
           sx={{ mt: 2, width: '100%' }}
           onClick={() => {
-            window.location.href = '/support';
+            alert('Email: management.wits.ac.za');
           }}
         >
           Contact Support

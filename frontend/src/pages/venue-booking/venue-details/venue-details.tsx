@@ -70,7 +70,6 @@ const amenityIcons: Record<string, React.ReactElement> = {
 
 const RoomDetails: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [reservations, setReservations] = useState<any>({});
   const [venueData, setVenueData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,18 +77,10 @@ const RoomDetails: React.FC = () => {
   const location = useLocation();
   const { venue } = location.state as any;
 
-  // Fetch reservations data
-  const { data, isError, isLoading } = useGetQuery({
+  const { data: reservationsData } = useGetQuery({
     resource: `api/venues/${venue?.venueId}/reservations`,
   });
-
-  // Update reservations when data is fetched
-  useEffect(() => {
-    if (!isLoading && !isError && data) {
-      setReservations(data);
-    }
-  }, [data, isError, isLoading]);
-
+  const reservations = reservationsData || [];
   // Set venue data on initial load
   useEffect(() => {
     if (venue) {
@@ -103,7 +94,6 @@ const RoomDetails: React.FC = () => {
   const handleDateSelect = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     setSelectedDate(formattedDate);
-    console.log('Selected Date:', formattedDate);
   };
 
   //@ts-ignore
@@ -204,7 +194,7 @@ const RoomDetails: React.FC = () => {
         </Typography>
         <Grid container spacing={2}>
           {venue.amenities.length > 0 ? (
-            JSON.parse(venue.amenities).map((amenity: string, index: number) => (
+            venue.amenities.map((amenity: string, index: number) => (
               <Grid item xs={6} md={3} key={index}>
                 <FacilityCard sx={{ display: 'flex', alignItems: 'center' }}>
                   <Box sx={{ mr: 2 }}>
