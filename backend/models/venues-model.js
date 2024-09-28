@@ -1,89 +1,30 @@
-import axios from 'axios';
-import process from 'process';
 import db from '../config/db.js';
 import { expandRepeats } from '../utils/expand-repeats.js';
 
-// Mocked building information to use in case of an error
-const mockBuildingInfo = {
-  1: {
-    campusName: 'West Campus',
-    buildingName: 'Commerce, Law & Management',
-    location: {
-      lat: 37.7749,
-      lng: -122.4194,
-    },
-  },
-  2: {
-    campusName: 'East Campus',
-    buildingName: 'Engineering Building',
-    location: {
-      lat: 37.7749,
-      lng: -122.4194,
-    },
-  },
-};
-
 class Venue {
-  static async getFilteredVenue({ seatingCapacity, features, buildingName }) {
-    // Step 1: Filter by capacity (if seatingCapacity is provided)
+  static async getFilteredVenue({ seatingCapacity, features }) {
     const capacityQuery = seatingCapacity
       ? `SELECT * FROM rooms WHERE capacity >= ?;`
       : `SELECT * FROM rooms;`;
 
     const [rooms] = await db.query(capacityQuery, [seatingCapacity]);
 
-    // Step 2: Filter by features
+    // Filter rooms by features
     const filteredRooms = rooms.filter((room) => {
       if (!features) return true;
       return features.every((feature) => room.amenities.includes(feature));
     });
 
-    // Step 3: Filter by building name
-    // Base URL and token from environment variables
-    const API_BASE_URL = process.env.API_BASE_URL;
-    const BEARER_TOKEN = process.env.BEARER_TOKEN;
-
-    const fetchBuildingInfo = async (buildingId) => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/buildings/${buildingId}`, {
-          headers: {
-            Authorization: `Bearer ${BEARER_TOKEN}`,
-          },
-        });
-
-        return response.data;
-      } catch {
-        return (
-          mockBuildingInfo[buildingId] || {
-            campusName: 'Unknown Campus',
-            buildingName: 'Unknown Building',
-          }
-        );
-      }
-    };
-
-    // Filter rooms by building name
-    const filteredVenues = await Promise.all(
-      filteredRooms.map(async (room) => {
-        const buildingInfo = await fetchBuildingInfo(room.building_id);
-        if (!buildingName || buildingInfo.buildingName === buildingName) {
-          return {
-            venueId: room.room_id,
-            capacity: room.capacity,
-            campusName: buildingInfo.campusName,
-            buildingName: buildingInfo.buildingName,
-            imageUrl: room.image_url,
-            type: room.type,
-            isUnderMaintenance: room.is_under_maintenance == 1,
-            amenities: room.amenities,
-            location: buildingInfo.location,
-          };
-        }
-        return null;
-      }),
-    );
-
-    return filteredVenues.filter((venue) => venue !== null);
+    // Return filtered room data
+    return filteredRooms.map((room) => ({
+      venueId: room.room_id,
+      capacity: room.capacity,
+      building_id: room.building_id, // Ensure building_id is included for combining later
+      imageUrl: room.image_url,
+      type: room.type,
+      isUnderMaintenance: room.is_under_maintenance == 1,
+      amenities: room.amenities,
+    }));
   }
 
   static async getVenueReservations(venueId) {
