@@ -1,7 +1,9 @@
+import { ErrorNotification } from '@/components/ErrorNotification';
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Users } from '@/interfaces';
 import {
   Alert,
+  Avatar,
   CircularProgress,
   FormControl,
   MenuItem,
@@ -55,12 +57,17 @@ const RoleChangeRequests: React.FC = () => {
       </Paper>
     );
 
+  if (isError) {
+    return (
+      <ErrorNotification
+        errorMessage="Failed to load notifications"
+        onRetry={() => location.reload()}
+      ></ErrorNotification>
+    );
+  }
+
   return (
     <Paper sx={{ p: 4, maxWidth: '900px', margin: '0 auto' }}>
-      <Typography variant="h4" gutterBottom color="primary" align="center">
-        Change User Roles
-      </Typography>
-
       {isError && (
         <Alert severity="error" sx={{ mb: 2 }}>
           Error fetching users. Please try again later.
@@ -96,7 +103,16 @@ const RoleChangeRequests: React.FC = () => {
           <TableBody>
             {filteredUsers?.map((user) => (
               <TableRow key={user.userId}>
-                <TableCell>{user.fullName}</TableCell>
+                <TableCell>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar
+                      src={user.profileUrl}
+                      alt={user.fullName}
+                      sx={{ width: 40, height: 40, mr: 2 }}
+                    />
+                    <Typography variant="body1">{user.fullName}</Typography>
+                  </div>
+                </TableCell>
                 <TableCell align="right">
                   <FormControl fullWidth>
                     {/* <InputLabel>Role</InputLabel> */}

@@ -5,29 +5,7 @@ export const getNotifications = async (req, res) => {
   try {
     const { userId } = req.auth;
     const notifications = await Notification.getNotificationsByUserId(userId);
-
-    if (notifications.length === 0) {
-      return res.status(404).json({ error: 'No notifications found' });
-    }
-
     res.status(200).json(notifications);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Create a new notification
-export const createNotification = async (req, res) => {
-  try {
-    const { userId, code, message } = req.body;
-
-    // Validate required fields
-    if (!userId || !code || !message) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    await Notification.createNotification(userId, code, message);
-    res.status(201).json({ message: 'Notification created' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUpdateMutation } from '../../hooks'; // Import your updateMutation hook
 import { useGetQuery } from '../../hooks/get-query';
 
@@ -21,24 +21,28 @@ const SingleIssueReport = ({
   onReviewButtonClick,
   onSetBackButtonClick,
 }: {
-  id: string;
+  id: number;
   onReviewButtonClick: () => void;
   onSetBackButtonClick: () => void;
 }) => {
-  const { data, isLoading, isError, error } = useGetQuery<IssueReport[]>({
-    resource: `api/single-issue-report/${id}`,
+  const { data, isLoading, isError, error } = useGetQuery<IssueReport>({
+    resource: `api/maintenance/issue-reports/${id}`,
   });
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackBarType] = useState<SnackbarType>('info');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // Track selected image
 
   const updateIssueMutation = useUpdateMutation({
-    resource: 'api/close-issue-report',
-    contentType: 'application/json',
+    resource: 'api/maintenance/issue-report',
+    invalidateKeys: ['api/maintenance/issue-reports', `api/maintenance/issue-reports/${id}`],
   });
 
+  useEffect(() => {
+    setSelectedImage(null);
+  }, [id]);
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
@@ -46,7 +50,7 @@ const SingleIssueReport = ({
   const handleConfirmClose = () => {
     updateIssueMutation.mutate(
       {
-        id: id as string | number,
+        id: id + '/close',
         data: {},
       },
       {
@@ -85,7 +89,7 @@ const SingleIssueReport = ({
   }
 
   // Add a check to ensure `data` is defined and has items
-  if (!data || data.length === 0) {
+  if (!data) {
     return (
       <Box sx={{ width: '100%', padding: '1rem' }}>
         <Typography>No data available</Typography>
@@ -93,13 +97,65 @@ const SingleIssueReport = ({
     );
   }
 
+  // Image list (can handle min 1 to max 5 images)
+  let images: string[] = []; // Initialize as an empty array
+
+  try {
+    if (data?.imageUrl) {
+      // Try parsing imageUrl if it's a JSON string
+      images = JSON.parse(data.imageUrl) || [];
+    }
+  } catch (error) {
+    console.log(error);
+    images = [data.imageUrl];
+  }
+
+  // Check if images array is empty before accessing its elements
+  if (selectedImage === null) {
+    setSelectedImage(images.length > 0 ? images[0] : 'https://via.placeholder.com/400'); // Set the first image as selected if it exists
+  }
+
   return (
     <Box sx={{ width: '100%', padding: '0 1rem 2rem' }}>
-      <img
-        src={data[0].image_url ? data[0].image_url : 'https://via.placeholder.com/400'}
-        alt="issue image"
-        style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
-      />
+      {/* Display selected image */}
+      <Box sx={{ textAlign: 'center' }}>
+        <img
+          src={selectedImage || images[0]} // Show selected image or first image by default
+          alt="issue image"
+          style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
+        />
+      </Box>
+
+      {/* Thumbnails in a row */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          marginBottom: '1rem',
+        }}
+      >
+        {images.map((imgUrl: string, index: number) => (
+          <Box
+            key={index}
+            sx={{
+              border: selectedImage === imgUrl ? '2px solid #003b5c' : '2px solid transparent',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              padding: '0.2rem',
+              '&:hover': { border: '2px solid #003b5c' }, // Highlight on hover
+            }}
+            onClick={() => setSelectedImage(imgUrl)}
+          >
+            <img
+              src={imgUrl}
+              alt={`thumbnail-${index}`}
+              style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '0.5rem' }}
+            />
+          </Box>
+        ))}
+      </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ color: '#777' }}>
           <Typography
@@ -107,22 +163,20 @@ const SingleIssueReport = ({
             component="h2"
             sx={{ fontWeight: 'bold', color: '#000', lineHeight: '0.9' }}
           >
-            {data[0].room_id || 'No Title Available'}
+            {data.venueId || 'No Title Available'}
           </Typography>
-          <Typography>{data[0].room_id || 'No Location Available'}</Typography>
+          <Typography>{data.venueId || 'No Location Available'}</Typography>
           <Box my={1}>
             <Typography color="black" variant="h6">
               Problem Description
             </Typography>
-            <Typography>{data[0].issue_description || 'No description provided.'}</Typography>
+            <Typography>{data.issueDescription || 'No description provided.'}</Typography>
             <Typography color="black" variant="h6">
               Resolution Log
             </Typography>
-            {data[0].status !== 'Reported' ? (
+            {data.status !== 'Reported' ? (
               (() => {
-                const resolutionLog = data[0].resolution_log
-                  ? JSON.parse(data[0].resolution_log)
-                  : null;
+                const resolutionLog = data.resolutionLog ? JSON.parse(data.resolutionLog) : null;
                 return resolutionLog ? (
                   <Box>
                     <Typography sx={{ fontWeight: 'bold' }}>Problem Class</Typography>
@@ -148,8 +202,10 @@ const SingleIssueReport = ({
           </Box>
         </Box>
       </Box>
+
+      {/* Display buttons based on issue status */}
       {(() => {
-        switch (data[0].status) {
+        switch (data.status) {
           case 'Reported':
             return (
               <Box mt={2}>
@@ -192,6 +248,8 @@ const SingleIssueReport = ({
             return '';
         }
       })()}
+
+      {/* Close Issue Dialog */}
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Report Issue As Resolved</DialogTitle>
         <DialogContent>
@@ -209,6 +267,7 @@ const SingleIssueReport = ({
           </Button>
         </DialogActions>
       </Dialog>
+
       <AutohideSnackbar
         message={snackbarMessage}
         open={openSnackbar}

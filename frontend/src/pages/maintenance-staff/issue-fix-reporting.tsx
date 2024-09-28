@@ -4,12 +4,12 @@ import { Box, Button, Container, Grid, TextField, Typography } from '@mui/materi
 import React, { useState } from 'react';
 
 interface IssueFixReportingProps {
-  issue_id: string;
+  issueId: number;
 }
 
 type SnackbarType = 'error' | 'success' | 'info' | 'warning';
 
-const IssueFixReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) => {
+const IssueFixReporting: React.FC<IssueFixReportingProps> = ({ issueId }) => {
   const [selectedIssueState, setIssueState] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -19,8 +19,8 @@ const IssueFixReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const updateIssueMutation = useUpdateMutation({
-    resource: 'api/review-issue-report',
-    contentType: 'application/json',
+    resource: 'api/maintenance/issue-report',
+    invalidateKeys: ['api/maintenance/issue-reports', `api/maintenance/issue-reports/${issueId}`],
   });
 
   const clearFormEntries = () => {
@@ -54,12 +54,12 @@ const IssueFixReporting: React.FC<IssueFixReportingProps> = ({ issue_id }) => {
     const formData = new FormData(event.currentTarget);
 
     const data = {
-      issue_state: selectedIssueState,
+      issueState: selectedIssueState,
       review: formData.get('description') as string,
     };
 
     updateIssueMutation.mutate(
-      { id: issue_id, data },
+      { id: issueId + '/review', data },
       {
         onSuccess: (responseData) => {
           console.log('Issue updated:', responseData);

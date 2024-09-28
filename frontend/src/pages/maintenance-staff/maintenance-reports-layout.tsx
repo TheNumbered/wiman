@@ -7,7 +7,7 @@ import IssueReportsList from './issue-reports-list';
 import IssueSetBackReporting from './issue-setback-reporting';
 import SingleIssueReport from './single-issue-report';
 
-const CardList = ({ onSelect }: { onSelect: (id: string) => void }) => (
+const CardList = ({ onSelect }: { onSelect: (id: number) => void }) => (
   <Box
     sx={{
       flex: '1',
@@ -42,12 +42,12 @@ const NoCardSelected = () => (
 );
 
 const CardDetails = ({
-  issue_id,
+  issueId,
   onNext,
   onShowSetBackForm,
   onPrev,
 }: {
-  issue_id: string;
+  issueId: number;
   onNext: () => void;
   onShowSetBackForm: () => void;
   onPrev: () => void;
@@ -74,7 +74,7 @@ const CardDetails = ({
       </Button>
     )}
     <SingleIssueReport
-      id={issue_id}
+      id={issueId}
       onReviewButtonClick={onNext}
       onSetBackButtonClick={onShowSetBackForm}
     />
@@ -82,11 +82,11 @@ const CardDetails = ({
 );
 
 const FormView = ({
-  issue_id,
+  issueId,
   onPrev,
   which_view,
 }: {
-  issue_id: string;
+  issueId: number;
   onPrev: () => void;
   which_view: 'review' | 'setback';
 }) => (
@@ -109,9 +109,9 @@ const FormView = ({
     </Button>
 
     {which_view === 'setback' ? (
-      <IssueSetBackReporting issue_id={issue_id} />
+      <IssueSetBackReporting issueId={issueId} />
     ) : (
-      <IssueFixReporting issue_id={issue_id} />
+      <IssueFixReporting issueId={issueId} />
     )}
   </Box>
 );
@@ -119,11 +119,11 @@ const FormView = ({
 export default function Issues() {
   // State management
   const [view, setView] = useState<'list' | 'details' | 'form' | 'setbackform'>('list'); // Manage views
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null); // Manage selected card
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null); // Manage selected card
   const isTabletScreen = useMediaQuery(useTheme().breakpoints.up('md'));
 
   // Handlers
-  const handleCardSelect = (id: string) => {
+  const handleCardSelect = (id: number) => {
     setSelectedCardId(id);
     setView('details'); // Move to details view
   };
@@ -142,7 +142,7 @@ export default function Issues() {
           <>
             {isTabletScreen && <CardList onSelect={handleCardSelect} />}
             <CardDetails
-              issue_id={selectedCardId}
+              issueId={selectedCardId}
               onNext={() => setView('form')}
               onShowSetBackForm={() => setView('setbackform')}
               onPrev={() => setView('list')} // Adjusted to handle return to list
@@ -154,7 +154,7 @@ export default function Issues() {
           <>
             {isTabletScreen && (
               <CardDetails
-                issue_id={selectedCardId}
+                issueId={selectedCardId}
                 onNext={() => setView('form')}
                 onShowSetBackForm={() => setView('setbackform')}
                 onPrev={() => setView('list')} // Adjusted to handle return to list
@@ -162,7 +162,7 @@ export default function Issues() {
             )}
             <FormView
               onPrev={() => setView('details')}
-              issue_id={selectedCardId}
+              issueId={selectedCardId}
               which_view="review"
             />
           </>
@@ -172,7 +172,7 @@ export default function Issues() {
           <>
             {isTabletScreen && (
               <CardDetails
-                issue_id={selectedCardId}
+                issueId={selectedCardId}
                 onNext={() => setView('form')}
                 onShowSetBackForm={() => setView('setbackform')}
                 onPrev={() => setView('list')} // Adjusted to handle return to list
@@ -180,7 +180,7 @@ export default function Issues() {
             )}
             <FormView
               onPrev={() => setView('details')}
-              issue_id={selectedCardId}
+              issueId={selectedCardId}
               which_view="setback"
             />
           </>

@@ -3,16 +3,11 @@ import { toCamelCase } from '../utils/case-converters.js';
 
 class Notification {
   static async getNotificationsByUserId(user_id) {
-    const [rows] = await db.query('SELECT * FROM notifications WHERE user_id = ?', [user_id]);
-    return rows.map(toCamelCase);
-  }
-
-  static async createNotification(user_id, code, message) {
-    const [result] = await db.query(
-      'INSERT INTO notifications (user_id, code, message, date, is_read) VALUES (?, ?, ?, NOW(), FALSE)',
-      [user_id, code, message],
+    const [rows] = await db.query(
+      'SELECT * FROM notifications WHERE user_id = ? ORDER BY date DESC',
+      [user_id],
     );
-    return result.insertId; // Returns the newly created notification's ID
+    return rows.map(toCamelCase);
   }
 
   static async markAsRead(id) {

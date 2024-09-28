@@ -7,21 +7,28 @@ export interface Venue {
   type: string;
   buildingName: string;
   amenities: string[];
-  pictures: string[];
+  imageUrl?: string;
+  status: 'AVAILABLE' | 'UNDER-MANTAINANCE';
+  location: {
+    lat: number;
+    lng: number;
+  };
 }
 
-export interface Issue {
-  issue_id: string;
-  issue_description: string;
-  room_id: string;
-  status: string;
-  reported_date: string;
+export interface MaintenanceIssue {
+  issueDescription: string;
+  maintenanceImageUrl: string; // updated field
+  resolutionLog: string | null;
+  amenities: string[];
+  underMaintenance: number;
+  capacity: number;
+  venueId: string;
 }
 
 export interface IssueReport {
-  image_url: string;
-  room_id: string;
-  issue_description: string;
+  imageUrl: string;
+  venueId: string;
+  issueDescription: string;
   status: 'Reported' | 'In Progress' | 'Resolved';
-  resolution_log: string | null;
+  resolutionLog: string | null;
 }

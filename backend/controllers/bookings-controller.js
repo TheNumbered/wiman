@@ -10,22 +10,16 @@ export const getAllBookings = async (req, res) => {
   }
 };
 
-// Get active bookings
-export const getActiveBookings = async (req, res) => {
+// Get bookings
+export const getUserBookings = async (req, res) => {
   try {
     const { userId } = req.auth;
-    const bookings = await Booking.getActiveBookingsByUserId(userId);
-    res.json(bookings);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    const bookings = await Booking.getBookingsByUserId(userId);
 
-// Get past bookings
-export const getPastBookings = async (req, res) => {
-  try {
-    const { userId } = req.auth;
-    const bookings = await Booking.getPastBookingsByUserId(userId);
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ error: 'No bookings found for this user' });
+    }
+
     res.json(bookings);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -42,7 +36,7 @@ export const createBooking = async (req, res) => {
       return res.status(400).json({ error: 'Required fields are missing' });
     }
 
-    await Booking.createBooking(
+    const bookingId = await Booking.createBooking(
       userId,
       date,
       startTime,
@@ -52,7 +46,7 @@ export const createBooking = async (req, res) => {
       repeatFrequency,
       repeatUntil,
     );
-    res.status(201).json({ message: 'Booking created' });
+    res.status(201).json({ message: 'Booking created', bookingId });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

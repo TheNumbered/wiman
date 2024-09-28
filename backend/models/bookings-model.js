@@ -9,18 +9,10 @@ class Booking {
   }
 
   // Get active bookings for a user
-  static async getActiveBookingsByUserId(userId) {
+  static async getBookingsByUserId(userId) {
     const [rows] = await db.query(
-      'SELECT * FROM bookings WHERE user_id = ? AND status = "confirmed" AND date >= CURDATE()',
-      [userId],
-    );
-    return rows.map(toCamelCase);
-  }
-
-  // Get past bookings for a user
-  static async getPastBookingsByUserId(userId) {
-    const [rows] = await db.query(
-      'SELECT * FROM bookings WHERE user_id = ? AND (date < CURDATE() OR (status = "cancelled" AND reason_for_cancellation != "User cancelled"))',
+      'SELECT * FROM bookings WHERE user_id = ?',
+      //'SELECT * FROM bookings WHERE user_id = ? AND NOT (status = "cancelled" AND reason_for_cancellation IS NULL)',
       [userId],
     );
     return rows.map(toCamelCase);

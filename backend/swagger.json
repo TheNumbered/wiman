@@ -97,21 +97,7 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Venue"
-                  },
-                  "example": [
-                    {
-                      "venueId": "CLM201",
-                      "capacity": 0,
-                      "campusName": "West Campus",
-                      "type": "Lecture Theatre",
-                      "buildingName": "Commerce, Law & Management",
-                      "amenities": ["projector", "whiteboard"],
-                      "pictures": [
-                        "https://example.com/images/clm37_1.jpg",
-                        "https://example.com/images/clm37_2.jpg"
-                      ]
-                    }
-                  ]
+                  }
                 }
               }
             }
@@ -197,7 +183,7 @@
         "x-swagger-router-controller": "Venues"
       }
     },
-    "/user/bookings/active": {
+    "/user/bookings": {
       "get": {
         "summary": "Get active bookings",
         "security": [
@@ -219,32 +205,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/user/bookings/past": {
-      "get": {
-        "summary": "Get past bookings",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "tags": ["User"],
-        "responses": {
-          "200": {
-            "description": "List of past bookings",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Booking"
-                  }
-                }
-              }
-            }
           },
           "404": {
             "description": "No past bookings found",
@@ -255,7 +215,46 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "No past bookings found"
+                      "example": "No bookings found for this user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/role": {
+      "get": {
+        "summary": "Get user role",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "User role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRole"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User role not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User role not found"
                     }
                   }
                 }
@@ -290,9 +289,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Booking"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking created successfully"
+                    },
+                    "bookingId": {
+                      "type": "integer",
+                      "example": 1
+                    }
                   }
                 }
               }
@@ -461,148 +467,6 @@
         }
       }
     },
-    "/maintenance": {
-      "post": {
-        "tags": ["Maintenance"],
-        "summary": "Report a maintenance issue",
-        "description": "Report a maintenance issue for a specific venue.",
-        "operationId": "maintenancePOST",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "venueId": {
-                    "type": "string"
-                  },
-                  "reportedBy": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "photos": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
-                },
-                "required": ["venueId", "reportedBy", "description"]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Maintenance issue reported",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Maintenance"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid Request body"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Maintenance"
-      }
-    },
-    "/maintenance/{issueId}": {
-      "patch": {
-        "tags": ["Maintenance"],
-        "summary": "Update maintenance issue status",
-        "description": "Update the status of a maintenance issue (e.g., In Progress, Completed).",
-        "operationId": "maintenanceIssueIdPATCH",
-        "parameters": [
-          {
-            "name": "issueId",
-            "in": "path",
-            "description": "ID of the maintenance issue",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MaintenanceUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Maintenance issue status updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Maintenance issue status updated"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No maintenance issue foud",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": " Maintenance issue with the given ID was not found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Maintenance"
-      }
-    },
     "/notifications": {
       "get": {
         "tags": ["Notifications"],
@@ -624,33 +488,17 @@
                       "notificationId": 1,
                       "message": "Your booking has been confirmed",
                       "date": "2024-08-29T04:56:07.000Z",
-                      "code": "booking_confirmed",
+                      "route": "/bookings",
                       "isRead": false
                     },
                     {
                       "notificationId": 2,
                       "message": "Maintenance work is scheduled for tomorrow",
                       "date": "2024-08-28T11:22:45.000Z",
-                      "code": "maintenance_scheduled",
+                      "route": "/maintenance",
                       "isRead": true
                     }
                   ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No notifications found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "No notifications found"
-                    }
-                  }
                 }
               }
             }
@@ -661,76 +509,6 @@
             "BearerAuth": []
           }
         ]
-      },
-      "post": {
-        "tags": ["Notifications"],
-        "summary": "Create a notification",
-        "description": "Create a new notification for a specific user.",
-        "operationId": "createNotificationPOST",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userId": {
-                    "type": "integer",
-                    "description": "ID of the user receiving the notification"
-                  },
-                  "code": {
-                    "type": "string",
-                    "description": "Code identifying the type of notification"
-                  },
-                  "message": {
-                    "type": "string",
-                    "description": "The message content of the notification"
-                  }
-                },
-                "required": ["userId", "code", "message"],
-                "example": {
-                  "userId": 123,
-                  "code": "booking_cancelled",
-                  "message": "Your booking has been cancelled"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Notification created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Notification created"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid input"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/notifications/{notificationId}/read": {
@@ -791,93 +569,32 @@
         ]
       }
     },
-    "/admin/schedule": {
-      "post": {
-        "tags": ["Admin"],
-        "summary": "Update academic schedule",
-        "description": "Update the academic schedule in the system to ensure classroom availability.",
-        "operationId": "adminSchedulePOST",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/ScheduleUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "Schedule updated"
-          },
-          "400": {
-            "description": "Invalid file format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "The uploaded file format is not supported"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "x-swagger-router-controller": "Admin"
-      }
-    },
-    "/admin/reports": {
+    "/admin/bookings": {
       "get": {
         "tags": ["Admin"],
-        "summary": "Generate usage reports",
-        "description": "Generate reports on room usage, booking trends, and maintenance issues.",
-        "operationId": "adminReportsGET",
-        "parameters": [
-          {
-            "name": "reportType",
-            "in": "query",
-            "description": "Type of report (e.g., usage, booking, maintenance)",
-            "required": true,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Get all bookings",
+        "description": "Retrieve all bookings in the system.",
+        "operationId": "getAllBookings",
         "responses": {
           "200": {
-            "description": "Report generated",
+            "description": "List of all bookings",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Report"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid report type",
+          "403": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "The report type provided is invalid"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -891,38 +608,32 @@
         "x-swagger-router-controller": "Admin"
       }
     },
-    "/admin/blackout-periods": {
-      "post": {
+    "/admin/users": {
+      "get": {
         "tags": ["Admin"],
-        "summary": "Set blackout periods for venues",
-        "description": "Set blackout periods for specific venues during maintenance or renovations.",
-        "operationId": "adminBlackout_periodsPOST",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BlackoutPeriod"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Get all users",
+        "description": "Retrieve all users in the system.",
+        "operationId": "getUsers",
         "responses": {
-          "204": {
-            "description": "Blackout period set"
-          },
-          "400": {
-            "description": "Invalid request",
+          "200": {
+            "description": "List of all users",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "The request contains invalid parameters"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
                   }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -936,51 +647,152 @@
         "x-swagger-router-controller": "Admin"
       }
     },
-    "/admin/users/{userId}/ban": {
-      "post": {
+    "/admin/bookings/approve/{id}": {
+      "put": {
         "tags": ["Admin"],
-        "summary": "Ban a user",
-        "description": "Ban a user from the system based on behavior or violation of terms.",
-        "operationId": "adminUsersUserIdBanPOST",
+        "summary": "Approve a booking",
+        "description": "Approve a pending booking by its ID.",
+        "operationId": "confirmBooking",
         "parameters": [
           {
-            "name": "userId",
+            "name": "id",
             "in": "path",
-            "description": "ID of the user",
+            "description": "Booking ID",
             "required": true,
-            "style": "simple",
-            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BanUser"
+        "responses": {
+          "204": {
+            "description": "Booking approved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking Approved"
+                    }
+                  }
+                }
               }
             }
           },
-          "required": true
+          "404": {
+            "description": "Booking not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/bookings/cancel/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Cancel a booking",
+        "description": "Cancel a booking by its ID.",
+        "operationId": "cancelBooking",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Booking ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "204": {
-            "description": "User banned"
+            "description": "Booking canceled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Booking canceled"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Booking not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/toggle-ban/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Toggle user's ban status",
+        "description": "Ban or unban a user based on the current status.",
+        "operationId": "toggleBanStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User ban status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User banned"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "User not found",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User with the given ID was not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -992,6 +804,442 @@
           }
         ],
         "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/update-role/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update a user's role",
+        "description": "Update a user's role (e.g., admin, user, maintenance).",
+        "operationId": "updateUserRole",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "User role updated"
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+    "/admin/update-venue/{id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update venue information",
+        "description": "Update the capacity, amenities, and maintenance status of a venue.",
+        "operationId": "updateVenue",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the venue to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "capacity": {
+                    "type": "integer",
+                    "description": "The maximum capacity of the venue"
+                  },
+                  "amenities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "A list of amenities available in the venue"
+                  },
+                  "underMaintenance": {
+                    "type": "boolean",
+                    "description": "Whether the venue is under maintenance"
+                  }
+                },
+                "required": ["capacity"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Venue updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Room updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Venue not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/issue-reports": {
+      "get": {
+        "tags": ["Maintenance"],
+        "summary": "Get all issue reports",
+        "description": "Retrieve a list of all issue reports in the system.",
+        "operationId": "getAllIssueReports",
+        "responses": {
+          "200": {
+            "description": "A list of issue reports",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IssueReport"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance/issue-reports/{id}": {
+      "get": {
+        "tags": ["Maintenance"],
+        "summary": "Get an issue report by ID",
+        "description": "Retrieve a specific issue report by its ID.",
+        "operationId": "getIssueReportById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the issue report to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested issue report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueReport"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Issue report not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance/issue-report": {
+      "post": {
+        "tags": ["Maintenance"],
+        "summary": "Create a new issue report",
+        "description": "Create a new issue report with an optional image upload.",
+        "operationId": "createIssueReport",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "venueId": {
+                    "type": "string"
+                  },
+                  "issueDescription": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Issue report created successfully"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance/issue-report/{id}/review": {
+      "put": {
+        "tags": ["Maintenance"],
+        "summary": "Add a review to an issue report",
+        "description": "Add a review and update the issue state for a specific issue report.",
+        "operationId": "addReviewToIssueReportReview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the issue report to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review added successfully"
+          },
+          "404": {
+            "description": "Issue report not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance/issue-report/{id}/add-setback": {
+      "put": {
+        "tags": ["Maintenance"],
+        "summary": "Add a setback to an issue report",
+        "description": "Report a setback and update the resolution log of an issue report.",
+        "operationId": "addIssueSetBackReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the issue report to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetbackReport"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Setback reported successfully"
+          },
+          "404": {
+            "description": "Issue report not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/maintenance/issue-report/{id}/close": {
+      "put": {
+        "tags": ["Maintenance"],
+        "summary": "Close an issue report",
+        "description": "Mark an issue report as closed after resolution.",
+        "operationId": "closeIssueReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the issue report to close"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Issue report closed successfully"
+          },
+          "404": {
+            "description": "Issue report not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     }
   },
@@ -1016,16 +1264,42 @@
             }
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "enum": ["LECTURE", "TUTORIAL", "LAB", "MEETING"]
           },
           "capacity": {
             "type": "integer"
           },
-          "pictures": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "imageUrl": {
+            "type": "string"
+          },
+          "isUnderMaintenance": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
             }
+          }
+        },
+        "example": {
+          "venueId": "LAB1D",
+          "capacity": 20,
+          "campusName": "East Campus",
+          "buildingName": "Engineering Building",
+          "imageUrl": "/venue-images/conferenceRoom.jpg",
+          "type": "LAB",
+          "isUnderMaintenance": false,
+          "amenities": ["computer", "projector"],
+          "location": {
+            "lat": 37.7749,
+            "lng": -122.4194
           }
         }
       },
@@ -1141,7 +1415,7 @@
             "description": "End time of the booking (HH:MM:SS)"
           },
           "venueId": {
-            "type": "integer",
+            "type": "string",
             "description": "ID of the venue for the booking"
           },
           "eventName": {
@@ -1160,46 +1434,6 @@
           }
         }
       },
-      "Maintenance": {
-        "type": "object",
-        "properties": {
-          "issueId": {
-            "type": "string"
-          },
-          "venueId": {
-            "type": "string"
-          },
-          "reportedBy": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "photos": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "status": {
-            "type": "string",
-            "enum": ["reported", "in_progress", "completed"]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "MaintenanceUpdate": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": ["reported", "in_progress", "completed"]
-          }
-        }
-      },
       "Notification": {
         "type": "object",
         "properties": {
@@ -1207,9 +1441,9 @@
             "type": "integer",
             "description": "Unique identifier for the notification"
           },
-          "code": {
+          "route": {
             "type": "string",
-            "description": "Code representing the type or category of the notification"
+            "description": "Route to redirect the user to when the notification is clicked"
           },
           "message": {
             "type": "string",
@@ -1227,66 +1461,122 @@
         },
         "required": ["notificationId", "code", "message", "date", "isRead"]
       },
-      "ScheduleUpdate": {
+      "User": {
         "type": "object",
         "properties": {
-          "scheduleFile": {
+          "userId": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "profileUrl": {
+            "type": "string"
+          },
+          "role": {
             "type": "string",
-            "format": "binary"
-          }
-        }
-      },
-      "Report": {
-        "type": "object",
-        "properties": {
-          "reportId": {
-            "type": "string"
+            "enum": ["user", "admin", "maintenance"]
           },
-          "reportType": {
-            "type": "string"
+          "blocked": {
+            "type": "boolean"
           },
-          "generatedOn": {
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           }
         }
       },
-      "BlackoutPeriod": {
+      "UserRole": {
         "type": "object",
         "properties": {
-          "venueId": {
-            "type": "string"
-          },
-          "startDate": {
+          "role": {
             "type": "string",
-            "format": "date"
+            "enum": ["user", "admin", "maintenance"]
           },
-          "endDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "time"
-          },
-          "reason": {
-            "type": "string"
+          "blocked": {
+            "type": "boolean"
           }
         }
       },
-      "BanUser": {
+      "Error": {
         "type": "object",
         "properties": {
-          "reason": {
-            "type": "string"
-          },
-          "duration": {
+          "error": {
             "type": "string",
-            "description": "Duration of the ban (e.g., 30 days)"
+            "example": "Resource not found or invalid operation"
+          }
+        }
+      },
+      "IssueReport": {
+        "type": "object",
+        "properties": {
+          "issueId": {
+            "type": "integer",
+            "description": "The unique identifier of the issue report"
+          },
+          "venueId": {
+            "type": "string",
+            "description": "The venue associated with the issue"
+          },
+          "reportedBy": {
+            "type": "string",
+            "description": "The user who reported the issue"
+          },
+          "issueDescription": {
+            "type": "string",
+            "description": "A detailed description of the issue"
+          },
+          "reportedDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the issue was reported"
+          },
+          "resolvedDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the issue was resolved",
+            "nullable": true
+          },
+          "resolutionLog": {
+            "type": "string",
+            "description": "The log of resolutions or actions taken to resolve the issue",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "The URL of an image associated with the issue report",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Reported", "In Progress", "Resolved"],
+            "description": "The current status of the issue report"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "review": {
+            "type": "string",
+            "description": "Review comments or further details for the issue"
+          },
+          "issueState": {
+            "type": "string",
+            "description": "The current state or classification of the issue"
+          }
+        }
+      },
+      "SetbackReport": {
+        "type": "object",
+        "properties": {
+          "setback": {
+            "type": "string",
+            "description": "Details of the setback in resolving the issue"
+          },
+          "newFixRequirements": {
+            "type": "string",
+            "description": "New requirements or changes needed to fix the issue"
           }
         }
       }

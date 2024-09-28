@@ -15,7 +15,7 @@ class NotificationService {
     this.filters = {
       userFilters: [{ field: 'tag', key: 'role', relation: '=', value: 'user' }],
       adminFilters: [{ field: 'tag', key: 'role', relation: '=', value: 'admin' }],
-      maintainerFilters: [{ field: 'tag', key: 'role', relation: '=', value: 'maintainer' }],
+      maintainerFilters: [{ field: 'tag', key: 'role', relation: '=', value: 'maintenance' }],
     };
   }
 

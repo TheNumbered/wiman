@@ -7,14 +7,15 @@ import {
   getAllIssueReports,
   getIssueReportById,
 } from '../controllers/issue-report-controller.js';
+import { authMaintenance } from '../middleware/auth.js';
 
 const router = express.Router();
-
-router.get('/issue-reports', getAllIssueReports);
-router.get('/single-issue-report/:id', getIssueReportById);
-router.post('/issue-report', createIssueReport);
-router.put('/review-issue-report/:id', addReviewToIssueReportReview);
-router.put('/add-issue-setback-report/:id', addIssueSetBackReport);
-router.put('/close-issue-report/:id', closeIssueReport);
+router.use('/maintenance', authMaintenance);
+router.get('/maintenance/issue-reports', getAllIssueReports);
+router.get('/maintenance/issue-reports/:id', getIssueReportById);
+router.post('/maintenance/issue-report', createIssueReport);
+router.put('/maintenance/issue-report/:id/review', addReviewToIssueReportReview);
+router.put('/maintenance/issue-report/:id/add-setback', addIssueSetBackReport);
+router.put('/maintenance/issue-report/:id/close', closeIssueReport);
 
 export default router;

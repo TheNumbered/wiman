@@ -1,5 +1,8 @@
 import { useGetQuery } from '@/hooks';
 import { Users } from '@/interfaces';
+import BannedPage from '@/pages/banned';
+import { useColorMode } from '@/theme-provider';
+import { useAuth } from '@clerk/clerk-react';
 import { AccountCircleOutlined } from '@mui/icons-material';
 import {
   BottomNavigation,
@@ -23,16 +26,22 @@ import {
 interface SidebarItemProps {
   icon: React.ReactNode;
   label: string;
-  onClick?: () => void;
   route?: string;
 }
 
 const SideBar: React.FC = () => {
-  const [value, setValue] = useState(0);
-  const isMobile = useMediaQuery('(max-width: 600px)');
-  const { data: user } = useGetQuery<{ role: Users['role'] }>({
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
+  const { toggleColorMode } = useColorMode();
+  const { signOut, userId } = useAuth();
+  const isMobile = useMediaQuery('(max-width: 800px)');
+  const { data: user } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
   });
+
+  if (user?.banned) {
+    <BannedPage />;
+  }
+
   const userRole = user?.role;
   const primaryMenuItems: SidebarItemProps[] =
     userRole === 'admin'
@@ -40,12 +49,31 @@ const SideBar: React.FC = () => {
       : userRole === 'maintenance'
         ? maintenanceMenuItems
         : userMenuItems;
+
   const secondaryMenuItems: SidebarItemProps[] =
     userRole === 'admin' ? adminSecondaryMenuItems : profileMenuItems;
+
+  if (userId) {
+    localStorage.setItem('onesignalUserId', userId);
+    if (user?.role) {
+      localStorage.setItem('onesignalUserRole', user.role);
+    }
+  }
 
   const navigate = useNavigate();
   const handleNavigate = (route: string) => {
     navigate(route);
+    setSelectedLabel(route); // Update selected label
+  };
+
+  const handleProfileMenuClick = (label: string) => {
+    if (label === 'Dark Mode') {
+      toggleColorMode();
+    }
+    if (label === 'Log Out') {
+      signOut();
+    }
+    setSelectedLabel(label); // Update selected label for profile items
   };
 
   return (
@@ -71,8 +99,9 @@ const SideBar: React.FC = () => {
                 label={item.label}
                 onClick={() => {
                   if (item.route) handleNavigate(item.route);
-                  if (item.onClick) item.onClick();
+                  if (!item.route) handleProfileMenuClick(item.label);
                 }}
+                selected={selectedLabel === item.route || selectedLabel === item.label} // Pass selected prop
               />
             ))}
           </List>
@@ -85,19 +114,21 @@ const SideBar: React.FC = () => {
                 label={item.label}
                 onClick={() => {
                   if (item.route) handleNavigate(item.route);
-                  if (item.onClick) item.onClick();
+                  if (!item.route) handleProfileMenuClick(item.label);
                 }}
+                selected={selectedLabel === item.route || selectedLabel === item.label} // Pass selected prop
               />
             ))}
           </List>
         </Box>
       ) : (
         <BottomNavigation
-          value={value}
+          value={primaryMenuItems.findIndex((item) => item.route === selectedLabel)}
           onChange={(__, newValue) => {
-            setValue(newValue);
+            setSelectedLabel(primaryMenuItems[newValue].route || primaryMenuItems[newValue].label);
             if (primaryMenuItems[newValue].route) handleNavigate(primaryMenuItems[newValue].route);
-            if (primaryMenuItems[newValue].onClick) primaryMenuItems[newValue].onClick();
+            if (!primaryMenuItems[newValue].route)
+              handleProfileMenuClick(primaryMenuItems[newValue].label);
           }}
           sx={{
             position: 'fixed',

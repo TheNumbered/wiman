@@ -7,10 +7,7 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <Box
-      component={'main'}
-      sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden', background: '#fff' }}
-    >
+    <Box component={'main'} sx={{ display: 'flex', maxWidth: '100vw', overflowX: 'hidden' }}>
       <Box
         component={'section'}
         bgcolor={'background.paper'}
@@ -22,8 +19,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Box>
       <Box
         component={'section'}
+        bgcolor={'background.paper'}
         sx={{
-          background: '#fff',
           width: '-webkit-fill-available',
           overflowY: 'scroll',
           '&::-webkit-scrollbar': {

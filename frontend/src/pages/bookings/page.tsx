@@ -1,130 +1,57 @@
-import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Bookings } from '@/interfaces';
-import { scrollbarStyles } from '@/theme';
-import SearchIcon from '@mui/icons-material/Search';
-import {
-  Box,
-  Container,
-  Divider,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import BookingCard from './card';
+import { Box, Container } from '@mui/material';
+import { useState } from 'react';
+import BookingsDetails from './bookings-details';
+import BookingsList from './list';
 
-const BookingPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredBookings, setFilteredBookings] = useState<Bookings[]>([]);
-  const [filteredBookingsPast, setFilteredBookingsPast] = useState<Bookings[]>([]);
-
-  const { data: activeBookings } = useGetQuery<Bookings[]>({
-    resource: 'api/user/bookings/active',
-  });
-  const { data: pastBookings } = useGetQuery<Bookings[]>({
-    resource: 'api/user/bookings/past',
-  });
-
-  const { mutate: cancelBooking } = useUpdateMutation({
-    resource: 'api/bookings/cancel',
-    invalidateKeys: ['api/user/bookings/active', 'api/user/bookings/past'],
-  });
-
-  const handleCancelBooking = (id: number) => {
-    cancelBooking({ id: id, data: {} });
-  };
-
-  const handleRebooking = (id: number) => {
-    console.log('Rebooking booking with ID:', id);
-    // TODO: Implement rebooking logic
-  };
-
-  useEffect(() => {
-    if (activeBookings) {
-      if (searchTerm) {
-        const filtered = activeBookings.filter((booking) =>
-          booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-        setFilteredBookings(filtered);
-      } else {
-        setFilteredBookings(activeBookings);
-      }
-    }
-
-    if (pastBookings) {
-      if (searchTerm) {
-        const filtered = pastBookings.filter((booking) =>
-          booking.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-        setFilteredBookingsPast(filtered);
-      } else {
-        setFilteredBookingsPast(pastBookings);
-      }
-    }
-  }, [activeBookings, pastBookings, searchTerm]);
-
-  return (
-    <Container
+const NoCardSelected = () => (
+  <Box sx={{ flex: 1 }}>
+    <Box
       sx={{
-        overflowY: 'scroll',
-        height: '100vh',
-        pb: 3,
-        ...scrollbarStyles,
+        height: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      {/* Search Field */}
-      <Box sx={{ mb: 3 }}>
-        <TextField
-          variant="outlined"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="end">
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
+      <img style={{ width: '15rem' }} src="/illustration.svg" alt="illustration" />
+      <h2 style={{ marginBottom: '0' }}>No booking is selected yet</h2>
+      <p style={{ color: '#777', margin: '0' }}>
+        Choose a booking on the left menu to view its details
+      </p>
+    </Box>
+  </Box>
+);
+
+const BookingsPage: React.FC = () => {
+  const [selectedBooking, setSelectedBooking] = useState<Bookings | null>(null);
+  return (
+    <Container sx={{ background: '#fff', width: '100%', pt: { xs: 2, md: 0 }, height: '100vh' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
+        {/* BookingsList takes up 50% of the screen */}
+        <Box sx={{ flex: 1, borderRight: '1px solid #ddd', overflowY: 'auto' }}>
+          <BookingsList onSelectCard={(booking) => setSelectedBooking(booking)} />
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            overflowY: 'scroll',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
           }}
-          fullWidth
-        />
+        >
+          {selectedBooking === null ? (
+            <NoCardSelected />
+          ) : (
+            <BookingsDetails booking={selectedBooking} />
+          )}
+        </Box>
       </Box>
-
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Active bookings
-      </Typography>
-
-      {/* Active Bookings */}
-      <>
-        {filteredBookings?.map((booking, index) => (
-          <BookingCard
-            key={index}
-            booking={booking}
-            onCancelBooking={() => handleCancelBooking(booking.bookingId)}
-          />
-        ))}
-        <Divider sx={{ my: 3 }} />
-      </>
-
-      <Typography variant="h6" fontWeight="bold" gutterBottom>
-        Past bookings
-      </Typography>
-
-      {/* Past Bookings */}
-      <>
-        {filteredBookingsPast?.map((booking, index) => (
-          <BookingCard
-            key={index}
-            booking={booking}
-            onRebooking={() => handleRebooking(booking.bookingId)}
-          />
-        ))}
-      </>
     </Container>
   );
 };
 
-export default BookingPage;
+export default BookingsPage;

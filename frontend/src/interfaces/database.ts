@@ -14,23 +14,23 @@ export type Bookings = {
 
 export type Maintenance = {
   issueId: number;
-  roomId?: string;
-  reportedBy?: number;
+  venueId?: string;
+  reportedBy?: string;
   issueDescription: string;
-  status: 'Reported';
   reportedDate: Date | string;
   resolvedDate?: Date | string;
   resolutionLog: string;
   imageUrl?: string;
+  status?: 'Reported';
 };
 
 export type Notifications = {
   notificationId: number;
   userId: string;
-  code: string;
   message: string;
   date: Date | string;
   isRead: boolean;
+  route?: string;
 };
 
 export type Rooms = {
@@ -39,6 +39,8 @@ export type Rooms = {
   capacity: number;
   type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
   amenities: any;
+  imageUrl?: string;
+  underMaintenance: boolean;
 };
 
 export type Users = {
@@ -66,23 +68,23 @@ export type BookingsInput = {
 
 export type MaintenanceInput = {
   issueId?: number;
-  roomId?: string;
-  reportedBy?: number;
+  venueId?: string;
+  reportedBy?: string;
   issueDescription: string;
-  status: 'Reported';
   reportedDate: Date | string;
   resolvedDate?: Date | string;
   resolutionLog: string;
   imageUrl?: string;
+  status?: 'Reported';
 };
 
 export type NotificationsInput = {
   notificationId?: number;
   userId: string;
-  code: string;
   message: string;
   date: Date | string;
   isRead: boolean;
+  route?: string;
 };
 
 export type RoomsInput = {
@@ -91,6 +93,8 @@ export type RoomsInput = {
   capacity: number;
   type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
   amenities: any;
+  imageUrl?: string;
+  underMaintenance: boolean;
 };
 
 export type UsersInput = {

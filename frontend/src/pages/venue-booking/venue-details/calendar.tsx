@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
 import {
   addDays,
   addMonths,
@@ -13,7 +13,6 @@ import {
   subMonths,
 } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import theme from '../../../theme';
 
 interface CalendarProps {
   onDateSelect: (date: Date) => void;
@@ -23,7 +22,7 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const theme = useTheme();
   // Call onDateSelect when selectedDate changes
   useEffect(() => {
     onDateSelect(selectedDate);

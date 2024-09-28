@@ -51,7 +51,7 @@ describe('User Controller', () => {
     const response = await request(app).get('/user/role');
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ role: 'user' });
+    expect(response.body).toEqual({ role: 'user', blocked: false });
 
     expect(User.createUser).toHaveBeenCalledWith(
       'test_user_id',
@@ -61,12 +61,12 @@ describe('User Controller', () => {
   });
 
   it('should fetch existing user role', async () => {
-    User.getRole = vi.fn().mockResolvedValue('admin');
+    User.getRole = vi.fn().mockResolvedValue({ role: 'admin', blocked: false });
 
     const response = await request(app).get('/user/role');
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ role: 'admin' });
+    expect(response.body).toEqual({ role: 'admin', blocked: false });
   });
 
   it('should toggle user ban status', async () => {

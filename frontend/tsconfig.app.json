@@ -28,5 +28,5 @@
       "hooks/*": ["src/hooks/*"]
     }
   },
-  "include": ["src", "src/pages/single-venue-details.tsx"]
+  "include": ["src"]
 }

@@ -1,5 +1,6 @@
+import { ErrorNotification } from '@/components/ErrorNotification';
+import { LoadingIndicator } from '@/components/LoadingIndicator';
 import { useGetQuery } from '@/hooks';
-import theme from '@/theme';
 import DefaultAmenityIcon from '@mui/icons-material/CheckCircleOutline';
 import {
   Box,
@@ -9,8 +10,8 @@ import {
   DialogTitle,
   Grid,
   Paper,
-  TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
@@ -27,41 +28,48 @@ const FacilityCard = styled(Paper)(({ theme }) => ({
 const amenityIcons: Record<string, React.ReactElement> = {
   projector: (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/ios/50/video-projector.png"
       alt="Video-Projector"
     />
   ),
   whiteboard: (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/external-smashingstocks-detailed-outline-smashing-stocks/66/external-Whiteboard-stationery-and-office-equipment-smashingstocks-detailed-outline-smashing-stocks.png"
       alt="Whiteboard"
     />
   ),
   'Wi-Fi': (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/ios-filled/50/wifi--v1.png"
       alt="Wi-Fi"
     />
   ),
   'Air Conditioning': (
     <img
-      width="66"
-      height="66"
+      width="50"
+      height="50"
       src="https://img.icons8.com/ios/50/air-conditioner.png"
       alt="air-conditioner"
+    />
+  ),
+  computer: (
+    <img
+      width="50"
+      height="50"
+      src="https://img.icons8.com/ios/50/workstation.png"
+      alt="computer"
     />
   ),
 };
 
 const RoomDetails: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [reservations, setReservations] = useState<any>({});
   const [venueData, setVenueData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,18 +77,10 @@ const RoomDetails: React.FC = () => {
   const location = useLocation();
   const { venue } = location.state as any;
 
-  // Fetch reservations data
-  const { data, isError, isLoading } = useGetQuery({
-    resource: `api/venues/${venue?.venueId}/reservation`,
+  const { data: reservationsData } = useGetQuery({
+    resource: `api/venues/${venue?.venueId}/reservations`,
   });
-
-  // Update reservations when data is fetched
-  useEffect(() => {
-    if (!isLoading && !isError && data) {
-      setReservations(data);
-    }
-  }, [data, isError, isLoading]);
-
+  const reservations = reservationsData || [];
   // Set venue data on initial load
   useEffect(() => {
     if (venue) {
@@ -94,7 +94,6 @@ const RoomDetails: React.FC = () => {
   const handleDateSelect = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     setSelectedDate(formattedDate);
-    console.log('Selected Date:', formattedDate);
   };
 
   //@ts-ignore
@@ -107,13 +106,9 @@ const RoomDetails: React.FC = () => {
   const handleCloseModal = () => {
     setOpenBookingModal(false);
   };
-
+  const theme = useTheme();
   return (
     <Box component="main" sx={{ flex: 1, p: 3, bgcolor: 'background.default' }}>
-      <Box mb={3}>
-        <TextField fullWidth label="Search for a Venue" variant="outlined" />
-      </Box>
-
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <FacilityCard>
@@ -121,9 +116,12 @@ const RoomDetails: React.FC = () => {
               Venue Details
             </Typography>
             {loading ? (
-              <Typography>Loading venue data...</Typography>
+              <LoadingIndicator />
             ) : error ? (
-              <Typography color="error">{error}</Typography>
+              <ErrorNotification
+                errorMessage="Failed to load venue data"
+                onRetry={() => window.location.reload()}
+              />
             ) : venueData ? (
               <>
                 <Box
@@ -132,7 +130,7 @@ const RoomDetails: React.FC = () => {
                     borderColor: theme.palette.background.default,
                     height: 235,
                     mb: 2,
-                    backgroundImage: `url(${venue.pictures[0] || 'https://via.placeholder.com/500'})`,
+                    backgroundImage: `url(${venue.imageUrl ?? 'https://via.placeholder.com/500'})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
@@ -152,7 +150,6 @@ const RoomDetails: React.FC = () => {
                 <Typography variant="body1">
                   <strong>Location:</strong> {venueData.campusName}
                 </Typography>
-                <Typography color="text.secondary">Status: Available</Typography>
               </>
             ) : (
               <Typography>No venue data available.</Typography>
