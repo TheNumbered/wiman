@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUpdateMutation } from '../../hooks'; // Import your updateMutation hook
 import { useGetQuery } from '../../hooks/get-query';
 
@@ -33,12 +33,16 @@ const SingleIssueReport = ({
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackBarType] = useState<SnackbarType>('info');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // Track selected image
 
   const updateIssueMutation = useUpdateMutation({
     resource: 'api/maintenance/issue-report',
     invalidateKeys: ['api/maintenance/issue-reports', `api/maintenance/issue-reports/${id}`],
   });
 
+  useEffect(() => {
+    setSelectedImage(null);
+  }, [id]);
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
@@ -92,13 +96,55 @@ const SingleIssueReport = ({
       </Box>
     );
   }
+
+  // Image list (can handle min 1 to max 5 images)
+  const images = data?.imageUrl ? JSON.parse(data.imageUrl) : ['https://via.placeholder.com/400'];
+
+  if (selectedImage === null) {
+    setSelectedImage(images[0]); // Set the first image as selected if it is null
+  }
+
   return (
     <Box sx={{ width: '100%', padding: '0 1rem 2rem' }}>
-      <img
-        src={data?.imageUrl ?? 'https://via.placeholder.com/400'}
-        alt="issue image"
-        style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
-      />
+      {/* Display selected image */}
+      <Box sx={{ textAlign: 'center' }}>
+        <img
+          src={selectedImage || images[0]} // Show selected image or first image by default
+          alt="issue image"
+          style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
+        />
+      </Box>
+
+      {/* Thumbnails in a row */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          marginBottom: '1rem',
+        }}
+      >
+        {images.map((imgUrl: string, index: number) => (
+          <Box
+            key={index}
+            sx={{
+              border: selectedImage === imgUrl ? '2px solid #003b5c' : '2px solid transparent',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              padding: '0.2rem',
+              '&:hover': { border: '2px solid #003b5c' }, // Highlight on hover
+            }}
+            onClick={() => setSelectedImage(imgUrl)}
+          >
+            <img
+              src={imgUrl}
+              alt={`thumbnail-${index}`}
+              style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '0.5rem' }}
+            />
+          </Box>
+        ))}
+      </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ color: '#777' }}>
           <Typography
@@ -145,6 +191,8 @@ const SingleIssueReport = ({
           </Box>
         </Box>
       </Box>
+
+      {/* Display buttons based on issue status */}
       {(() => {
         switch (data.status) {
           case 'Reported':
@@ -189,6 +237,8 @@ const SingleIssueReport = ({
             return '';
         }
       })()}
+
+      {/* Close Issue Dialog */}
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Report Issue As Resolved</DialogTitle>
         <DialogContent>
@@ -206,6 +256,7 @@ const SingleIssueReport = ({
           </Button>
         </DialogActions>
       </Dialog>
+
       <AutohideSnackbar
         message={snackbarMessage}
         open={openSnackbar}

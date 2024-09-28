@@ -5,10 +5,15 @@ interface SidebarItemProps {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;
+  selected: boolean; // Add selected prop
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, onClick }) => (
-  <ListItemButton onClick={onClick} sx={{ mb: 1 }}>
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, onClick, selected }) => (
+  <ListItemButton
+    onClick={onClick}
+    selected={selected} // Apply selected state
+    sx={{ mb: 1 }}
+  >
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={label} />
   </ListItemButton>

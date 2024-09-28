@@ -142,7 +142,7 @@ describe('Issue Report Routes', () => {
       '123', // venueId is passed
       'test_user', // Mocked user ID from the request
       'Broken window',
-      null, // No image uploaded
+      'null', // No image uploaded
     );
 
     expect(response.status).toBe(201);

@@ -218,27 +218,27 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: number) => void }) => {
                   component="p"
                   sx={{ marginLeft: '5px', fontWeight: 'bold' }}
                 >
-                  {issue.issueDescription || 'No Title'}
+                  {issue.venueId || 'No Title'}
                 </Typography>
               </Box>
-              <Typography>{issue.venueId || 'No Location'}</Typography>
+              <Typography>{issue.issueDescription || 'No Location'}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '1rem' }}>
               <Box
                 sx={{
                   border: '1px solid',
-                  borderColor: getBorderColorByStatus(issue.status),
+                  borderColor: getBorderColorByStatus(issue.status ?? 'Reported'),
                   borderRadius: '0.75rem',
                   display: 'flex',
                   alignItems: 'center',
                   padding: '0.2rem 0.8rem',
                   height: 'min-content',
-                  background: getBgColorByStatus(issue.status),
+                  background: getBgColorByStatus(issue.status ?? 'Reported'),
                   width: 'min-content',
                   marginRight: '5px',
                 }}
               >
-                {getStatusIcon(issue.status)}
+                {getStatusIcon(issue.status ?? 'Reported')}
                 <Typography sx={{ width: 'max-content' }}>{issue.status}</Typography>
               </Box>
               <TimeAgo timestamp={new Date(issue.reportedDate).toLocaleString()} />

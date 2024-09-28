@@ -30,22 +30,18 @@ interface SidebarItemProps {
 }
 
 const SideBar: React.FC = () => {
-  const [value, setValue] = useState(0);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
   const { toggleColorMode } = useColorMode();
   const { signOut, userId } = useAuth();
   const isMobile = useMediaQuery('(max-width: 800px)');
-  const {
-    data: user,
-    // isLoading,
-    // isError,
-  } = useGetQuery<{ role: Users['role']; banned: boolean }>({
+  const { data: user } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
   });
 
-  // if (isLoading || isError) return <></>;
   if (user?.banned) {
     <BannedPage />;
   }
+
   const userRole = user?.role;
   const primaryMenuItems: SidebarItemProps[] =
     userRole === 'admin'
@@ -53,6 +49,7 @@ const SideBar: React.FC = () => {
       : userRole === 'maintenance'
         ? maintenanceMenuItems
         : userMenuItems;
+
   const secondaryMenuItems: SidebarItemProps[] =
     userRole === 'admin' ? adminSecondaryMenuItems : profileMenuItems;
 
@@ -66,6 +63,7 @@ const SideBar: React.FC = () => {
   const navigate = useNavigate();
   const handleNavigate = (route: string) => {
     navigate(route);
+    setSelectedLabel(route); // Update selected label
   };
 
   const handleProfileMenuClick = (label: string) => {
@@ -75,6 +73,7 @@ const SideBar: React.FC = () => {
     if (label === 'Log Out') {
       signOut();
     }
+    setSelectedLabel(label); // Update selected label for profile items
   };
 
   return (
@@ -102,6 +101,7 @@ const SideBar: React.FC = () => {
                   if (item.route) handleNavigate(item.route);
                   if (!item.route) handleProfileMenuClick(item.label);
                 }}
+                selected={selectedLabel === item.route || selectedLabel === item.label} // Pass selected prop
               />
             ))}
           </List>
@@ -116,15 +116,16 @@ const SideBar: React.FC = () => {
                   if (item.route) handleNavigate(item.route);
                   if (!item.route) handleProfileMenuClick(item.label);
                 }}
+                selected={selectedLabel === item.route || selectedLabel === item.label} // Pass selected prop
               />
             ))}
           </List>
         </Box>
       ) : (
         <BottomNavigation
-          value={value}
+          value={primaryMenuItems.findIndex((item) => item.route === selectedLabel)}
           onChange={(__, newValue) => {
-            setValue(newValue);
+            setSelectedLabel(primaryMenuItems[newValue].route || primaryMenuItems[newValue].label);
             if (primaryMenuItems[newValue].route) handleNavigate(primaryMenuItems[newValue].route);
             if (!primaryMenuItems[newValue].route)
               handleProfileMenuClick(primaryMenuItems[newValue].label);

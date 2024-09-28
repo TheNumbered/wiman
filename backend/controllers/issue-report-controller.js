@@ -86,24 +86,37 @@ export const addIssueSetBackReport = async (req, res) => {
 };
 
 export const createIssueReport = async (req, res) => {
-  // Use the upload.single middleware to handle the file upload and form data
-  upload.single('image')(req, res, async (err) => {
+  console.log(req.body);
+
+  // Use the upload.array middleware to handle multiple file uploads (max 5 files)
+  upload.array('images', 5)(req, res, async (err) => {
     if (err) {
+      // console.log(err);
       return res.status(500).send(err.message);
     }
+
     try {
       const { venueId, description } = req.body;
-      let image_url = null;
-      if (req.file) {
-        // Process the uploaded image file (e.g., save it to disk or cloud storage)
-        // For now, assume you store the image file and get its URL.
-        image_url = await uploadToAzureBlob(req.file);
+      let reported_by = req.auth?.userId; // Assuming you are using some form of auth to get the user ID
+
+      let image_urls = null;
+      // Process uploaded files (if any)
+      if (req.files && req.files.length > 0) {
+        image_urls = [];
+        // Loop over each uploaded file and process it (e.g., upload to Azure Blob)
+        for (const file of req.files) {
+          const imageUrl = await uploadToAzureBlob(file); // Upload to Azure Blob (or any storage service)
+          image_urls.push(imageUrl); // Store the uploaded image URL
+        }
       }
-
-      let reported_by = req.auth?.userId;
-
-      // Save the issue report
-      await IssueReport.createIssueReport(venueId, reported_by, description, image_url);
+      // console.log(reported_by, image_urls, description, venueId);
+      // Save the issue report with the associated image URLs
+      await IssueReport.createIssueReport(
+        venueId,
+        reported_by,
+        description,
+        JSON.stringify(image_urls),
+      );
 
       res.status(201).send({ message: 'Issue report created' });
     } catch (err) {
