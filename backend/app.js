@@ -5,7 +5,7 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { authRequest } from './middleware/auth.js';
 import errorHandler from './middleware/error-handler.js';
-import apiRouter from './routes/index.js';
+import alertRoutes from './routes/alert-routes.js'; // Correct import path
 
 const app = express();
 app.use(cors());
@@ -21,7 +21,8 @@ try {
   console.log('Error reading swagger.json file');
 }
 
-app.use('/api', apiRouter);
+// Mount alert routes under /api
+app.use('/api', alertRoutes); // This will mount all routes in alertRoutes.js under /api
 
 app.get('/', authRequest, (req, res) => {
   res.json({ message: 'Hello, world!' });
