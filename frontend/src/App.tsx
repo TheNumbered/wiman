@@ -95,7 +95,15 @@ const App: React.FC = () => {
           element={isSignedIn ? <Navigate to={'/dashboard'} /> : <Navigate to={'/sign-in'} />}
         />
 
-        <Route path="*" element={<>No Route Found</>} />
+        <Route
+          path="*"
+          element={
+            <ErrorNotification
+              errorMessage="Page not found"
+              onRetry={() => window.location.reload()}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

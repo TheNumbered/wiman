@@ -204,7 +204,10 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: number) => void }) => {
               padding: '1rem',
               borderRadius: '0.5rem',
               border: '1px solid #e7e7e7',
-              '&:hover': { backgroundColor: '#f5f5f5' },
+              backgroundColor: 'background.paper',
+              '&:hover': {
+                backgroundColor: 'background.default',
+              },
             }}
             onClick={() => onSelect(issue.issueId)}
           >
@@ -239,7 +242,11 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: number) => void }) => {
                 }}
               >
                 {getStatusIcon(issue.status ?? 'Reported')}
-                <Typography sx={{ width: 'max-content' }}>{issue.status}</Typography>
+                {
+                  /* Status */
+                  //make the color contrast
+                }
+                <Typography sx={{ width: 'max-content', color: '#333' }}>{issue.status}</Typography>
               </Box>
               <TimeAgo timestamp={new Date(issue.reportedDate).toLocaleString()} />
             </Box>

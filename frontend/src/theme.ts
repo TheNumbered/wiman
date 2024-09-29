@@ -11,7 +11,12 @@ const theme = (mode: 'dark' | 'light') =>
         main: '#f99326', // Gold
       },
       background: {
-        default: '#fff',
+        default: mode === 'dark' ? '#121212' : '#ffffff', // Dark mode background or light mode background
+        paper: mode === 'dark' ? '#1e1e1e' : '#fafafa', // Dark mode paper or light mode paper
+      },
+      text: {
+        primary: mode === 'dark' ? '#ffffff' : '#333333', // White text for dark mode, dark text for light mode
+        secondary: mode === 'dark' ? '#bbbbbb' : '#666666', // Lighter text color
       },
       error: {
         main: '#f44336', // Red
@@ -43,24 +48,21 @@ const theme = (mode: 'dark' | 'light') =>
     },
     typography: {
       fontFamily: 'Roboto, Arial, sans-serif',
+      // Example typography overrides
       // h1: {
       //   fontSize: '3rem',
       //   fontWeight: 700,
-      //   color: '#003b5c', // Navy Blue
+      //   color: mode === 'dark' ? '#ffffff' : '#003b5c', // Conditional color based on mode
       // },
       // h2: {
       //   fontSize: '2.5rem',
       //   fontWeight: 600,
-      //   color: '#917248', // Gold
+      //   color: mode === 'dark' ? '#bbbbbb' : '#917248',
       // },
       // body1: {
       //   fontSize: '1rem',
       //   lineHeight: 1.5,
-      //   color: '#333333', // Dark Gray Text
-      // },
-      // button: {
-      //   textTransform: 'none',
-      //   fontSize: '1rem',
+      //   color: mode === 'dark' ? '#e0e0e0' : '#333333',
       // },
     },
     components: {
@@ -68,7 +70,6 @@ const theme = (mode: 'dark' | 'light') =>
         styleOverrides: {
           root: {
             borderRadius: 8,
-            // boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
             padding: '10px 20px',
             '&:hover': {
               boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.15)',
@@ -82,6 +83,7 @@ const theme = (mode: 'dark' | 'light') =>
             padding: '20px',
             borderRadius: 20,
             boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+            backgroundColor: mode === 'dark' ? '#1e1e1e' : '#ffffff',
           },
         },
       },
@@ -90,6 +92,7 @@ const theme = (mode: 'dark' | 'light') =>
           root: {
             borderRadius: 20,
             boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+            backgroundColor: mode === 'dark' ? '#1e1e1e' : '#ffffff',
           },
         },
       },
@@ -98,11 +101,11 @@ const theme = (mode: 'dark' | 'light') =>
           root: {
             borderRadius: 20,
             '&.Mui-selected': {
-              background: '#f99326',
+              background: mode === 'dark' ? '#f99326' : '#f99326',
               color: '#fff',
             },
             '&.Mui-selected:hover': {
-              background: '#d3893a',
+              background: mode === 'dark' ? '#d3893a' : '#d3893a',
               color: '#fff',
             },
           },
@@ -111,7 +114,7 @@ const theme = (mode: 'dark' | 'light') =>
       MuiListItemIcon: {
         styleOverrides: {
           root: {
-            color: 'inherit',
+            color: mode === 'dark' ? '#ffffff' : 'inherit',
           },
         },
       },

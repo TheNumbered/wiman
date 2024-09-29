@@ -26,12 +26,17 @@ export const adminMenuItems = [
   { label: 'Home', icon: <HomeOutlined />, route: '/dashboard' },
   { label: 'Manage Users', icon: <GroupOutlined />, route: '/admin/manage-users' },
   { label: 'Manage Bookings', icon: <EventAvailableOutlined />, route: '/admin/manage-bookings' },
-  { label: 'Maintenance ', icon: <AssessmentOutlined />, route: '/admin/issues' },
+  { label: 'Advanced Issues', icon: <AssessmentOutlined />, route: '/admin/issues' },
 ];
 
 export const maintenanceMenuItems = [
   { label: 'Home', icon: <HomeOutlined />, route: '/dashboard' },
   { label: 'Issues', icon: <PanTool />, route: '/maintenance' },
+  {
+    label: 'Activity',
+    icon: <NotificationsOutlined />,
+    route: '/activity',
+  },
 ];
 export const adminSecondaryMenuItems = [
   {

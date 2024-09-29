@@ -129,7 +129,9 @@ export default function Issues() {
   };
 
   return (
-    <Container sx={{ background: '#fff', width: '-webkit-fill-available', pt: { xs: 2, md: 0 } }}>
+    <Container
+      sx={{ background: 'background.paper', width: '-webkit-fill-available', pt: { xs: 2, md: 0 } }}
+    >
       <div style={{ display: 'flex' }}>
         {view === 'list' && (
           <>

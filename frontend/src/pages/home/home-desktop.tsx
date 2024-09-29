@@ -10,13 +10,14 @@ import {
   styled,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // Styled components
-const SearchInput = styled(TextField)(() => ({
-  backgroundColor: '#E7F0FB',
+const SearchInput = styled(TextField)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#E7F0FB',
   borderRadius: '25px',
   '& .MuiOutlinedInput-root': {
     '& fieldset': { borderColor: 'transparent' },
@@ -28,7 +29,6 @@ const SearchInput = styled(TextField)(() => ({
 // Data for filter buttons
 const filterButtons = [
   { label: 'All', value: '' },
-  // { label: 'Currently Available', value: 'Available' },
   { label: 'Lecture Hall', value: 'Lecture' },
   { label: 'Tutorial Venue', value: 'Tutorial' },
   { label: 'Hall', value: 'Hall' },
@@ -36,14 +36,16 @@ const filterButtons = [
   { label: 'East Campus', value: 'East Campus' },
   { label: 'West Campus', value: 'West Campus' },
 ];
+
 const FilterButton = styled(Button)(({ theme }) => ({
   borderRadius: '25px',
   textTransform: 'none',
   padding: '5px 15px',
   borderColor: theme.palette.primary.main,
   color: theme.palette.text.primary,
+  backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#fff',
   '&:hover': {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.mode === 'dark' ? '#555' : theme.palette.primary.light,
     borderColor: theme.palette.primary.main,
   },
 }));
@@ -53,6 +55,7 @@ const HomeDesktop: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState<string>('');
   const [filteredVenues, setFilteredVenues] = React.useState<Venue[]>([]);
   const location = useLocation();
+  const theme = useTheme(); // Access the theme to apply mode-specific styles
 
   const { data } = useGetQuery({
     resource: 'api/venues',
@@ -115,11 +118,18 @@ const HomeDesktop: React.FC = () => {
             variant="outlined"
             onClick={() => handleFilterClick(filter.value)}
             sx={{
-              backgroundColor: filter.value === '' ? '#007bff' : '#fff',
-              color: filter.value === '' ? '#fff' : '#000',
-              borderColor: '#007bff',
+              backgroundColor:
+                filter.value === '' ? theme.palette.primary.main : theme.palette.background.paper,
+              color:
+                filter.value === ''
+                  ? theme.palette.primary.contrastText
+                  : theme.palette.text.primary,
+              borderColor: theme.palette.primary.main,
               '&:hover': {
-                backgroundColor: filter.value === '' ? '#0056b3' : '#f5f5f5',
+                backgroundColor:
+                  filter.value === ''
+                    ? theme.palette.primary.dark
+                    : theme.palette.background.default,
               },
             }}
           >
@@ -136,7 +146,7 @@ const HomeDesktop: React.FC = () => {
               style={{ textDecoration: 'none' }}
               state={{ venue }}
             >
-              <Card>
+              <Card sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#fff' }}>
                 <CardMedia
                   component="img"
                   height="140"
@@ -144,12 +154,16 @@ const HomeDesktop: React.FC = () => {
                   alt={`Room ${venue.venueId}`}
                 />
                 <CardContent>
-                  <Typography variant="h6">
+                  <Typography variant="h6" color={theme.palette.text.primary}>
                     {venue.buildingName} - {venue.venueId}
                   </Typography>
-                  <Typography>Size: {venue.capacity}</Typography>
-                  <Typography>Type: {venue.type}</Typography>
-                  <Typography>Location: {venue.campusName}</Typography>
+                  <Typography color={theme.palette.text.secondary}>
+                    Size: {venue.capacity}
+                  </Typography>
+                  <Typography color={theme.palette.text.secondary}>Type: {venue.type}</Typography>
+                  <Typography color={theme.palette.text.secondary}>
+                    Location: {venue.campusName}
+                  </Typography>
                 </CardContent>
               </Card>
             </Link>

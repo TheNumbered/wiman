@@ -27,7 +27,7 @@ const NoCardSelected = () => (
 const BookingsPage: React.FC = () => {
   const [selectedBooking, setSelectedBooking] = useState<Bookings | null>(null);
   return (
-    <Container sx={{ background: '#fff', width: '100%', pt: { xs: 2, md: 0 }, height: '100vh' }}>
+    <Container sx={{ width: '100%', pt: { xs: 2, md: 0 }, height: '100vh' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
         {/* BookingsList takes up 50% of the screen */}
         <Box sx={{ flex: 1, borderRight: '1px solid #ddd', overflowY: 'auto' }}>

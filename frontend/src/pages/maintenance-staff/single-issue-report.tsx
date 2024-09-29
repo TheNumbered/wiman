@@ -161,17 +161,17 @@ const SingleIssueReport = ({
           <Typography
             variant="h5"
             component="h2"
-            sx={{ fontWeight: 'bold', color: '#000', lineHeight: '0.9' }}
+            sx={{ fontWeight: 'bold', color: 'text.primary', lineHeight: '0.9' }}
           >
             {data.venueId || 'No Title Available'}
           </Typography>
           <Typography>{data.venueId || 'No Location Available'}</Typography>
           <Box my={1}>
-            <Typography color="black" variant="h6">
+            <Typography color="text.primary" variant="h6">
               Problem Description
             </Typography>
             <Typography>{data.issueDescription || 'No description provided.'}</Typography>
-            <Typography color="black" variant="h6">
+            <Typography color="text.primary" variant="h6">
               Resolution Log
             </Typography>
             {data.status !== 'Reported' ? (
@@ -253,7 +253,9 @@ const SingleIssueReport = ({
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Report Issue As Resolved</DialogTitle>
         <DialogContent>
-          <Typography sx={{ color: '#999' }}>
+          <Typography
+          // sx={{ color: '#999' }}
+          >
             You are about to report this issue as resolved to the admin. Are you sure this issue has
             been resolved as expected and the venue is ready for public use?
           </Typography>

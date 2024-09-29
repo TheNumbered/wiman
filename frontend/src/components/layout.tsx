@@ -19,7 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Box>
       <Box
         component={'section'}
-        bgcolor={'background.paper'}
+        bgcolor={'background.default'}
         sx={{
           width: '-webkit-fill-available',
           overflowY: 'scroll',

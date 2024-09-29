@@ -28,7 +28,7 @@ const HomeMobile: FC = () => {
       flexDirection="column"
       alignItems="center"
       p={4}
-      sx={{ backgroundColor: 'background.default', minHeight: '100vh' }}
+      sx={{ minHeight: '100vh' }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center" width="100%" mb={4}>
         <Typography variant="h6" fontWeight="bold" color="text.primary">
