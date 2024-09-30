@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import OtherWitsAppsModal from '../other-wits-apps';
 import SidebarItem from './item';
 import {
   adminMenuItems,
@@ -31,8 +32,9 @@ interface SidebarItemProps {
 
 const SideBar: React.FC = () => {
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
+  const [openModal, setOpenModal] = useState(false);
   const { toggleColorMode } = useColorMode();
-  const { signOut, userId } = useAuth();
+  const { signOut, userId, getToken } = useAuth();
   const isMobile = useMediaQuery('(max-width: 800px)');
   const { data: user } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
@@ -65,6 +67,25 @@ const SideBar: React.FC = () => {
     navigate(route);
     setSelectedLabel(route); // Update selected label
   };
+  const clearHistory = async () => {
+    try {
+      // Get the token for authorization
+      const token = await getToken();
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings/clear-history`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to clear history');
+      }
+      window.location.reload();
+    } catch {
+      alert('Failed to clear history');
+    }
+  };
 
   const handleProfileMenuClick = (label: string) => {
     if (label === 'Dark Mode') {
@@ -72,6 +93,15 @@ const SideBar: React.FC = () => {
     }
     if (label === 'Log Out') {
       signOut();
+    }
+    if (label === 'Clear History') {
+      clearHistory();
+    }
+    if (label === 'Other Wits Apps') {
+      setOpenModal(true); // Open modal for Wits Apps
+    }
+    if (label === 'Profile') {
+      handleNavigate('/profile'); // Make sure to define the correct route for the profile
     }
     setSelectedLabel(label); // Update selected label for profile items
   };
@@ -145,6 +175,7 @@ const SideBar: React.FC = () => {
           <BottomNavigationAction label="Profile" icon={<AccountCircleOutlined />} />
         </BottomNavigation>
       )}
+      <OtherWitsAppsModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 };
