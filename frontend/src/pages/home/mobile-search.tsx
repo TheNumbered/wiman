@@ -1,6 +1,16 @@
 import { useGetQuery } from '@/hooks';
 import { Venue } from '@/interfaces';
-import { Box, Button, Card, CardContent, Grid, styled, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  styled,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -74,6 +84,7 @@ const MobileSearch: React.FC = () => {
   const handleFilterClick = (filter: string) => {
     setSearchTerm(filter);
   };
+  const theme = useTheme(); // Access the theme to apply mode-specific styles
 
   return (
     <Box p={4} bgcolor="background.paper" borderRadius={2} boxShadow={3}>
@@ -101,11 +112,18 @@ const MobileSearch: React.FC = () => {
             variant="outlined"
             onClick={() => handleFilterClick(filter.value)}
             sx={{
-              backgroundColor: filter.value === '' ? '#007bff' : '#fff',
-              color: filter.value === '' ? '#fff' : '#000',
-              borderColor: '#007bff',
+              backgroundColor:
+                filter.value === '' ? theme.palette.primary.main : theme.palette.background.paper,
+              color:
+                filter.value === ''
+                  ? theme.palette.primary.contrastText
+                  : theme.palette.text.primary,
+              borderColor: theme.palette.primary.main,
               '&:hover': {
-                backgroundColor: filter.value === '' ? '#0056b3' : '#f5f5f5',
+                backgroundColor:
+                  filter.value === ''
+                    ? theme.palette.primary.dark
+                    : theme.palette.background.default,
               },
             }}
           >

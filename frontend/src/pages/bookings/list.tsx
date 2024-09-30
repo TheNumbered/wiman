@@ -12,8 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import BookingCard from './card';
 import { useNavigate } from 'react-router-dom';
+import BookingCard from './card';
 
 interface BookingsListProps {
   onSelectCard: (booking: Bookings) => void;

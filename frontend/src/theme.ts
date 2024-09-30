@@ -11,30 +11,30 @@ const theme = (mode: 'dark' | 'light') =>
         main: '#f99326', // Gold
       },
       background: {
-        default: mode === 'dark' ? '#121212' : '#ffffff', // Dark mode background or light mode background
-        paper: mode === 'dark' ? '#1e1e1e' : '#fafafa', // Dark mode paper or light mode paper
+        default: mode === 'dark' ? '#232323' : '#ffffff', // Soften the dark mode background
+        paper: mode === 'dark' ? '#181818' : '#fafafa', // Paper is lighter in dark mode
       },
       text: {
-        primary: mode === 'dark' ? '#ffffff' : '#333333', // White text for dark mode, dark text for light mode
-        secondary: mode === 'dark' ? '#bbbbbb' : '#666666', // Lighter text color
+        primary: mode === 'dark' ? '#e0e0e0' : '#333333', // Light gray for dark mode text
+        secondary: mode === 'dark' ? '#b0b0b0' : '#666666', // Softer text color
       },
       error: {
         main: '#f44336', // Red
         light: '#e57373', // Light Red
         dark: '#d32f2f', // Dark Red
-        contrastText: '#ffffff', // White text
+        contrastText: '#ffffff',
       },
       warning: {
         main: '#ff9800', // Orange
         light: '#ffb74d', // Light Orange
         dark: '#f57c00', // Dark Orange
-        contrastText: '#000000', // Black text
+        contrastText: '#000000',
       },
       success: {
         main: '#4caf50', // Green
         light: '#81c784', // Light Green
         dark: '#388e3c', // Dark Green
-        contrastText: '#ffffff', // White text
+        contrastText: '#ffffff',
       },
     },
     breakpoints: {
@@ -48,22 +48,6 @@ const theme = (mode: 'dark' | 'light') =>
     },
     typography: {
       fontFamily: 'Roboto, Arial, sans-serif',
-      // Example typography overrides
-      // h1: {
-      //   fontSize: '3rem',
-      //   fontWeight: 700,
-      //   color: mode === 'dark' ? '#ffffff' : '#003b5c', // Conditional color based on mode
-      // },
-      // h2: {
-      //   fontSize: '2.5rem',
-      //   fontWeight: 600,
-      //   color: mode === 'dark' ? '#bbbbbb' : '#917248',
-      // },
-      // body1: {
-      //   fontSize: '1rem',
-      //   lineHeight: 1.5,
-      //   color: mode === 'dark' ? '#e0e0e0' : '#333333',
-      // },
     },
     components: {
       MuiButton: {
@@ -72,7 +56,7 @@ const theme = (mode: 'dark' | 'light') =>
             borderRadius: 8,
             padding: '10px 20px',
             '&:hover': {
-              boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.15)',
+              boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.1)',
             },
           },
         },
@@ -83,7 +67,7 @@ const theme = (mode: 'dark' | 'light') =>
             padding: '20px',
             borderRadius: 20,
             boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
-            backgroundColor: mode === 'dark' ? '#1e1e1e' : '#ffffff',
+            backgroundColor: mode === 'dark' ? '#232323' : '#ffffff', // Lightened dark mode background
           },
         },
       },
@@ -92,7 +76,7 @@ const theme = (mode: 'dark' | 'light') =>
           root: {
             borderRadius: 20,
             boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
-            backgroundColor: mode === 'dark' ? '#1e1e1e' : '#ffffff',
+            backgroundColor: mode === 'dark' ? '#232323' : '#ffffff', // Consistent with paper
           },
         },
       },
@@ -134,7 +118,7 @@ export const scrollbarStyles = {
     borderRadius: '10px',
   },
   '&::-webkit-scrollbar-thumb:hover': {
-    backgroundColor: '#999',
+    backgroundColor: '#999', // Slight hover change
   },
   scrollbarWidth: 'thin', // Firefox
   scrollbarColor: '#ffddb8 #fff7ef', // Firefox

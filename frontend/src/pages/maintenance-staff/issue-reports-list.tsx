@@ -242,10 +242,6 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: number) => void }) => {
                 }}
               >
                 {getStatusIcon(issue.status ?? 'Reported')}
-                {
-                  /* Status */
-                  //make the color contrast
-                }
                 <Typography sx={{ width: 'max-content', color: '#333' }}>{issue.status}</Typography>
               </Box>
               <TimeAgo timestamp={new Date(issue.reportedDate).toLocaleString()} />

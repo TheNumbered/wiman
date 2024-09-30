@@ -98,7 +98,7 @@ const HomeMobile: FC = () => {
               alignContent={'center'}
               textAlign={'center'}
               sx={{
-                backgroundColor: '#FFE8CB',
+                backgroundColor: 'secondary.light',
                 cursor: 'pointer',
               }}
             >
