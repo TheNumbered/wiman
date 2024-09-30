@@ -89,7 +89,7 @@ const SideBar: React.FC = () => {
           }}
         >
           <Box mb={4}>
-            <img src="/LOGO.png" alt="Logo" />
+            <img src="/logo_1000w.png" alt="Logo" width={'250px'} />
           </Box>
           <List component="nav">
             {primaryMenuItems.map((item) => (
