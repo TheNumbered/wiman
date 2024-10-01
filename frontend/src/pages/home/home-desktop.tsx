@@ -1,12 +1,13 @@
 import { useGetQuery } from '@/hooks';
 import { Venue } from '@/interfaces';
-import { AccountBalanceOutlined, EventSeatOutlined, LocationOnOutlined } from '@mui/icons-material';
+import { AccountBalanceOutlined, EventSeatOutlined } from '@mui/icons-material';
 import {
   Box,
   Button,
   Card,
   CardContent,
   CardMedia,
+  Chip,
   Grid,
   styled,
   TextField,
@@ -168,22 +169,18 @@ const HomeDesktop: React.FC = () => {
                   sx={{ borderRadius: '8px' }}
                 />
                 <CardContent component={'section'}>
-                  <Typography variant="h6">
-                    {venue.buildingName} - {venue.venueId}
-                  </Typography>
-                  <Box display={'flex'}>
-                    <EventSeatOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />
-                    <Typography>
-                      <strong>{venue.capacity}</strong> Capacity
-                    </Typography>
-                  </Box>
-                  <Box display={'flex'}>
-                    <AccountBalanceOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />
-                    <Typography>Type: {venue.type}</Typography>
-                  </Box>
-                  <Box display={'flex'}>
-                    <LocationOnOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />
-                    <Typography>{venue.campusName}</Typography>
+                  <Typography variant="h6">{venue.buildingName}</Typography>
+                  <Typography>Room: {venue.venueId}</Typography>
+                  <Typography>{venue.campusName}</Typography>
+                  <Box display={'flex'} gap={2}>
+                    <Chip
+                      icon={<EventSeatOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />}
+                      label={`${venue.capacity} Capacity`}
+                    />
+                    <Chip
+                      icon={<AccountBalanceOutlined sx={{ color: '#cdcdcd' }} />}
+                      label={`Type: ${venue.type}`}
+                    />
                   </Box>
                 </CardContent>
               </Card>
