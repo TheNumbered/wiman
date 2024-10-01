@@ -11,8 +11,9 @@ import {
   Divider,
   List,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidebarItem from './item';
 import {
@@ -30,7 +31,6 @@ interface SidebarItemProps {
 }
 
 const SideBar: React.FC = () => {
-  const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
   const { toggleColorMode } = useColorMode();
   const { signOut, userId } = useAuth();
   const isMobile = useMediaQuery('(max-width: 800px)');
@@ -38,9 +38,10 @@ const SideBar: React.FC = () => {
     resource: 'api/user/role',
   });
 
-  if (user?.banned) {
-    <BannedPage />;
-  }
+  const navigate = useNavigate();
+  const theme = useTheme();
+
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
 
   const userRole = user?.role;
   const primaryMenuItems: SidebarItemProps[] =
@@ -53,6 +54,18 @@ const SideBar: React.FC = () => {
   const secondaryMenuItems: SidebarItemProps[] =
     userRole === 'admin' ? adminSecondaryMenuItems : profileMenuItems;
 
+  // Set the first item as the default selected label if none is selected
+  useEffect(() => {
+    if (!selectedLabel && primaryMenuItems.length > 0) {
+      setSelectedLabel(primaryMenuItems[0].route || primaryMenuItems[0].label);
+    }
+  }, [selectedLabel, primaryMenuItems]);
+
+  // Early return to banned page if the user is banned
+  if (user?.banned) {
+    return <BannedPage />;
+  }
+
   if (userId) {
     localStorage.setItem('onesignalUserId', userId);
     if (user?.role) {
@@ -60,7 +73,6 @@ const SideBar: React.FC = () => {
     }
   }
 
-  const navigate = useNavigate();
   const handleNavigate = (route: string) => {
     navigate(route);
     setSelectedLabel(route); // Update selected label
@@ -89,7 +101,11 @@ const SideBar: React.FC = () => {
           }}
         >
           <Box mb={4}>
-            <img src="/logo_1000w.png" alt="Logo" width={'250px'} />
+            <img
+              src={theme.palette.mode === 'dark' ? '/logo_1000w_dark.png' : '/logo_1000w.png'}
+              alt="Logo"
+              width={'250px'}
+            />
           </Box>
           <List component="nav">
             {primaryMenuItems.map((item) => (
@@ -137,6 +153,8 @@ const SideBar: React.FC = () => {
             right: 0,
             zIndex: 1100,
             bgcolor: 'background.paper',
+            padding: '2.5rem 1rem',
+            borderTop: '1px solid #999',
           }}
         >
           {primaryMenuItems.map((item) => (

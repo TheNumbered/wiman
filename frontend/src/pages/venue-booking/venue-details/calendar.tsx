@@ -91,14 +91,23 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, reservationsData }) =
                 padding: 1,
                 width: '40px',
                 height: '40px',
+                transition: '.1s all ease-in',
                 backgroundColor: isSameMonth(day, monthStart)
                   ? isSameDay(day, selectedDate)
                     ? 'primary.main'
                     : isBooked
                       ? theme.palette.secondary.main
-                      : theme.palette.background.default
-                  : 'text.disabled',
-                color: isSameDay(day, selectedDate) || isBooked ? 'white' : 'text.primary',
+                      : 'inherit'
+                  : 'inherit',
+                color:
+                  isSameDay(day, selectedDate) || isBooked
+                    ? 'white'
+                    : isSameMonth(day, monthStart)
+                      ? 'text.primary'
+                      : 'text.disabled',
+                '&:hover': {
+                  bgcolor: theme.palette.secondary.light,
+                },
                 borderRadius: '50%',
                 margin: 'auto',
               }}

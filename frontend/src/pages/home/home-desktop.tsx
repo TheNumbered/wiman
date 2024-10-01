@@ -1,5 +1,6 @@
 import { useGetQuery } from '@/hooks';
 import { Venue } from '@/interfaces';
+import { AccountBalanceOutlined, EventSeatOutlined, LocationOnOutlined } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -18,6 +19,7 @@ import { Link, useLocation } from 'react-router-dom';
 // Styled components
 const SearchInput = styled(TextField)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#E7F0FB',
+
   borderRadius: '25px',
   '& .MuiOutlinedInput-root': {
     '& fieldset': { borderColor: 'transparent' },
@@ -60,7 +62,6 @@ const HomeDesktop: React.FC = () => {
   const { data } = useGetQuery({
     resource: 'api/venues',
   });
-
   useEffect(() => {
     if (data) {
       //@ts-ignore
@@ -94,7 +95,14 @@ const HomeDesktop: React.FC = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: 'background.default', padding: 4, overflow: 'auto' }}>
+    <Box
+      sx={{
+        backgroundColor: 'background.default',
+        padding: 4,
+        overflow: 'auto',
+        p: { xs: '1rem', md: 1 },
+      }}
+    >
       <SearchInput
         fullWidth
         variant="outlined"
@@ -146,24 +154,37 @@ const HomeDesktop: React.FC = () => {
               style={{ textDecoration: 'none' }}
               state={{ venue }}
             >
-              <Card sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#fff' }}>
+              <Card
+                sx={{
+                  backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#fff',
+                  height: '100%',
+                }}
+              >
                 <CardMedia
                   component="img"
                   height="140"
                   image={venue.imageUrl ?? 'https://via.placeholder.com/140'}
                   alt={`Room ${venue.venueId}`}
+                  sx={{ borderRadius: '8px' }}
                 />
-                <CardContent>
-                  <Typography variant="h6" color={theme.palette.text.primary}>
+                <CardContent component={'section'}>
+                  <Typography variant="h6">
                     {venue.buildingName} - {venue.venueId}
                   </Typography>
-                  <Typography color={theme.palette.text.secondary}>
-                    Size: {venue.capacity}
-                  </Typography>
-                  <Typography color={theme.palette.text.secondary}>Type: {venue.type}</Typography>
-                  <Typography color={theme.palette.text.secondary}>
-                    Location: {venue.campusName}
-                  </Typography>
+                  <Box display={'flex'}>
+                    <EventSeatOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />
+                    <Typography>
+                      <strong>{venue.capacity}</strong> Capacity
+                    </Typography>
+                  </Box>
+                  <Box display={'flex'}>
+                    <AccountBalanceOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />
+                    <Typography>Type: {venue.type}</Typography>
+                  </Box>
+                  <Box display={'flex'}>
+                    <LocationOnOutlined sx={{ color: '#cdcdcd', marginRight: '0.5rem' }} />
+                    <Typography>{venue.campusName}</Typography>
+                  </Box>
                 </CardContent>
               </Card>
             </Link>

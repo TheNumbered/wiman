@@ -3,10 +3,9 @@ import { MaintenanceIssue } from '@/interfaces';
 import {
   Box,
   Button,
-  Card,
   CardContent,
-  CardMedia,
   Chip,
+  Container,
   MenuItem,
   Modal,
   Paper,
@@ -20,11 +19,25 @@ interface MaintenanceIssueDetailsProps {
   issue: MaintenanceIssue | null;
 }
 
+const getParsedAmenities = (amenities: any) => {
+  if (Array.isArray(amenities)) {
+    return amenities;
+  }
+
+  try {
+    return typeof amenities === 'string' ? JSON.parse(amenities) : [];
+  } catch (error) {
+    console.error('Failed to parse amenities:', error);
+    return [];
+  }
+};
+
 const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue }) => {
   const [openModal, setOpenModal] = useState(false);
   const [capacity, setCapacity] = useState<number>(0); // Default state
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [isUnderMaintenance, setIsUnderMaintenance] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // Track selected image
 
   const { mutate: updateVenue } = useUpdateMutation({
     resource: 'api/admin/update-venue',
@@ -36,13 +49,49 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
   useEffect(() => {
     if (issue) {
       setCapacity(issue.capacity);
-      setSelectedAmenities(issue.amenities);
+      const amenitiesArray =
+        typeof issue.amenities === 'string' ? JSON.parse(issue.amenities) : issue.amenities;
+      setSelectedAmenities(amenitiesArray);
       setIsUnderMaintenance(issue.underMaintenance === 1);
+      setSelectedImage(null);
     }
   }, [issue]);
 
   if (!issue) {
-    return <Typography variant="h6">Select an issue to view its details</Typography>;
+    return (
+      <Box sx={{ flex: '1' }}>
+        <Box
+          sx={{
+            height: '80vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <img style={{ width: '15rem' }} src="/illustration.svg" alt="illustration" />
+          <h2 style={{ marginBottom: '0' }}>No report is selected yet</h2>
+          <p style={{ color: '#777', margin: '0' }}>
+            Choose a report on the left menu to view its details
+          </p>
+        </Box>
+      </Box>
+    );
+  }
+
+  // Parse maintenanceImageUrl if it's a JSON array
+  let images: string[] = [];
+  try {
+    if (issue.maintenanceImageUrl) {
+      images = JSON.parse(issue.maintenanceImageUrl) || [];
+    }
+  } catch (error) {
+    console.error('Failed to parse image URLs:', error);
+    images = [issue.maintenanceImageUrl];
+  }
+
+  if (selectedImage === null) {
+    setSelectedImage(images.length > 0 ? images[0] : 'https://via.placeholder.com/400');
   }
 
   const resolutionLogData = issue.resolutionLog ? JSON.parse(issue.resolutionLog) : null;
@@ -62,14 +111,52 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
 
   return (
     <>
-      <Card sx={{ maxWidth: 600, margin: 'auto' }}>
+      <Container sx={{ maxWidth: 600, margin: 'auto', p: { xs: 0, md: 2 } }}>
         {issue.maintenanceImageUrl && (
-          <CardMedia
-            component="img"
-            image={issue.maintenanceImageUrl}
-            alt="Maintenance Issue"
-            sx={{ height: 200 }}
-          />
+          <>
+            <Box sx={{ textAlign: 'center' }}>
+              <img
+                src={selectedImage || images[0]} // Show selected image or first image by default
+                alt="Maintenance Issue"
+                style={{ width: '100%', borderRadius: '1rem', marginBottom: '1rem' }}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                marginBottom: '1rem',
+              }}
+            >
+              {images.length > 1 &&
+                images.map((imgUrl: string, index: number) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      border:
+                        selectedImage === imgUrl ? '2px solid #003b5c' : '2px solid transparent',
+                      borderRadius: '0.5rem',
+                      cursor: 'pointer',
+                      padding: '0.2rem',
+                      '&:hover': { border: '2px solid #003b5c' }, // Highlight on hover
+                    }}
+                    onClick={() => setSelectedImage(imgUrl)}
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`thumbnail-${index}`}
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        objectFit: 'cover',
+                        borderRadius: '0.5rem',
+                      }}
+                    />
+                  </Box>
+                ))}
+            </Box>
+          </>
         )}
         <CardContent>
           <Typography variant="h5" gutterBottom>
@@ -81,14 +168,27 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
           </Typography>
           <Typography variant="body1">Amenities:</Typography>
           <Box mb={2}>
-            {issue.amenities.map((amenity, index) => (
-              <Chip
-                key={index}
-                label={amenity}
-                sx={{ marginRight: 1, marginBottom: 1, cursor: 'pointer' }}
-                onClick={() => console.log(`Clicked on ${amenity}`)} // Optional click handler
-              />
-            ))}
+            {getParsedAmenities(issue.amenities).map(
+              (
+                amenity:
+                  | string
+                  | number
+                  | boolean
+                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+                  | Iterable<React.ReactNode>
+                  | React.ReactPortal
+                  | null
+                  | undefined,
+                index: React.Key | null | undefined,
+              ) => (
+                <Chip
+                  key={index}
+                  label={amenity}
+                  sx={{ marginRight: 1, marginBottom: 1, cursor: 'pointer' }}
+                  onClick={() => console.log(`Clicked on ${amenity}`)} // Optional click handler
+                />
+              ),
+            )}
           </Box>
           {resolutionLogData && (
             <Paper elevation={2} sx={{ padding: 2, marginTop: 2 }}>
@@ -108,7 +208,7 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
             Update Venue
           </Button>
         </CardContent>
-      </Card>
+      </Container>
 
       {/* Update Modal */}
       <Modal open={openModal} onClose={handleCloseModal}>

@@ -65,7 +65,11 @@ const CardDetails = ({
   >
     {useMediaQuery(useTheme().breakpoints.down('md')) && (
       <Button
-        sx={{ margin: '1rem', width: '-webkit-fill-available', height: '2rem' }}
+        sx={{
+          margin: '1rem',
+          width: ['-webkit-fill-available', '-moz-available', '100%'],
+          height: '2rem',
+        }}
         onClick={onPrev}
         variant="text"
         disableElevation
@@ -100,7 +104,7 @@ const FormView = ({
     }}
   >
     <Button
-      sx={{ marginLeft: '1rem', width: '-webkit-fill-available' }}
+      sx={{ marginLeft: '1rem', width: ['-webkit-fill-available', '-moz-available', '100%'] }}
       onClick={onPrev}
       variant="text"
       disableElevation
@@ -121,7 +125,6 @@ export default function Issues() {
   const [view, setView] = useState<'list' | 'details' | 'form' | 'setbackform'>('list'); // Manage views
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null); // Manage selected card
   const isTabletScreen = useMediaQuery(useTheme().breakpoints.up('md'));
-
   // Handlers
   const handleCardSelect = (id: number) => {
     setSelectedCardId(id);
@@ -130,7 +133,11 @@ export default function Issues() {
 
   return (
     <Container
-      sx={{ background: 'background.paper', width: '-webkit-fill-available', pt: { xs: 2, md: 0 } }}
+      sx={{
+        background: 'background.paper',
+        width: ['-webkit-fill-available', '-moz-available', '100%'],
+        pt: { xs: 2, md: 0 },
+      }}
     >
       <div style={{ display: 'flex' }}>
         {view === 'list' && (

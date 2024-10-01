@@ -74,7 +74,7 @@ const App: React.FC = () => {
             <Route path="/venue/:id" element={<RoomDetails />} />
             <Route path="/venue/booking" element={<BookVenueForm />} />
             <Route path="/mobile/search" element={<MobileSearch />} />
-            <Route path="/venue-issue-reporting" element={<IssueReportForm />} />
+            <Route path="/venue-issue-reporting/:venueId" element={<IssueReportForm />} />
           </Route>
         )}
         {isLoading && <Route path="*" element={<LoadingIndicator />} />}

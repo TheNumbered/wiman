@@ -5,10 +5,13 @@ const theme = (mode: 'dark' | 'light') =>
     palette: {
       mode: mode ?? 'light',
       primary: {
-        main: '#0159a1', // Navy Blue
+        main: mode === 'dark' ? '#5eabea;;' : '#0159a1', // Navy Blue
+        light: '#9fc1dd',
+        contrastText: mode === 'dark' ? '#111' : '#fff',
       },
       secondary: {
         main: '#f99326', // Gold
+        light: mode === 'dark' ? '#1e1e1e' : '#FFE8CB',
       },
       background: {
         default: mode === 'dark' ? '#232323' : '#ffffff', // Soften the dark mode background
@@ -120,8 +123,8 @@ export const scrollbarStyles = {
   '&::-webkit-scrollbar-thumb:hover': {
     backgroundColor: '#999', // Slight hover change
   },
-  scrollbarWidth: 'thin', // Firefox
-  scrollbarColor: '#ffddb8 #fff7ef', // Firefox
+  // scrollbarWidth: 'thin', // Firefox
+  // scrollbarColor: '#ffddb8 #fff7ef', // Firefox
 };
 
 export default theme;

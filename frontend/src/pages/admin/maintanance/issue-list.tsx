@@ -1,4 +1,14 @@
-import { Box, List, ListItemButton, ListItemText, TextField, Typography } from '@mui/material';
+import { NavigateNext } from '@mui/icons-material';
+import {
+  Box,
+  Breadcrumbs,
+  Link,
+  List,
+  ListItemButton,
+  ListItemText,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 
 interface MaintenanceIssuesListProps {
@@ -16,9 +26,33 @@ const MaintenanceIssuesList: React.FC<MaintenanceIssuesListProps> = ({ issues, o
       issue.venueId.toString().toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
+  const breadcrumbs = [
+    <Link underline="hover" key="1" color="inherit" href="/">
+      Home
+    </Link>,
+    <Link
+      underline="hover"
+      key="2"
+      color="inherit"
+      // href="/material-ui/getting-started/installation/"
+    >
+      Manage Venues
+    </Link>,
+    <Typography key="3" sx={{ color: 'text.primary' }}>
+      List Issues
+    </Typography>,
+  ];
+
   return (
-    <Box>
+    <Box pl={4}>
       {/* Search input */}
+      <Breadcrumbs
+        sx={{ marginBottom: '1rem', mt: { xs: 2, md: 0 } }}
+        separator={<NavigateNext fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
       <TextField
         label="Search Issues"
         variant="outlined"

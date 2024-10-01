@@ -3,11 +3,13 @@ import { useCreateMutation } from '@/hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const MAX_IMAGES = 5;
 
 const IssueReportForm: React.FC = () => {
-  const [venueId, setVenueId] = useState('');
+  const { venueId: urlVenueId } = useParams<{ venueId: string }>(); // Extract venueId from URL
+  const [venueId, setVenueId] = useState(urlVenueId || ''); // Initialize with URL parameter
   const [description, setDescription] = useState('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [errors, setErrors] = useState<{ venueId?: string; description?: string }>({});
@@ -43,6 +45,9 @@ const IssueReportForm: React.FC = () => {
 
     selectedImages.forEach((image) => {
       formData.append('images', image);
+    });
+    formData.forEach((item) => {
+      console.log(item);
     });
 
     createIssueMutation.mutate(formData);

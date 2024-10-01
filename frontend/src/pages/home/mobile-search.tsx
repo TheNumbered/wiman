@@ -33,8 +33,8 @@ const FilterButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const SearchInput = styled(TextField)(() => ({
-  backgroundColor: '#E7F0FB',
+const SearchInput = styled(TextField)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.light, // Access theme here
   borderRadius: '25px',
   '& .MuiOutlinedInput-root': {
     '& fieldset': { borderColor: 'transparent' },
@@ -87,7 +87,7 @@ const MobileSearch: React.FC = () => {
   const theme = useTheme(); // Access the theme to apply mode-specific styles
 
   return (
-    <Box p={4} bgcolor="background.paper" borderRadius={2} boxShadow={3}>
+    <Box p={4} bgcolor="background.paper" borderRadius={2}>
       <Box display="flex" alignItems="center">
         <SearchInput
           fullWidth
@@ -140,11 +140,11 @@ const MobileSearch: React.FC = () => {
               state={{ venue }}
             >
               <Card>
-                <CardContent sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                <CardContent sx={{ display: 'flex', alignItems: 'flex-start', padding: 0 }}>
                   <img
                     src={venue.imageUrl}
                     alt={venue.buildingName}
-                    style={{ width: 80, height: 80, marginRight: 16, borderRadius: 15 }}
+                    style={{ width: 100, height: 100, marginRight: 16, borderRadius: 15 }}
                   />
                   <Box>
                     <Typography variant="h6">{venue.buildingName}</Typography>

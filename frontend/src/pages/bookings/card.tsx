@@ -46,14 +46,14 @@ const BookingCard: React.FC<BookingCardProps> = ({
   // Determine colors based on status and theme mode (dark/light)
   const cardBackgroundColor = isCancelled
     ? theme.palette.mode === 'dark'
-      ? '#3c2f2f'
+      ? '#000'
       : '#ffebee'
     : booking.status === 'confirmed'
       ? theme.palette.mode === 'dark'
-        ? '#3e3626'
+        ? '#000'
         : '#fff7e8'
       : theme.palette.mode === 'dark'
-        ? '#424242'
+        ? '#000'
         : '#e0e0e0';
 
   const borderColor = isCancelled

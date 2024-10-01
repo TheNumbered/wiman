@@ -1,12 +1,12 @@
 import { useUser } from '@clerk/clerk-react';
-import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Button, Grid, Typography, useTheme } from '@mui/material';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const HomeMobile: FC = () => {
   const { user } = useUser();
   const navigate = useNavigate();
-
+  const theme = useTheme();
   const handleBookVenue = () => {
     navigate('/venue/booking');
   };
@@ -31,7 +31,7 @@ const HomeMobile: FC = () => {
       sx={{ minHeight: '100vh' }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center" width="100%" mb={4}>
-        <Typography variant="h6" fontWeight="bold" color="text.primary">
+        <Typography variant="h6" color="text.primary">
           Welcome, {user?.firstName}
         </Typography>
         <Avatar
@@ -47,7 +47,11 @@ const HomeMobile: FC = () => {
       </Box>
 
       <Box display="flex" justifyContent="center" width="100%" mb={4}>
-        <img src="/LOGO.png" alt="Logo" style={{ width: '280px', height: 'auto' }} />
+        <img
+          src={theme.palette.mode === 'dark' ? '/logo_1000w_dark.png' : '/logo_1000w.png'}
+          alt="Logo"
+          style={{ width: '280px', height: 'auto' }}
+        />
       </Box>
 
       <Box display="flex" gap={4} mb={4} sx={{ width: '100%', justifyContent: 'center' }}>
@@ -102,7 +106,7 @@ const HomeMobile: FC = () => {
                 cursor: 'pointer',
               }}
             >
-              <Typography variant="h6" fontWeight="bold" color="text.secondary">
+              <Typography variant="h6" fontWeight="bold" color="text.primary">
                 {item.campus}
               </Typography>
               <Typography color="text.primary">{item.subCampus}</Typography>

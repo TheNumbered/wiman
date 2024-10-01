@@ -1,5 +1,6 @@
 import { Bookings } from '@/interfaces';
-import { Box, Container } from '@mui/material';
+import { NavigateBeforeRounded } from '@mui/icons-material';
+import { Box, Button, Container, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import BookingsDetails from './bookings-details';
 import BookingsList from './list';
@@ -26,29 +27,53 @@ const NoCardSelected = () => (
 
 const BookingsPage: React.FC = () => {
   const [selectedBooking, setSelectedBooking] = useState<Bookings | null>(null);
-  return (
-    <Container sx={{ width: '100%', pt: { xs: 2, md: 0 }, height: '100vh' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-        {/* BookingsList takes up 50% of the screen */}
-        <Box sx={{ flex: 1, borderRight: '1px solid #ddd', overflowY: 'auto' }}>
-          <BookingsList onSelectCard={(booking) => setSelectedBooking(booking)} />
-        </Box>
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-        <Box
-          sx={{
-            flex: 1,
-            overflowY: 'scroll',
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
-          }}
-        >
-          {selectedBooking === null ? (
-            <NoCardSelected />
-          ) : (
+  return (
+    <Container
+      sx={{
+        width: '100%',
+        pt: { xs: 2 },
+        pb: { xs: 6, md: 0 },
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
+        {(!isSmallScreen || selectedBooking === null) && (
+          <Box sx={{ flex: 1, borderRight: '1px solid #ddd', overflowY: 'auto' }}>
+            {/* BookingsList takes up full width on small screens when no booking is selected */}
+            <BookingsList onSelectCard={(booking) => setSelectedBooking(booking)} />
+          </Box>
+        )}
+        {selectedBooking !== null && isSmallScreen ? (
+          <Box sx={{ flex: 1 }}>
+            {/* Show the details view on small screens when a booking is selected */}
+            <Button
+              onClick={() => setSelectedBooking(null)}
+              variant="text"
+              sx={{ mb: 2, width: '100%' }}
+            >
+              <NavigateBeforeRounded /> Back to List
+            </Button>
             <BookingsDetails booking={selectedBooking} />
-          )}
-        </Box>
+          </Box>
+        ) : (
+          !isSmallScreen && (
+            <Box
+              sx={{
+                flex: 1,
+              }}
+            >
+              {selectedBooking === null ? (
+                <NoCardSelected />
+              ) : (
+                <BookingsDetails booking={selectedBooking} />
+              )}
+            </Box>
+          )
+        )}
       </Box>
     </Container>
   );
