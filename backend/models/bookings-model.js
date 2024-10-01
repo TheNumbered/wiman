@@ -64,6 +64,17 @@ class Booking {
     );
     return result.affectedRows; // Returns the number of rows updated
   }
+  static async clearBookingHistory(userId) {
+    const [result] = await db.query(
+      `DELETE FROM bookings 
+       WHERE user_id = ? 
+       AND (status = 'cancelled' 
+            OR (date < CURDATE() AND (status = 'pending' OR repeat_until IS NULL))
+            OR (repeat_until < CURDATE()))`,
+      [userId],
+    );
+    return result.affectedRows; // Returns the number of rows deleted
+  }
 }
 
 export default Booking;

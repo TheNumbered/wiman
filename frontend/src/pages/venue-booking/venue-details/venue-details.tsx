@@ -93,7 +93,7 @@ const RoomDetails: React.FC = () => {
 
   const navigate = useNavigate();
   const handleNavigateClick = () => {
-    navigate('/venue-issue-reporting'); // Navigate to the desired route
+    navigate(`/venue-issue-reporting/${venue?.venueId}`); // Navigate to the desired route
   };
   const handleDateSelect = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
