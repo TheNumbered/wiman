@@ -2,7 +2,7 @@ import { ErrorNotification } from '@/components/ErrorNotification';
 import { LoadingIndicator } from '@/components/LoadingIndicator';
 import { useGetQuery } from '@/hooks';
 import { Notifications } from '@/interfaces';
-import { Divider, Typography } from '@mui/material';
+import { Divider, Paper, Typography } from '@mui/material';
 import React from 'react';
 import NotificationItem from './item';
 
@@ -34,7 +34,7 @@ const NotificationList: React.FC = () => {
   const seenNotifications = notifications.filter((notification) => notification.isRead);
 
   return (
-    <div style={{ margin: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: 20 }}>
+    <Paper style={{ margin: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: 20 }}>
       <Typography variant="h6" style={{ marginBottom: 16 }}>
         Notifications
       </Typography>
@@ -50,7 +50,7 @@ const NotificationList: React.FC = () => {
       {seenNotifications.map((notification) => (
         <NotificationItem key={notification.notificationId} notification={notification} />
       ))}
-    </div>
+    </Paper>
   );
 };
 

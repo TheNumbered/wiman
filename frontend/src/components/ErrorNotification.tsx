@@ -21,7 +21,7 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ errorMessa
       alignItems="center"
       justifyContent="center"
       height="100vh"
-      bgcolor="#f5f5f5"
+      bgcolor="background.default"
       px={2}
     >
       <Paper

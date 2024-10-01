@@ -16,7 +16,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import QuickBookVenueForm from '../form/quick-book-venue-form';
 import Calendar from './calendar';
 
@@ -91,6 +91,10 @@ const RoomDetails: React.FC = () => {
     }
   }, [venue]);
 
+  const navigate = useNavigate();
+  const handleNavigateClick = () => {
+    navigate(`/venue-issue-reporting/${venue?.venueId}`); // Navigate to the desired route
+  };
   const handleDateSelect = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     setSelectedDate(formattedDate);
@@ -107,11 +111,21 @@ const RoomDetails: React.FC = () => {
     setOpenBookingModal(false);
   };
   const theme = useTheme();
+  const venueAmenities = Array.isArray(venue.amenities)
+    ? venue.amenities
+    : JSON.parse(venue.amenities);
   return (
-    <Box component="main" sx={{ flex: 1, p: 3, bgcolor: 'background.default' }}>
+    <Box
+      component="main"
+      sx={{
+        flex: 1,
+        p: { xs: '1rem 1rem 4rem', md: 1 },
+        bgcolor: 'background.default',
+      }}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <FacilityCard>
+          <FacilityCard sx={{ p: { xs: 2, md: 3 } }}>
             <Typography variant="h6" gutterBottom>
               Venue Details
             </Typography>
@@ -130,16 +144,16 @@ const RoomDetails: React.FC = () => {
                     borderColor: theme.palette.background.default,
                     height: 235,
                     mb: 2,
+                    borderRadius: 2,
                     backgroundImage: `url(${venue.imageUrl ?? 'https://via.placeholder.com/500'})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 />
-                <Typography variant="body1">
-                  <strong>Building Name:</strong> {venueData.buildingName}
-                </Typography>
-                <Typography variant="body1">
-                  <strong>Venue Code:</strong> {venueData.venueId}
+                <Typography variant="h6" component="h2">
+                  <strong>
+                    {venueData.buildingName} | {venueData.venueId}
+                  </strong>
                 </Typography>
                 <Typography variant="body1">
                   <strong>Venue Size:</strong> {venueData.capacity} seats
@@ -158,12 +172,24 @@ const RoomDetails: React.FC = () => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <FacilityCard>
-            <Typography variant="h6" gutterBottom>
-              Reservations
-            </Typography>
+          <FacilityCard sx={{ p: 0 }}>
+            <Box
+              sx={{
+                p: 1,
+                mb: 2,
+                textAlign: 'center',
+                bgcolor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
+                borderTopRightRadius: '20px',
+                borderTopLeftRadius: '20px',
+              }}
+            >
+              <Typography variant="h6" gutterBottom mb={0}>
+                Reservations
+              </Typography>
+            </Box>
             <Calendar onDateSelect={handleDateSelect} reservationsData={reservations} />
-            <Box mt={2}>
+            <Box mt={2} p={4} sx={{ textAlign: 'center' }}>
               <Typography variant="body1">
                 <strong>
                   Reservations for{' '}
@@ -194,10 +220,10 @@ const RoomDetails: React.FC = () => {
         </Typography>
         <Grid container spacing={2}>
           {venue.amenities.length > 0 ? (
-            venue.amenities.map((amenity: string, index: number) => (
+            venueAmenities.map((amenity: string, index: number) => (
               <Grid item xs={6} md={3} key={index}>
                 <FacilityCard sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ mr: 2 }}>
+                  <Box sx={{ mr: 2, filter: 'contrast(0.5)' }}>
                     {amenityIcons[amenity] || <DefaultAmenityIcon color="primary" />}
                   </Box>
                   <Typography variant="body2" color="text.secondary">
@@ -219,6 +245,9 @@ const RoomDetails: React.FC = () => {
             onClick={() => window.history.back()}
           >
             Cancel
+          </Button>
+          <Button variant="text" onClick={handleNavigateClick}>
+            Report an issue
           </Button>
           <Button
             type="submit"

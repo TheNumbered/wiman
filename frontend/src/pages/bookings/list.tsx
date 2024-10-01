@@ -1,6 +1,5 @@
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Bookings } from '@/interfaces';
-import { scrollbarStyles } from '@/theme';
 import {
   Box,
   Breadcrumbs,
@@ -12,8 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import BookingCard from './card';
 import { useNavigate } from 'react-router-dom';
+import BookingCard from './card';
 
 interface BookingsListProps {
   onSelectCard: (booking: Bookings) => void;
@@ -71,14 +70,7 @@ const BookingsList: React.FC<BookingsListProps> = ({ onSelectCard }) => {
   }, [bookings, searchTerm, statusFilter]);
 
   return (
-    <Container
-      sx={{
-        overflowY: 'scroll',
-        height: '100vh',
-        pb: 3,
-        ...scrollbarStyles,
-      }}
-    >
+    <Container sx={{ pb: { xs: 12, md: 0 } }}>
       {/* Breadcrumbs */}
       <Box sx={{ mb: 3 }}>
         <Breadcrumbs aria-label="breadcrumb">

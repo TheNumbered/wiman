@@ -1,6 +1,16 @@
 import { useGetQuery } from '@/hooks';
 import { Venue } from '@/interfaces';
-import { Box, Button, Card, CardContent, Grid, styled, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  styled,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -23,8 +33,8 @@ const FilterButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const SearchInput = styled(TextField)(() => ({
-  backgroundColor: '#E7F0FB',
+const SearchInput = styled(TextField)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.light, // Access theme here
   borderRadius: '25px',
   '& .MuiOutlinedInput-root': {
     '& fieldset': { borderColor: 'transparent' },
@@ -74,9 +84,10 @@ const MobileSearch: React.FC = () => {
   const handleFilterClick = (filter: string) => {
     setSearchTerm(filter);
   };
+  const theme = useTheme(); // Access the theme to apply mode-specific styles
 
   return (
-    <Box p={4} bgcolor="background.paper" borderRadius={2} boxShadow={3}>
+    <Box p={4} bgcolor="background.paper" borderRadius={2}>
       <Box display="flex" alignItems="center">
         <SearchInput
           fullWidth
@@ -101,11 +112,18 @@ const MobileSearch: React.FC = () => {
             variant="outlined"
             onClick={() => handleFilterClick(filter.value)}
             sx={{
-              backgroundColor: filter.value === '' ? '#007bff' : '#fff',
-              color: filter.value === '' ? '#fff' : '#000',
-              borderColor: '#007bff',
+              backgroundColor:
+                filter.value === '' ? theme.palette.primary.main : theme.palette.background.paper,
+              color:
+                filter.value === ''
+                  ? theme.palette.primary.contrastText
+                  : theme.palette.text.primary,
+              borderColor: theme.palette.primary.main,
               '&:hover': {
-                backgroundColor: filter.value === '' ? '#0056b3' : '#f5f5f5',
+                backgroundColor:
+                  filter.value === ''
+                    ? theme.palette.primary.dark
+                    : theme.palette.background.default,
               },
             }}
           >
@@ -122,11 +140,11 @@ const MobileSearch: React.FC = () => {
               state={{ venue }}
             >
               <Card>
-                <CardContent sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                <CardContent sx={{ display: 'flex', alignItems: 'flex-start', padding: 0 }}>
                   <img
                     src={venue.imageUrl}
                     alt={venue.buildingName}
-                    style={{ width: 80, height: 80, marginRight: 16, borderRadius: 15 }}
+                    style={{ width: 100, height: 100, marginRight: 16, borderRadius: 15 }}
                   />
                   <Box>
                     <Typography variant="h6">{venue.buildingName}</Typography>

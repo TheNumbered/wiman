@@ -4,6 +4,7 @@ const storage = multer.memoryStorage(); // or use diskStorage if you want to sav
 const upload = multer({ storage });
 
 import IssueReport from '../models/issue-report-model.js';
+import NotificationService from '../services/notification.js';
 import uploadToAzureBlob from '../services/upload-azure-blob.js';
 
 export const getAllIssueReports = async (req, res) => {
@@ -86,8 +87,6 @@ export const addIssueSetBackReport = async (req, res) => {
 };
 
 export const createIssueReport = async (req, res) => {
-  console.log(req.body);
-
   // Use the upload.array middleware to handle multiple file uploads (max 5 files)
   upload.array('images', 5)(req, res, async (err) => {
     if (err) {
@@ -117,6 +116,19 @@ export const createIssueReport = async (req, res) => {
         description,
         JSON.stringify(image_urls),
       );
+
+      try {
+        const notificationService = new NotificationService();
+        const content = `A new issue report has been created for venue: ${venueId}`;
+        await notificationService.pushNotification({
+          heading: 'Issue Report Created',
+          content,
+          filters: notificationService.filters.maintainerFilters,
+        });
+        console.log('Notification sent to maintainers');
+      } catch (err) {
+        console.log(err);
+      }
 
       res.status(201).send({ message: 'Issue report created' });
     } catch (err) {

@@ -35,11 +35,11 @@ export type Notifications = {
 
 export type Rooms = {
   roomId: string;
-  buildingId: number;
+  buildingId: string;
   capacity: number;
-  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
+  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING' | 'HALL';
   amenities: any;
-  imageUrl?: string;
+  imageUrl: any;
   underMaintenance: boolean;
 };
 
@@ -89,11 +89,11 @@ export type NotificationsInput = {
 
 export type RoomsInput = {
   roomId?: string;
-  buildingId: number;
+  buildingId: string;
   capacity: number;
-  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING';
+  type: 'LECTURE' | 'TUTORIAL' | 'LAB' | 'MEETING' | 'HALL';
   amenities: any;
-  imageUrl?: string;
+  imageUrl: any;
   underMaintenance: boolean;
 };
 

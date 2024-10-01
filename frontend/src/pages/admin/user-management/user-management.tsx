@@ -1,4 +1,4 @@
-import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import RoleChangeRequests from './role-change';
 import UserBanManagement from './user-ban';
@@ -6,12 +6,14 @@ import UserBanManagement from './user-ban';
 const UserManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
   return (
-    <Paper sx={{ p: 4, maxWidth: '900px', margin: '0 auto' }}>
+    <Container
+      sx={{ p: { xs: 2, md: 4 }, pt: { xs: 3, md: 0 }, maxWidth: '900px', margin: '0 auto' }}
+    >
       <Typography variant="h4" gutterBottom color="primary" align="center">
         USER MANAGEMENT
       </Typography>
@@ -34,7 +36,7 @@ const UserManagement: React.FC = () => {
         {activeTab === 0 && <RoleChangeRequests />}
         {activeTab === 1 && <UserBanManagement />}
       </Box>
-    </Paper>
+    </Container>
   );
 };
 

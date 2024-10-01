@@ -2,17 +2,19 @@ import { useGetQuery } from '@/hooks';
 import { Bookings, Venue } from '@/interfaces';
 import Calendar from '../venue-booking/venue-details/calendar';
 
-import { getRecurringDates } from '@/utils';
+import { ErrorNotification } from '@/components/ErrorNotification';
+import { formatDate, getRecurringDates } from '@/utils';
 import {
   Alert,
   Box,
   Card,
   CardContent,
   CardMedia,
+  Chip,
   CircularProgress,
+  Divider,
   Typography,
 } from '@mui/material';
-import { ErrorNotification } from '@/components/ErrorNotification';
 
 interface BookingsDetailsProps {
   booking: Bookings;
@@ -32,7 +34,6 @@ const BookingsDetails: React.FC<BookingsDetailsProps> = ({ booking }) => {
   } = useGetQuery<Venue[]>({
     resource: 'api/venues',
   });
-
   if (isError) {
     return (
       <ErrorNotification
@@ -53,9 +54,20 @@ const BookingsDetails: React.FC<BookingsDetailsProps> = ({ booking }) => {
   }
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3, overflow: 'scroll', maxHeight: '100vh', pb: { xs: 12, md: 0 } }}>
       {/* Venue Calendar */}
-      <Card sx={{ mb: 3 }}>
+      <Box mb={2}>
+        <Typography variant={'h4'}>{booking.eventName}</Typography>
+        <Typography mb={2}>{formatDate(booking.date)}</Typography>
+        {booking.repeatFrequency == 'none' ? (
+          <Chip label={'Once-Off'} />
+        ) : (
+          <Chip label={booking.repeatFrequency} />
+        )}
+      </Box>
+
+      <Divider textAlign={'center'}> Venue Details </Divider>
+      <Card sx={{ mb: 3, mt: 2 }}>
         <Calendar reservationsData={reservationsData} onDateSelect={() => {}} />
       </Card>
       {/* Venue Information */}
@@ -79,7 +91,10 @@ const BookingsDetails: React.FC<BookingsDetailsProps> = ({ booking }) => {
             <strong>Capacity:</strong> {venue.capacity}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <strong>Amenities:</strong> {venue.amenities.join(', ')}
+            <strong>Amenities:</strong>{' '}
+            {Array.isArray(venue.amenities)
+              ? venue.amenities.join(', ')
+              : JSON.parse(venue.amenities).join(', ')}
           </Typography>
         </CardContent>
       </Card>

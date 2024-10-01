@@ -8,6 +8,11 @@ class Booking {
     return rows.map(toCamelCase);
   }
 
+  static async getBookingById(id) {
+    const [rows] = await db.query('SELECT * FROM bookings WHERE booking_id = ?', [id]);
+    return rows.map(toCamelCase);
+  }
+
   // Get active bookings for a user
   static async getBookingsByUserId(userId) {
     const [rows] = await db.query(
@@ -63,6 +68,17 @@ class Booking {
       [id],
     );
     return result.affectedRows; // Returns the number of rows updated
+  }
+  static async clearBookingHistory(userId) {
+    const [result] = await db.query(
+      `DELETE FROM bookings 
+       WHERE user_id = ? 
+       AND (status = 'cancelled' 
+            OR (date < CURDATE() AND (status = 'pending' OR repeat_until IS NULL))
+            OR (repeat_until < CURDATE()))`,
+      [userId],
+    );
+    return result.affectedRows; // Returns the number of rows deleted
   }
 }
 

@@ -38,10 +38,11 @@ export const fetchBuildingData = async () => {
       lastFetchTime = Date.now(); // Update the cache time
       return cachedBuildingData;
     } else {
-      throw new Error('Failed to fetch building data');
+      console.error('Error fetching building data:', response.data.data.message);
+      return [];
     }
   } catch (error) {
     console.error('Error fetching building data:', error.message);
-    throw new Error('Error fetching building data');
+    return [];
   }
 };

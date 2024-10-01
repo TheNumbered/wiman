@@ -1,6 +1,15 @@
 import { Bookings } from '@/interfaces';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box, Card, CardContent, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import React, { useState } from 'react';
 
 interface BookingCardProps {
@@ -16,6 +25,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
   onRebooking,
   onSelectCard,
 }) => {
+  const theme = useTheme(); // Access the current theme (light/dark mode)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,18 +43,38 @@ const BookingCard: React.FC<BookingCardProps> = ({
   const status =
     booking.status === 'pending' && isPastDate ? 'Not Confirmed In Time' : booking.status;
 
-  // Determine colors based on status
+  // Determine colors based on status and theme mode (dark/light)
   const cardBackgroundColor = isCancelled
-    ? '#ffebee'
+    ? theme.palette.mode === 'dark'
+      ? '#000'
+      : '#ffebee'
     : booking.status === 'confirmed'
-      ? '#fff7e8'
-      : '#e0e0e0';
+      ? theme.palette.mode === 'dark'
+        ? '#000'
+        : '#fff7e8'
+      : theme.palette.mode === 'dark'
+        ? '#000'
+        : '#e0e0e0';
+
   const borderColor = isCancelled
-    ? '#ffcccb'
+    ? theme.palette.mode === 'dark'
+      ? '#a77171'
+      : '#ffcccb'
     : booking.status === 'confirmed'
-      ? '#1565c0'
-      : '#bdbdbd';
-  const dateColor = isCancelled ? '#9e9e9e' : '#1565c0';
+      ? theme.palette.mode === 'dark'
+        ? '#ffb74d'
+        : '#1565c0'
+      : theme.palette.mode === 'dark'
+        ? '#616161'
+        : '#bdbdbd';
+
+  const dateColor = isCancelled
+    ? theme.palette.mode === 'dark'
+      ? '#aaaaaa'
+      : '#9e9e9e'
+    : theme.palette.mode === 'dark'
+      ? '#ffcc80'
+      : '#1565c0';
 
   return (
     <div
@@ -82,6 +112,10 @@ const BookingCard: React.FC<BookingCardProps> = ({
           borderLeft: `5px solid ${borderColor}`, // Light version of card color for the left border
           padding: 0,
           borderRadius: 3,
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? '0 3px 6px rgba(0,0,0,0.6)'
+              : '0 3px 6px rgba(0,0,0,0.1)',
         }}
       >
         {/* Details Section */}

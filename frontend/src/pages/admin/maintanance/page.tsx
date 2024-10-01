@@ -18,14 +18,14 @@ const MaintenanceIssuesPage = () => {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container p={{ xs: 2, md: 0 }} spacing={2}>
       {/* Left Side: List of Issues */}
-      <Grid item xs={4}>
+      <Grid item xs={12} md={5} pl={{ xs: 0, md: 8 }}>
         <MaintenanceIssuesList issues={data || []} onIssueClick={handleIssueClick} />
       </Grid>
 
       {/* Right Side: Detailed View */}
-      <Grid item xs={8}>
+      <Grid item xs={12} md={7}>
         <MaintenanceIssueDetails issue={selectedIssue} />
       </Grid>
     </Grid>

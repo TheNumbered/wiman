@@ -1,4 +1,5 @@
 import Booking from '../models/bookings-model.js';
+import NotificationService from '../services/notification.js';
 
 // Fetch all bookings
 export const getAllBookings = async (req, res) => {
@@ -79,6 +80,24 @@ export const cancelBooking = async (req, res) => {
     }
     const { reasonForCancellation } = req.body;
     await Booking.cancelBooking(id, reasonForCancellation);
+
+    try {
+      if (reasonForCancellation) {
+        const updatedBooking = await Booking.getBookingStatus(id);
+        // Send notification to the user
+        const notificationService = new NotificationService();
+        const userId = updatedBooking.userId;
+        const content = `Your booking for ${updatedBooking.eventName} has been cancelled, reason: ${reasonForCancellation}`;
+        await notificationService.pushNotification({
+          heading: 'Booking Cancelled',
+          content,
+          userIds: [userId], // Send to the specific user
+        });
+        console.log(`Notification sent to user`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
     res.status(200).json({ message: 'Booking cancelled' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -93,7 +112,40 @@ export const confirmBooking = async (req, res) => {
       return res.status(400).json({ error: 'Invalid booking ID' });
     }
     await Booking.confirmBooking(id);
+
+    try {
+      const updatedBooking = await Booking.getBookingStatus(id);
+      // Send notification to the user
+      const notificationService = new NotificationService();
+      const userId = updatedBooking.userId;
+      const content = `Your booking for event: ${updatedBooking.eventName} has been confirmed`;
+      await notificationService.pushNotification({
+        heading: 'Booking Confirmed',
+        content,
+        userIds: [userId], // Send to the specific user
+      });
+      console.log(`Notification sent to user`);
+    } catch (err) {
+      console.log(err);
+    }
+
     res.status(200).json({ message: 'Booking confirmed' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Clear booking history for a specific user
+export const clearUserBookingHistory = async (req, res) => {
+  try {
+    const { userId } = req.auth; // Assuming userId is retrieved from authentication middleware
+    const deletedCount = await Booking.clearBookingHistory(userId);
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ message: 'No bookings to clear for this user.' });
+    }
+
+    res.status(200).json({ message: `${deletedCount} bookings cleared for user ${userId}.` });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

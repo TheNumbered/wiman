@@ -11,9 +11,11 @@ import {
   Divider,
   List,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import OtherWitsAppsModal from '../other-wits-apps';
 import SidebarItem from './item';
 import {
   adminMenuItems,
@@ -31,16 +33,16 @@ interface SidebarItemProps {
 
 const SideBar: React.FC = () => {
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
+  const [openModal, setOpenModal] = useState(false);
   const { toggleColorMode } = useColorMode();
-  const { signOut, userId } = useAuth();
+  const { signOut, userId, getToken } = useAuth();
   const isMobile = useMediaQuery('(max-width: 800px)');
   const { data: user } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
   });
 
-  if (user?.banned) {
-    <BannedPage />;
-  }
+  const navigate = useNavigate();
+  const theme = useTheme();
 
   const userRole = user?.role;
   const primaryMenuItems: SidebarItemProps[] =
@@ -53,6 +55,18 @@ const SideBar: React.FC = () => {
   const secondaryMenuItems: SidebarItemProps[] =
     userRole === 'admin' ? adminSecondaryMenuItems : profileMenuItems;
 
+  // Set the first item as the default selected label if none is selected
+  useEffect(() => {
+    if (!selectedLabel && primaryMenuItems.length > 0) {
+      setSelectedLabel(primaryMenuItems[0]?.route || primaryMenuItems[0].label);
+    }
+  }, [selectedLabel, primaryMenuItems]);
+
+  // Early return to banned page if the user is banned
+  if (user?.banned) {
+    return <BannedPage />;
+  }
+
   if (userId) {
     localStorage.setItem('onesignalUserId', userId);
     if (user?.role) {
@@ -60,10 +74,28 @@ const SideBar: React.FC = () => {
     }
   }
 
-  const navigate = useNavigate();
   const handleNavigate = (route: string) => {
     navigate(route);
     setSelectedLabel(route); // Update selected label
+  };
+  const clearHistory = async () => {
+    try {
+      // Get the token for authorization
+      const token = await getToken();
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings/clear-history`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to clear history');
+      }
+      window.location.reload();
+    } catch {
+      alert('Failed to clear history');
+    }
   };
 
   const handleProfileMenuClick = (label: string) => {
@@ -72,6 +104,15 @@ const SideBar: React.FC = () => {
     }
     if (label === 'Log Out') {
       signOut();
+    }
+    if (label === 'Clear History') {
+      clearHistory();
+    }
+    if (label === 'Other Wits Apps') {
+      setOpenModal(true); // Open modal for Wits Apps
+    }
+    if (label === 'Profile') {
+      handleNavigate('/profile'); // Make sure to define the correct route for the profile
     }
     setSelectedLabel(label); // Update selected label for profile items
   };
@@ -89,7 +130,11 @@ const SideBar: React.FC = () => {
           }}
         >
           <Box mb={4}>
-            <img src="/LOGO.png" alt="Logo" />
+            <img
+              src={theme.palette.mode === 'dark' ? '/logo_1000w_dark.png' : '/logo_1000w.png'}
+              alt="Logo"
+              width={'250px'}
+            />
           </Box>
           <List component="nav">
             {primaryMenuItems.map((item) => (
@@ -124,7 +169,12 @@ const SideBar: React.FC = () => {
       ) : (
         <BottomNavigation
           value={primaryMenuItems.findIndex((item) => item.route === selectedLabel)}
-          onChange={(__, newValue) => {
+          onChange={(_, newValue) => {
+            if (newValue === 3) {
+              handleNavigate('/profile');
+              setSelectedLabel('/profile');
+              return;
+            }
             setSelectedLabel(primaryMenuItems[newValue].route || primaryMenuItems[newValue].label);
             if (primaryMenuItems[newValue].route) handleNavigate(primaryMenuItems[newValue].route);
             if (!primaryMenuItems[newValue].route)
@@ -137,6 +187,8 @@ const SideBar: React.FC = () => {
             right: 0,
             zIndex: 1100,
             bgcolor: 'background.paper',
+            padding: '2.5rem 1rem',
+            borderTop: '1px solid #999',
           }}
         >
           {primaryMenuItems.map((item) => (
@@ -145,6 +197,7 @@ const SideBar: React.FC = () => {
           <BottomNavigationAction label="Profile" icon={<AccountCircleOutlined />} />
         </BottomNavigation>
       )}
+      <OtherWitsAppsModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 };

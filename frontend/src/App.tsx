@@ -15,6 +15,7 @@ import HomePage from './pages/home/home';
 import MobileSearch from './pages/home/mobile-search';
 import IssueReportForm from './pages/issue-reporting';
 import Issues from './pages/maintenance-staff/maintenance-reports-layout';
+import MobileProfilePage from './pages/mobile-profile/profile';
 import SignInPage from './pages/sign-in';
 import SignUpPage from './pages/sign-up';
 import { BookVenueForm } from './pages/venue-booking/form/book-venue-form';
@@ -55,7 +56,7 @@ const App: React.FC = () => {
           >
             {user?.role === 'admin' && (
               <>
-                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/manage-users" element={<UserManagement />} />
                 <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
                 <Route path="/admin/issues" element={<MaintenanceIssuesPage />} />
@@ -74,7 +75,8 @@ const App: React.FC = () => {
             <Route path="/venue/:id" element={<RoomDetails />} />
             <Route path="/venue/booking" element={<BookVenueForm />} />
             <Route path="/mobile/search" element={<MobileSearch />} />
-            <Route path="/venue-issue-reporting" element={<IssueReportForm />} />
+            <Route path="/venue-issue-reporting/:venueId" element={<IssueReportForm />} />
+            <Route path="/profile" element={<MobileProfilePage />} />
           </Route>
         )}
         {isLoading && <Route path="*" element={<LoadingIndicator />} />}
@@ -95,7 +97,15 @@ const App: React.FC = () => {
           element={isSignedIn ? <Navigate to={'/dashboard'} /> : <Navigate to={'/sign-in'} />}
         />
 
-        <Route path="*" element={<>No Route Found</>} />
+        <Route
+          path="*"
+          element={
+            <ErrorNotification
+              errorMessage="Page not found"
+              onRetry={() => window.location.reload()}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
