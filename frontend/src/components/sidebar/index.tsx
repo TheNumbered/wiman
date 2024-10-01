@@ -58,7 +58,7 @@ const SideBar: React.FC = () => {
   // Set the first item as the default selected label if none is selected
   useEffect(() => {
     if (!selectedLabel && primaryMenuItems.length > 0) {
-      setSelectedLabel(primaryMenuItems[0].route || primaryMenuItems[0].label);
+      setSelectedLabel(primaryMenuItems[0]?.route || primaryMenuItems[0].label);
     }
   }, [selectedLabel, primaryMenuItems]);
 
@@ -169,7 +169,12 @@ const SideBar: React.FC = () => {
       ) : (
         <BottomNavigation
           value={primaryMenuItems.findIndex((item) => item.route === selectedLabel)}
-          onChange={(__, newValue) => {
+          onChange={(_, newValue) => {
+            if (newValue === 3) {
+              handleNavigate('/profile');
+              setSelectedLabel('/profile');
+              return;
+            }
             setSelectedLabel(primaryMenuItems[newValue].route || primaryMenuItems[newValue].label);
             if (primaryMenuItems[newValue].route) handleNavigate(primaryMenuItems[newValue].route);
             if (!primaryMenuItems[newValue].route)

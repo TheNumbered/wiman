@@ -56,7 +56,7 @@ const App: React.FC = () => {
           >
             {user?.role === 'admin' && (
               <>
-                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/manage-users" element={<UserManagement />} />
                 <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
                 <Route path="/admin/issues" element={<MaintenanceIssuesPage />} />

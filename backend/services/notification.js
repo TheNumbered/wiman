@@ -31,9 +31,13 @@ class NotificationService {
         notification.include_aliases = {
           external_id: userIds,
         };
+        notification.target_channel = 'push';
       }
 
-      notification.filters = filters;
+      if (filters.length > 0) {
+        notification.filters = filters;
+      }
+
       const response = await this.client.createNotification(notification);
       return response;
     } catch (error) {

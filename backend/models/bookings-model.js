@@ -8,6 +8,11 @@ class Booking {
     return rows.map(toCamelCase);
   }
 
+  static async getBookingById(id) {
+    const [rows] = await db.query('SELECT * FROM bookings WHERE booking_id = ?', [id]);
+    return rows.map(toCamelCase);
+  }
+
   // Get active bookings for a user
   static async getBookingsByUserId(userId) {
     const [rows] = await db.query(

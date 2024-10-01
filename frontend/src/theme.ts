@@ -5,7 +5,7 @@ const theme = (mode: 'dark' | 'light') =>
     palette: {
       mode: mode ?? 'light',
       primary: {
-        main: mode === 'dark' ? '#5eabea;;' : '#0159a1', // Navy Blue
+        main: mode === 'dark' ? '#5eabea' : '#0159a1', // Navy Blue
         light: '#9fc1dd',
         contrastText: mode === 'dark' ? '#111' : '#fff',
       },

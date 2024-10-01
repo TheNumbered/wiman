@@ -39,11 +39,14 @@ createRoot(document.getElementById('root')!).render(
             colorSuccess: currentTheme.palette.success.main,
             colorWarning: currentTheme.palette.warning.main,
             //colorNeutral: theme.palette.grey[500],
-            //colorBackground: theme.palette.background.default,
-            //   colorText: theme.palette.text.primary,
+            colorBackground:
+              currentColorMode === 'light' ? currentTheme.palette.background.default : '#333',
+            colorText: currentTheme.palette.text.primary,
             //   colorTextOnPrimaryBackground: theme.palette.primary.contrastText,
-            //colorTextSecondary: theme.palette.secondary.main,
-            //   colorInputText: theme.palette.text.primary,
+            colorTextSecondary:
+              currentColorMode === 'light' ? currentTheme.palette.text.secondary : '#fff',
+            colorInputText:
+              currentColorMode === 'light' ? currentTheme.palette.text.primary : '#fff',
             fontFamily: currentTheme.typography.fontFamily,
             fontFamilyButtons: currentTheme.typography.fontFamily,
             //   fontSize: '0.875rem',
