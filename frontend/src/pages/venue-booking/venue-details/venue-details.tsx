@@ -1,4 +1,4 @@
-import { ErrorNotification } from '@/components/ErrorNotification';
+import ErrorComponent from '@/components/error-component';
 import { LoadingIndicator } from '@/components/LoadingIndicator';
 import { useGetQuery } from '@/hooks';
 import DefaultAmenityIcon from '@mui/icons-material/CheckCircleOutline';
@@ -132,7 +132,7 @@ const RoomDetails: React.FC = () => {
             {loading ? (
               <LoadingIndicator />
             ) : error ? (
-              <ErrorNotification
+              <ErrorComponent
                 errorMessage="Failed to load venue data"
                 onRetry={() => window.location.reload()}
               />

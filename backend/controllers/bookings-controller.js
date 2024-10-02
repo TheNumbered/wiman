@@ -134,19 +134,3 @@ export const confirmBooking = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// Clear booking history for a specific user
-export const clearUserBookingHistory = async (req, res) => {
-  try {
-    const { userId } = req.auth; // Assuming userId is retrieved from authentication middleware
-    const deletedCount = await Booking.clearBookingHistory(userId);
-
-    if (deletedCount === 0) {
-      return res.status(404).json({ message: 'No bookings to clear for this user.' });
-    }
-
-    res.status(200).json({ message: `${deletedCount} bookings cleared for user ${userId}.` });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};

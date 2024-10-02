@@ -1,4 +1,4 @@
-import { ErrorNotification } from '@/components/ErrorNotification';
+import ErrorComponent from '@/components/error-component';
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Users } from '@/interfaces';
 import {
@@ -59,10 +59,10 @@ const RoleChangeRequests: React.FC = () => {
 
   if (isError) {
     return (
-      <ErrorNotification
+      <ErrorComponent
         errorMessage="Failed to load notifications"
         onRetry={() => location.reload()}
-      ></ErrorNotification>
+      ></ErrorComponent>
     );
   }
 

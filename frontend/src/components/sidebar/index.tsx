@@ -1,6 +1,6 @@
 import { useGetQuery } from '@/hooks';
+import { useClearHistory } from '@/hooks/clear-history';
 import { Users } from '@/interfaces';
-import BannedPage from '@/pages/banned';
 import { useColorMode } from '@/theme-provider';
 import { useAuth } from '@clerk/clerk-react';
 import { AccountCircleOutlined } from '@mui/icons-material';
@@ -35,7 +35,8 @@ const SideBar: React.FC = () => {
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null); // Track selected label
   const [openModal, setOpenModal] = useState(false);
   const { toggleColorMode } = useColorMode();
-  const { signOut, userId, getToken } = useAuth();
+  const { signOut } = useAuth();
+  const { clearHistory } = useClearHistory();
   const isMobile = useMediaQuery('(max-width: 800px)');
   const { data: user } = useGetQuery<{ role: Users['role']; banned: boolean }>({
     resource: 'api/user/role',
@@ -62,40 +63,9 @@ const SideBar: React.FC = () => {
     }
   }, [selectedLabel, primaryMenuItems]);
 
-  // Early return to banned page if the user is banned
-  if (user?.banned) {
-    return <BannedPage />;
-  }
-
-  if (userId) {
-    localStorage.setItem('onesignalUserId', userId);
-    if (user?.role) {
-      localStorage.setItem('onesignalUserRole', user.role);
-    }
-  }
-
   const handleNavigate = (route: string) => {
     navigate(route);
     setSelectedLabel(route); // Update selected label
-  };
-  const clearHistory = async () => {
-    try {
-      // Get the token for authorization
-      const token = await getToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings/clear-history`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to clear history');
-      }
-      window.location.reload();
-    } catch {
-      alert('Failed to clear history');
-    }
   };
 
   const handleProfileMenuClick = (label: string) => {
@@ -168,6 +138,7 @@ const SideBar: React.FC = () => {
         </Box>
       ) : (
         <BottomNavigation
+          showLabels
           value={primaryMenuItems.findIndex((item) => item.route === selectedLabel)}
           onChange={(_, newValue) => {
             if (newValue === 3) {

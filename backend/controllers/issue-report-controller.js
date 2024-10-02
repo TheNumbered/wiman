@@ -95,7 +95,8 @@ export const createIssueReport = async (req, res) => {
     }
 
     try {
-      const { venueId, description } = req.body;
+      const { venueId } = req.params;
+      const { description } = req.body;
       let reported_by = req.auth?.userId; // Assuming you are using some form of auth to get the user ID
 
       let image_urls = null;

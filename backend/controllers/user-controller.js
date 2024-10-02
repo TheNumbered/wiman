@@ -49,3 +49,18 @@ export const updateUserRole = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const clearUserHistory = async (req, res) => {
+  try {
+    const { userId } = req.auth;
+    const deletedCount = await User.clearHistory(userId);
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ message: 'No History to clear for this user.' });
+    }
+
+    res.status(200).json({ message: `${deletedCount} rows cleared for user ${userId}.` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

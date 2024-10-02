@@ -25,6 +25,21 @@ class User {
     const [rows] = await db.query('SELECT role, blocked FROM users WHERE user_id = ?', [id]);
     return toCamelCase(rows[0]);
   }
+
+  static async clearHistory(userId) {
+    const [result] = await db.query(
+      `DELETE FROM bookings 
+       WHERE user_id = ? 
+       AND (status = 'cancelled' 
+            OR (date < CURDATE() AND (status = 'pending' OR repeat_until IS NULL))
+            OR (repeat_until < CURDATE()))`,
+      [userId],
+    );
+
+    // Delete notifications for the user
+    const [result2] = await db.query('DELETE FROM notifications WHERE user_id = ?', [userId]);
+    return result.affectedRows + result2.affectedRows;
+  }
 }
 
 export default User;

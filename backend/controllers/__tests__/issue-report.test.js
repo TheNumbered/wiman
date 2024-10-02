@@ -19,7 +19,7 @@ vi.mock('../services/upload-azure-blob.js', () =>
 
 app.get('/api/issue-reports', IssueReportController.getAllIssueReports);
 app.get('/api/issue-reports/:id', IssueReportController.getIssueReportById);
-app.post('/api/issue-reports', IssueReportController.createIssueReport);
+app.post('/api/venues/:venueId/create-issue', IssueReportController.createIssueReport);
 app.put('/api/issue-reports/:id/review', IssueReportController.addReviewToIssueReportReview);
 app.put('/api/issue-reports/:id/setback', IssueReportController.addIssueSetBackReport);
 app.put('/api/issue-reports/:id/close', IssueReportController.closeIssueReport);
@@ -133,8 +133,7 @@ describe('Issue Report Routes', () => {
 
     // Simulate a POST request without file upload
     const response = await request(app)
-      .post('/api/issue-reports')
-      .field('venueId', '123')
+      .post('/api/venues/123/create-issue')
       .field('description', 'Broken window');
 
     // Ensure the createIssueReport method is called with null for image_url

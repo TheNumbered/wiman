@@ -15,7 +15,7 @@ const IssueReportForm: React.FC = () => {
   const [errors, setErrors] = useState<{ venueId?: string; description?: string }>({});
 
   const createIssueMutation = useCreateMutation({
-    resource: 'api/maintenance/issue-report',
+    resource: `api/venues/${venueId}/issue-report`,
     contentType: 'empty',
     onSuccessMessage: 'Issue report created successfully!',
     invalidateKeys: ['issue-reports'],
@@ -148,6 +148,7 @@ const IssueReportForm: React.FC = () => {
             onChange={(e) => setVenueId(e.target.value)}
             error={!!errors.venueId}
             helperText={errors.venueId || ''}
+            disabled
           />
         </Grid>
 

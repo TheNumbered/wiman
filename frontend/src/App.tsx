@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import { ErrorNotification } from './components/ErrorNotification';
+import ErrorComponent from './components/error-component';
 import Layout from './components/layout';
 import { LoadingIndicator } from './components/LoadingIndicator';
 import { useGetQuery } from './hooks';
@@ -27,7 +27,7 @@ interface User {
 }
 
 const App: React.FC = () => {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded, userId } = useAuth();
   const {
     data: user,
     isLoading,
@@ -40,6 +40,12 @@ const App: React.FC = () => {
     return <LoadingIndicator />;
   }
 
+  if (userId) {
+    localStorage.setItem('onesignalUserId', userId);
+    if (user?.role) {
+      localStorage.setItem('onesignalUserRole', user.role);
+    }
+  }
   return (
     <BrowserRouter>
       <Routes>
@@ -84,7 +90,8 @@ const App: React.FC = () => {
           <Route
             path="*"
             element={
-              <ErrorNotification
+              <ErrorComponent
+                errorTitle="Server Error"
                 errorMessage="A network error occurred"
                 onRetry={() => window.location.reload()}
               />
@@ -100,7 +107,7 @@ const App: React.FC = () => {
         <Route
           path="*"
           element={
-            <ErrorNotification
+            <ErrorComponent
               errorMessage="Page not found"
               onRetry={() => window.location.reload()}
             />

@@ -18,8 +18,8 @@ const HomeMobile: FC = () => {
   const campuses = [
     { campus: 'Braamfontein', subCampus: 'East Campus' },
     { campus: 'Braamfontein', subCampus: 'West Campus' },
-    { campus: 'Parktown', subCampus: 'Education Campus' },
-    { campus: 'Parktown', subCampus: 'Health Science Campus' },
+    // { campus: 'Parktown', subCampus: 'Education Campus' },
+    // { campus: 'Parktown', subCampus: 'Health Science Campus' },
   ];
 
   return (
@@ -27,8 +27,8 @@ const HomeMobile: FC = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      p={4}
-      sx={{ minHeight: '100vh' }}
+      p={2}
+      sx={{ minHeight: '100vh', overflowY: 'none' }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center" width="100%" mb={4}>
         <Typography variant="h6" color="text.primary">
@@ -54,7 +54,7 @@ const HomeMobile: FC = () => {
         />
       </Box>
 
-      <Box display="flex" gap={4} mb={4} sx={{ width: '100%', justifyContent: 'center' }}>
+      <Box display="flex" gap={1} mb={4} sx={{ width: '100%', justifyContent: 'center' }}>
         <Button
           variant="contained"
           color="primary"
