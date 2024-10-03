@@ -62,7 +62,7 @@ const UserBanManagement: React.FC = () => {
       />
 
       <TableContainer>
-        <Table sx={{ minWidth: 650 }}>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>
@@ -70,7 +70,7 @@ const UserBanManagement: React.FC = () => {
                   Name
                 </Typography>
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="right">
                 <Typography variant="h6" color="text.secondary">
                   Actions
                 </Typography>
@@ -91,7 +91,7 @@ const UserBanManagement: React.FC = () => {
                   </div>
                 </TableCell>
 
-                <TableCell>
+                <TableCell align="right">
                   <Button
                     variant="contained"
                     sx={{

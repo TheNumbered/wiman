@@ -83,7 +83,7 @@ export const cancelBooking = async (req, res) => {
 
     try {
       if (reasonForCancellation) {
-        const updatedBooking = await Booking.getBookingStatus(id);
+        const updatedBooking = await Booking.getBookingById(id);
         // Send notification to the user
         const notificationService = new NotificationService();
         const userId = updatedBooking.userId;
@@ -93,7 +93,6 @@ export const cancelBooking = async (req, res) => {
           content,
           userIds: [userId], // Send to the specific user
         });
-        console.log(`Notification sent to user`);
       }
     } catch (err) {
       console.log(err);
@@ -114,7 +113,7 @@ export const confirmBooking = async (req, res) => {
     await Booking.confirmBooking(id);
 
     try {
-      const updatedBooking = await Booking.getBookingStatus(id);
+      const updatedBooking = await Booking.getBookingById(id);
       // Send notification to the user
       const notificationService = new NotificationService();
       const userId = updatedBooking.userId;
@@ -124,7 +123,6 @@ export const confirmBooking = async (req, res) => {
         content,
         userIds: [userId], // Send to the specific user
       });
-      console.log(`Notification sent to user`);
     } catch (err) {
       console.log(err);
     }

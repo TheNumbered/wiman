@@ -1,10 +1,9 @@
 import { useUpdateMutation } from '@/hooks';
-import { MaintenanceIssue } from '@/interfaces';
+import { AdvancedIssue } from '@/interfaces';
 import {
   Box,
   Button,
   CardContent,
-  Chip,
   Container,
   MenuItem,
   Modal,
@@ -14,26 +13,15 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import CancelVenueBookingsModal from './cancel-venue-bookings';
 
-interface MaintenanceIssueDetailsProps {
-  issue: MaintenanceIssue | null;
+interface IssueDetailsProps {
+  issue: AdvancedIssue | null;
 }
 
-const getParsedAmenities = (amenities: any) => {
-  if (Array.isArray(amenities)) {
-    return amenities;
-  }
-
-  try {
-    return typeof amenities === 'string' ? JSON.parse(amenities) : [];
-  } catch (error) {
-    console.error('Failed to parse amenities:', error);
-    return [];
-  }
-};
-
-const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue }) => {
+const IssueDetails: React.FC<IssueDetailsProps> = ({ issue }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
   const [capacity, setCapacity] = useState<number>(0); // Default state
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [isUnderMaintenance, setIsUnderMaintenance] = useState<boolean>(false);
@@ -82,12 +70,12 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
   // Parse maintenanceImageUrl if it's a JSON array
   let images: string[] = [];
   try {
-    if (issue.maintenanceImageUrl) {
-      images = JSON.parse(issue.maintenanceImageUrl) || [];
+    if (issue.issueImages) {
+      images = JSON.parse(issue.issueImages) || [];
     }
   } catch (error) {
     console.error('Failed to parse image URLs:', error);
-    images = [issue.maintenanceImageUrl];
+    images = [issue.issueImages];
   }
 
   if (selectedImage === null) {
@@ -112,7 +100,7 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
   return (
     <>
       <Container sx={{ maxWidth: 600, margin: 'auto', p: { xs: 0, md: 2 } }}>
-        {issue.maintenanceImageUrl && (
+        {issue.issueImages && (
           <>
             <Box sx={{ textAlign: 'center' }}>
               <img
@@ -163,33 +151,11 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
             Issue Details
           </Typography>
           <Typography variant="body1">Description: {issue.issueDescription}</Typography>
-          <Typography variant="body1">
-            Under Maintenance: {issue.underMaintenance ? 'Yes' : 'No'}
-          </Typography>
-          <Typography variant="body1">Amenities:</Typography>
-          <Box mb={2}>
-            {getParsedAmenities(issue.amenities).map(
-              (
-                amenity:
-                  | string
-                  | number
-                  | boolean
-                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-                  | Iterable<React.ReactNode>
-                  | React.ReactPortal
-                  | null
-                  | undefined,
-                index: React.Key | null | undefined,
-              ) => (
-                <Chip
-                  key={index}
-                  label={amenity}
-                  sx={{ marginRight: 1, marginBottom: 1, cursor: 'pointer' }}
-                  onClick={() => console.log(`Clicked on ${amenity}`)} // Optional click handler
-                />
-              ),
-            )}
-          </Box>
+          {issue.venueId !== 'N/A' && (
+            <Typography variant="body1">
+              Venue Under Maintenance: {issue.underMaintenance ? 'Yes' : 'No'}
+            </Typography>
+          )}
           {resolutionLogData && (
             <Paper elevation={2} sx={{ padding: 2, marginTop: 2 }}>
               <Typography variant="h6">Resolution Log:</Typography>
@@ -204,9 +170,23 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
               </Typography>
             </Paper>
           )}
-          <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleOpenModal}>
-            Update Venue
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '1rem' }}>
+            {issue.venueId !== 'N/A' && (
+              <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleOpenModal}>
+                Update Venue
+              </Button>
+            )}
+            {issue.venueId !== 'N/A' && (
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ marginTop: 2 }}
+                onClick={() => setOpenCancelBookingModal(true)}
+              >
+                Cancel Bookings
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Container>
 
@@ -214,11 +194,12 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box
           sx={{
-            width: 400,
+            width: 340,
             margin: 'auto',
             padding: 4,
-            backgroundColor: 'white',
+            backgroundColor: 'background.paper',
             marginTop: '15%',
+            borderRadius: '1rem',
           }}
         >
           <Typography variant="h6" gutterBottom>
@@ -270,8 +251,14 @@ const MaintenanceIssueDetails: React.FC<MaintenanceIssueDetailsProps> = ({ issue
           </Box>
         </Box>
       </Modal>
+      {openCancelBookingModal && (
+        <CancelVenueBookingsModal
+          onClose={() => setOpenCancelBookingModal(false)}
+          venueId={issue.venueId}
+        />
+      )}
     </>
   );
 };
 
-export default MaintenanceIssueDetails;
+export default IssueDetails;

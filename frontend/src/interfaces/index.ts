@@ -15,9 +15,10 @@ export interface Venue {
   };
 }
 
-export interface MaintenanceIssue {
+export interface AdvancedIssue {
+  issueId: string;
   issueDescription: string;
-  maintenanceImageUrl: string; // updated field
+  issueImages: any;
   resolutionLog: string | null;
   amenities: string[];
   underMaintenance: number;
@@ -31,4 +32,17 @@ export interface IssueReport {
   issueDescription: string;
   status: 'Reported' | 'In Progress' | 'Resolved';
   resolutionLog: string | null;
+}
+
+export interface SecurityReport {
+  uid: string;
+  reportID: number;
+  removed: boolean;
+  geoLocation: string; // as "-26.1873281, 27.9856566"
+  description: string;
+  location: string;
+  urgencyLevel: string;
+  status: string;
+  timestamp: { _seconds: number; _nanoseconds: number };
+  imageUrls: any;
 }

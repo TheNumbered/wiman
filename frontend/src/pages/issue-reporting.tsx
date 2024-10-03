@@ -8,8 +8,7 @@ import { useParams } from 'react-router-dom';
 const MAX_IMAGES = 5;
 
 const IssueReportForm: React.FC = () => {
-  const { venueId: urlVenueId } = useParams<{ venueId: string }>(); // Extract venueId from URL
-  const [venueId, setVenueId] = useState(urlVenueId || ''); // Initialize with URL parameter
+  const { venueId } = useParams<{ venueId: string }>(); // Extract venueId from URL
   const [description, setDescription] = useState('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [errors, setErrors] = useState<{ venueId?: string; description?: string }>({});
@@ -26,10 +25,6 @@ const IssueReportForm: React.FC = () => {
     let hasError = false;
 
     const validationErrors: { venueId?: string; description?: string } = {};
-    if (!venueId) {
-      validationErrors.venueId = 'Venue ID is required';
-      hasError = true;
-    }
     if (!description) {
       validationErrors.description = 'Description is required';
       hasError = true;
@@ -40,7 +35,6 @@ const IssueReportForm: React.FC = () => {
     if (hasError) return;
 
     const formData = new FormData();
-    formData.append('venueId', venueId);
     formData.append('description', description);
 
     selectedImages.forEach((image) => {
@@ -51,7 +45,6 @@ const IssueReportForm: React.FC = () => {
     });
 
     createIssueMutation.mutate(formData);
-    setVenueId('');
     setDescription('');
     setSelectedImages([]);
   };
@@ -145,7 +138,6 @@ const IssueReportForm: React.FC = () => {
             label="Venue ID"
             fullWidth
             value={venueId}
-            onChange={(e) => setVenueId(e.target.value)}
             error={!!errors.venueId}
             helperText={errors.venueId || ''}
             disabled

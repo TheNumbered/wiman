@@ -23,14 +23,21 @@ const DashboardCards: React.FC = () => {
     <div style={{ position: 'relative' }}>
       <IconButton
         onClick={handleClick}
-        style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 1 }} // Position the icon
+        style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          zIndex: 1,
+          backgroundColor: '#f5f5f5',
+        }} // Position the icon
+        color="primary"
       >
         <NotificationsIcon />
       </IconButton>
       <Notifications anchorEl={anchorEl} onClose={handleClose} open={open} />{' '}
       {/* Pass props to Notifications */}
       <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-        <Grid item xs={12} sm={6} md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6">Booking Requests</Typography>
@@ -41,7 +48,7 @@ const DashboardCards: React.FC = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6">Maintenance Efficiency</Typography>

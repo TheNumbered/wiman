@@ -7,7 +7,7 @@ import { useGetQuery } from './hooks';
 import NotificationList from './pages/activities/list';
 import BookingRequestsModal from './pages/admin/booking/BookingRequestsModal';
 import AdminDashboard from './pages/admin/dashboard';
-import MaintenanceIssuesPage from './pages/admin/maintanance/page';
+import MaintenanceIssuesPage from './pages/admin/issues/page';
 import UserManagement from './pages/admin/user-management/user-management';
 import BannedPage from './pages/banned';
 import BookingPage from './pages/bookings/page';

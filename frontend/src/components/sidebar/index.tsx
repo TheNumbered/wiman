@@ -92,7 +92,7 @@ const SideBar: React.FC = () => {
       {!isMobile ? (
         <Box
           sx={{
-            overflowY: 'hidden',
+            overflow: 'hidden',
             height: '100vh',
             width: '16rem',
             bgcolor: 'background.paper',
@@ -141,9 +141,9 @@ const SideBar: React.FC = () => {
           showLabels
           value={primaryMenuItems.findIndex((item) => item.route === selectedLabel)}
           onChange={(_, newValue) => {
-            if (newValue === 3) {
+            if (newValue === primaryMenuItems.length) {
               handleNavigate('/profile');
-              setSelectedLabel('/profile');
+              setSelectedLabel('Profile');
               return;
             }
             setSelectedLabel(primaryMenuItems[newValue].route || primaryMenuItems[newValue].label);

@@ -10,7 +10,7 @@ class Booking {
 
   static async getBookingById(id) {
     const [rows] = await db.query('SELECT * FROM bookings WHERE booking_id = ?', [id]);
-    return rows.map(toCamelCase);
+    return toCamelCase(rows[0]);
   }
 
   // Get active bookings for a user
