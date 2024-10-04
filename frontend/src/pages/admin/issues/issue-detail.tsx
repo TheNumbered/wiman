@@ -73,8 +73,8 @@ const IssueDetails: React.FC<IssueDetailsProps> = ({ issue }) => {
     if (issue.issueImages) {
       images = JSON.parse(issue.issueImages) || [];
     }
-  } catch (error) {
-    console.error('Failed to parse image URLs:', error);
+  } catch {
+    //console.error('Failed to parse image URLs:', error);
     images = [issue.issueImages];
   }
 
@@ -99,7 +99,15 @@ const IssueDetails: React.FC<IssueDetailsProps> = ({ issue }) => {
 
   return (
     <>
-      <Container sx={{ maxWidth: 600, margin: 'auto', p: { xs: 0, md: 2 } }}>
+      <Container
+        sx={{
+          maxWidth: 600,
+          margin: 'auto',
+          p: { xs: 0, md: 2 },
+          border: '1px solid #ddd',
+          borderRadius: '1rem',
+        }}
+      >
         {issue.issueImages && (
           <>
             <Box sx={{ textAlign: 'center' }}>

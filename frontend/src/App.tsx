@@ -5,7 +5,7 @@ import Layout from './components/layout';
 import { LoadingIndicator } from './components/LoadingIndicator';
 import { useGetQuery } from './hooks';
 import NotificationList from './pages/activities/list';
-import BookingRequestsModal from './pages/admin/booking/BookingRequestsModal';
+import BookingRequestsModal from './pages/admin/booking/booking-request';
 import AdminDashboard from './pages/admin/dashboard';
 import MaintenanceIssuesPage from './pages/admin/issues/page';
 import UserManagement from './pages/admin/user-management/user-management';

@@ -1,6 +1,6 @@
 import { useGetQuery } from '@/hooks';
 import { AdvancedIssue } from '@/interfaces';
-import { NavigateNext } from '@mui/icons-material';
+import { Build, NavigateNext, Security } from '@mui/icons-material';
 import {
   Box,
   Breadcrumbs,
@@ -8,6 +8,7 @@ import {
   Link,
   List,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   TextField,
   Typography,
@@ -21,37 +22,41 @@ interface IssuesListProps {
 
 const IssuesList: React.FC<IssuesListProps> = ({ onIssueClick }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [typeFilter, setTypeFilter] = useState<string | null>(null); // Track the filter type
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const itemsPerPage = 5; // Items to show per page
 
-  const { data } = useGetQuery<AdvancedIssue[]>({
+  // Fetch maintenance issues
+  const { data: maintenanceIssues } = useGetQuery<AdvancedIssue[]>({
     resource: 'api/admin/issues-in-progress',
   });
+
+  // Fetch security issues
   const securityIssues = useSecurityIssues();
 
-  // Filtered issues from both API data and security issues
-  let filteredMaintenaceIssues = (data || []).filter(
+  // Filter the maintenance issues based on search query
+  const filteredMaintenanceIssues = (maintenanceIssues || []).filter(
     (issue) =>
       issue.issueDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
       issue.venueId.toString().toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  let filteredSecurityIssues = securityIssues.filter(
+  // Filter the security issues based on search query
+  const filteredSecurityIssues = securityIssues.filter(
     (issue) =>
       issue.issueDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
       issue.venueId.toString().toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  // Filter by type
+  // Apply type filter logic
+  let combinedIssues = [];
   if (typeFilter === 'maintenance') {
-    filteredSecurityIssues = [];
+    combinedIssues = filteredMaintenanceIssues; // Show only maintenance issues
   } else if (typeFilter === 'security') {
-    filteredMaintenaceIssues = [];
+    combinedIssues = filteredSecurityIssues; // Show only security issues
+  } else {
+    combinedIssues = [...filteredMaintenanceIssues, ...filteredSecurityIssues]; // Show both
   }
-
-  // Combine both filtered lists
-  const combinedIssues = [...filteredMaintenaceIssues, ...filteredSecurityIssues];
 
   // Pagination logic
   const totalItems = combinedIssues.length;
@@ -78,7 +83,7 @@ const IssuesList: React.FC<IssuesListProps> = ({ onIssueClick }) => {
 
   return (
     <Box pl={4}>
-      {/* Search input */}
+      {/* Breadcrumbs */}
       <Breadcrumbs
         sx={{ marginBottom: '1rem', mt: { xs: 2, md: 0 } }}
         separator={<NavigateNext fontSize="small" />}
@@ -86,6 +91,8 @@ const IssuesList: React.FC<IssuesListProps> = ({ onIssueClick }) => {
       >
         {breadcrumbs}
       </Breadcrumbs>
+
+      {/* Search input */}
       <TextField
         label="Search Issues"
         variant="outlined"
@@ -119,9 +126,9 @@ const IssuesList: React.FC<IssuesListProps> = ({ onIssueClick }) => {
 
       {/* Issues list */}
       <List>
-        {paginatedIssues.map((issue) => (
+        {paginatedIssues.map((issue, index) => (
           <ListItemButton
-            key={issue?.issueId + issue.venueId}
+            key={index}
             divider
             onClick={() => onIssueClick(issue)}
             sx={{
@@ -129,6 +136,15 @@ const IssuesList: React.FC<IssuesListProps> = ({ onIssueClick }) => {
               borderRadius: 1,
             }}
           >
+            <ListItemIcon>
+              {/* Conditional icon rendering based on issue type */}
+              {typeFilter === 'maintenance' ||
+              (combinedIssues.includes(issue) && filteredMaintenanceIssues.includes(issue)) ? (
+                <Build color="primary" /> // Hammer icon for maintenance issues
+              ) : (
+                <Security color="secondary" /> // Shield icon for security issues
+              )}
+            </ListItemIcon>
             <ListItemText
               primary={`Issue: ${issue.issueDescription}`}
               secondary={

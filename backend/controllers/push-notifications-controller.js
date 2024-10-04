@@ -15,7 +15,6 @@ export const sendReminders = async () => {
 
       for (const booking of bookingsToRemind) {
         const {
-          date,
           bookingId,
           userId,
           eventName,

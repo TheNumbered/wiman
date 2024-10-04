@@ -20,8 +20,8 @@ const findVenuesNearIssue = (issue: Issue, venues: Venue[], radius: number) => {
   let issueLocation;
   try {
     issueLocation = parseGeoLocation(issue.geoLocation);
-  } catch (error) {
-    console.error('Error parsing geoLocation:', error);
+  } catch {
+    // console.error('Error parsing geoLocation:', error);
     return [];
   }
 
@@ -73,7 +73,7 @@ const useSecurityIssues = () => {
 
   useEffect(() => {
     if (reports.length > 0 && venuesData) {
-      const radius = 200;
+      const radius = 500;
 
       // Map each security report to an AdvancedIssue
       const issues = reports.map((report) => {
