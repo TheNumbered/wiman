@@ -1,4 +1,4 @@
-import { useGetQuery, useUpdateMutation } from '@/hooks';
+import { useCreateMutation, useGetQuery, useUpdateMutation } from '@/hooks';
 import { Bookings as BookingInterface } from '@/interfaces';
 import {
   Button,
@@ -28,6 +28,11 @@ const CancelVenueBookingsModal = ({
     invalidateKeys: ['api/admin/bookings'],
   });
 
+  const { mutate: notifyRecurringBooking } = useCreateMutation({
+    resource: 'api/admin/notify/user',
+    onSuccessMessage: 'Notification sent to organizer successfully!',
+  });
+
   // Filter to exclude cancelled bookings
   const venueBookings = bookings?.filter(
     (booking) => booking.venueId === venueId && booking.status !== 'cancelled',
@@ -42,9 +47,13 @@ const CancelVenueBookingsModal = ({
     });
   };
 
-  const handleNotifyRecurringBooking = (bookingId: number) => {
-    // Logic to send notification for recurring bookings
-    console.log(`Notify recurring booking: ${bookingId}`);
+  const handleNotifyRecurringBooking = (booking: BookingInterface) => {
+    notifyRecurringBooking({
+      userId: booking.userId,
+      heading: 'Booking Cancellation',
+      message: `Your booking for ${booking.eventName} at ${booking.venueId} has been cancelled due to issues with the venue, but the rest of the bookings are still on.`,
+      route: '/bookings',
+    });
   };
 
   return (
@@ -82,9 +91,9 @@ const CancelVenueBookingsModal = ({
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => handleNotifyRecurringBooking(booking.bookingId)}
+                    onClick={() => handleNotifyRecurringBooking(booking)}
                   >
-                    Notify Organizer
+                    Cancel once and notify
                   </Button>
                 )}
               </CardActions>

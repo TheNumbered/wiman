@@ -7,6 +7,12 @@ import * as IssueReportController from '../issue-report-controller.js';
 const app = express();
 app.use(express.json());
 
+vi.mock('./push-notifications-controller.js', {
+  onBookingCancelled: vi.fn(),
+  onBookingConfirmed: vi.fn(),
+  onIssueReportCreated: vi.fn(),
+});
+
 // Middleware to simulate authentication
 app.use((req, res, next) => {
   req.auth = { userId: 'test_user' };

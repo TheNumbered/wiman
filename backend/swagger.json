@@ -750,6 +750,82 @@
         "x-swagger-router-controller": "Admin"
       }
     },
+    "/admin/notify/user": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Send notification to a user",
+        "description": "Send a notification to a specific user.",
+        "operationId": "notifyUser",
+        "requestBody": {
+          "description": "Notification details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "ID of the user to notify"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "description": "Heading of the notification",
+                    "example": "New Notification"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Message content of the notification",
+                    "example": "You have a new message!"
+                  },
+                  "route": {
+                    "type": "string",
+                    "description": "Optional route for the notification",
+                    "example": "/messages"
+                  }
+                },
+                "required": ["userId", "message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notification sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Notification sent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+
     "/admin/bookings/approve/{id}": {
       "put": {
         "tags": ["Admin"],

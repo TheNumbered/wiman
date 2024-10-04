@@ -30,6 +30,7 @@
     "@azure/storage-blob": "^12.24.0",
     "@clerk/clerk-sdk-node": "^5.0.33",
     "@onesignal/node-onesignal": "5.0.0-alpha-01",
+    "node-cron": "^3.0.3",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
