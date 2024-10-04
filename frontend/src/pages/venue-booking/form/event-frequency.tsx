@@ -1,6 +1,8 @@
 import {
   Box,
+  FormControl,
   FormControlLabel,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Radio,
@@ -17,6 +19,7 @@ interface EventFrequencyProps {
   setRepeatUntil: (value: string | null) => void;
   selectedFrequency: string | null;
   setSelectedFrequency: (value: string | null) => void;
+  error: { repeatUntil?: string; selectedFrequency?: string };
 }
 
 const EventFrequency: React.FC<EventFrequencyProps> = ({
@@ -26,6 +29,7 @@ const EventFrequency: React.FC<EventFrequencyProps> = ({
   setRepeatUntil,
   selectedFrequency,
   setSelectedFrequency,
+  error,
 }) => {
   return (
     <Box sx={{ marginBottom: 3 }}>
@@ -37,23 +41,24 @@ const EventFrequency: React.FC<EventFrequencyProps> = ({
         name="frequency"
       >
         <FormControlLabel value="once" control={<Radio />} label="Only once" />
-        <FormControlLabel value="every" control={<Radio />} label="Every" />
+        <FormControlLabel value="every" control={<Radio />} label="Repeat" />
         {repeatOption === 'every' && (
-          <>
+          <FormControl variant="outlined" sx={{ mx: 1, mt: 2 }} error={!!error.selectedFrequency}>
             <Select
               value={selectedFrequency}
               onChange={(e) => setSelectedFrequency(e.target.value)}
               variant="outlined"
-              sx={{ width: '150px', mx: 1, height: '55px', mt: 2 }}
+              sx={{ height: '55px' }}
             >
               <MenuItem value="" disabled>
                 Choose a Day
               </MenuItem>
-              <MenuItem value="daily">Day</MenuItem>
-              <MenuItem value="weekly">Week</MenuItem>
-              <MenuItem value="monthly">Month</MenuItem>
+              <MenuItem value="daily">Daily</MenuItem>
+              <MenuItem value="weekly">Weekly</MenuItem>
+              <MenuItem value="monthly">Monthly</MenuItem>
             </Select>
-          </>
+            {error.selectedFrequency && <FormHelperText>{error.selectedFrequency}</FormHelperText>}
+          </FormControl>
         )}
       </RadioGroup>
       {repeatOption === 'every' && (
@@ -67,6 +72,8 @@ const EventFrequency: React.FC<EventFrequencyProps> = ({
             variant="outlined"
             fullWidth
             margin="normal"
+            error={!!error.repeatUntil}
+            helperText={error.repeatUntil || ''}
           />
         </Box>
       )}

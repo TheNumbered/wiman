@@ -5,9 +5,15 @@ interface EventDetailsProps {
   category: string;
   setCategory: (value: string) => void;
   setEventName: (value: string) => void;
+  error: { eventName?: string; category?: string };
 }
 
-const EventDetails: React.FC<EventDetailsProps> = ({ category, setCategory, setEventName }) => {
+const EventDetails: React.FC<EventDetailsProps> = ({
+  category,
+  setCategory,
+  setEventName,
+  error,
+}) => {
   return (
     <Box sx={{ marginBottom: 3 }}>
       <InputLabel shrink>
@@ -26,6 +32,8 @@ const EventDetails: React.FC<EventDetailsProps> = ({ category, setCategory, setE
           aria-required="true"
           margin="normal"
           onChange={(e) => setEventName(e.target.value)}
+          error={!!error.eventName}
+          helperText={error.eventName || ''}
         />
       </Box>
       <Box>
@@ -40,6 +48,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ category, setCategory, setE
           aria-required="true"
           value={category}
           onChange={(e) => setCategory(e.target.value as string)}
+          error={!!error.category}
         >
           <MenuItem value="">Choose Category</MenuItem>
           <MenuItem value="LECTURE">Lecture</MenuItem>

@@ -1,4 +1,5 @@
 import Booking from '../models/bookings-model.js';
+import { isAfter, isBefore, isDate } from 'date-fns';
 import { onBookingCancelled, onBookingConfirmed } from './push-notifications-controller.js';
 // Fetch all bookings
 export const getAllBookings = async (req, res) => {
@@ -43,6 +44,32 @@ export const createBooking = async (req, res) => {
 
     if (!date || !startTime || !endTime || !eventName || !venueId) {
       return res.status(400).json({ error: 'Required fields are missing' });
+    }
+
+    if (!isDate(new Date(date))) {
+      throw new Error('Invalid date format');
+    }
+
+    const start = new Date(`${date}T${startTime}`);
+    const end = new Date(`${date}T${endTime}`);
+
+    if (!isDate(start) || !isDate(end)) {
+      throw new Error('Invalid time format');
+    }
+
+    if (isAfter(start, end)) {
+      throw new Error('Start time must be before end time');
+    }
+
+    if (repeatFrequency && repeatUntil) {
+      const repeatUntilDate = new Date(repeatUntil);
+      if (!isDate(repeatUntilDate)) {
+        throw new Error('Invalid repeatUntil date format');
+      }
+
+      if (isBefore(repeatUntilDate, new Date(date))) {
+        throw new Error('repeatUntil must be after the initial booking date');
+      }
     }
 
     let nextReminder = null;

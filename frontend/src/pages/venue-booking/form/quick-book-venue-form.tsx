@@ -28,6 +28,14 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
   const [eventDate, setEventDate] = useState<string>('');
   const User = useUser().user;
   const location = useLocation();
+  const [error, setError] = useState<{
+    eventName?: string;
+    startDate?: string;
+    startTime?: string;
+    endTime?: string;
+    repeatInterval?: string;
+    repeatUntil?: string;
+  }>({});
 
   const { venue } = location.state as any;
 
@@ -64,6 +72,7 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    let hasError = false;
 
     const formElements = event.currentTarget.elements;
     const eventName = (formElements.namedItem('title') as HTMLInputElement)?.value || '';
@@ -73,6 +82,49 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
     const date = eventDate;
     const userId = User?.id;
     const repeatFrequency = frequency === 'once' ? 'none' : repeatInterval;
+
+    const validationErrors: {
+      eventName?: string;
+      startDate?: string;
+      startTime?: string;
+      endTime?: string;
+      repeatInterval?: string;
+      repeatUntil?: string;
+    } = {};
+
+    if (!eventName) {
+      validationErrors.eventName = 'Event Name is required';
+      hasError = true;
+    }
+
+    if (!date) {
+      validationErrors.startDate = 'Start Date is required';
+      hasError = true;
+    }
+
+    if (!startTime) {
+      validationErrors.startTime = 'Start Time is required';
+      hasError = true;
+    }
+
+    if (!endTime) {
+      validationErrors.endTime = 'End Time is required';
+      hasError = true;
+    }
+
+    if (frequency === 'every' && !repeatInterval) {
+      validationErrors.repeatInterval = 'Repeat Interval is required';
+      hasError = true;
+    }
+
+    if (frequency === 'every' && !repeatUntil) {
+      validationErrors.repeatUntil = 'Repeat Until is required';
+      hasError = true;
+    }
+
+    setError(validationErrors);
+
+    if (hasError) return;
 
     const formData = {
       userId,
@@ -110,6 +162,8 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
               variant="outlined"
               fullWidth
               margin="normal"
+              error={!!error.eventName}
+              helperText={error.eventName || ''}
             />
           </Box>
         </Box>
@@ -126,6 +180,8 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
                 fullWidth
                 margin="normal"
                 onChange={handleEventDateChange}
+                error={!!error.startDate}
+                helperText={error.startDate || ''}
               />
             </Grid>
             <Grid item xs={12} md={4}>
@@ -137,6 +193,8 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!error.startTime}
+                helperText={error.startTime || ''}
               />
             </Grid>
             <Grid item xs={12} md={4}>
@@ -148,6 +206,8 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!error.endTime}
+                helperText={error.endTime || ''}
               />
             </Grid>
           </Grid>
@@ -157,7 +217,7 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
           <InputLabel shrink>Frequency</InputLabel>
           <RadioGroup row value={frequency} onChange={handleFrequencyChange} name="frequency">
             <FormControlLabel value="once" control={<Radio />} label="Only once" />
-            <FormControlLabel value="every" control={<Radio />} label="Every" />
+            <FormControlLabel value="every" control={<Radio />} label="Repeat" />
           </RadioGroup>
 
           {frequency === 'every' && (
@@ -170,6 +230,8 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
                   onChange={handleRepeatIntervalChange}
                   variant="outlined"
                   fullWidth
+                  error={!!error.repeatInterval}
+                  helperText={error.repeatInterval || ''}
                 >
                   <MenuItem value="" disabled>
                     Choose Interval
@@ -189,6 +251,8 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
                   onChange={handleRepeatUntilChange}
                   variant="outlined"
                   fullWidth
+                  error={!!error.repeatUntil}
+                  helperText={error.repeatUntil || ''}
                 />
               </Box>
             </>
@@ -205,7 +269,7 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
             Cancel
           </Button>
 
-          <Button type="submit" variant="contained" color="secondary" sx={{ px: 4, py: 1.5 }}>
+          <Button type="submit" variant="contained" color="primary" sx={{ px: 4, py: 1.5 }}>
             Book
           </Button>
         </Box>

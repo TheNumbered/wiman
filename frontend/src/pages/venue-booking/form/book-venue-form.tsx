@@ -24,6 +24,18 @@ export const BookVenueForm: React.FC = () => {
   const [filteredVenuesByCategory, setFilteredVenuesByCategory] = useState<Venue[]>([]);
   const [filteredVenuesByBuilding, setFilteredVenuesByBuilding] = useState<Venue[]>([]);
   const [filteredVenuesByCapacity, setFilteredVenuesByCapacity] = useState<Venue[]>([]);
+  const [error, setError] = useState<{
+    eventName?: string;
+    category?: string;
+    eventDate?: string;
+    startTime?: string;
+    endTime?: string;
+    capacity?: string;
+    building?: string;
+    selectedFrequency?: string;
+    repeatUntil?: string;
+    selectedRoom?: string;
+  }>({});
 
   const { data: venuesData } = useGetQuery<Venue[]>({
     resource: 'api/venues',
@@ -88,6 +100,63 @@ export const BookVenueForm: React.FC = () => {
 
     const adjustedRepeatFrequency = repeatOption === 'once' ? 'none' : selectedFrequency;
 
+    const validationErrors: {
+      eventName?: string;
+      category?: string;
+      eventDate?: string;
+      startTime?: string;
+      endTime?: string;
+      capacity?: string;
+      building?: string;
+      selectedFrequency?: string;
+      repeatUntil?: string;
+      selectedRoom?: string;
+    } = {};
+
+    if (!eventName) {
+      validationErrors.eventName = 'Event Name is required';
+    }
+
+    if (!category) {
+      validationErrors.category = 'Category is required';
+    }
+
+    if (!eventDate) {
+      validationErrors.eventDate = 'Start Date is required';
+    }
+
+    if (!startTime) {
+      validationErrors.startTime = 'Start Time is required';
+    }
+
+    if (!endTime) {
+      validationErrors.endTime = 'End Time is required';
+    }
+
+    if (venueSelection === 'chooseForMe' && !capacity) {
+      validationErrors.capacity = 'Capacity is required';
+    }
+
+    if (venueSelection === 'searchVenue' && !building) {
+      validationErrors.building = 'Preferred Building is required';
+    }
+
+    if (repeatOption === 'every' && selectedFrequency === 'none') {
+      validationErrors.selectedFrequency = 'Repeat Interval is required';
+    }
+
+    if (repeatOption === 'every' && !repeatUntil) {
+      validationErrors.repeatUntil = 'Repeat Until is required';
+    }
+
+    if (!selectedRoom) {
+      validationErrors.selectedRoom = 'Venue is required';
+    }
+
+    setError(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) return;
+
     const formData = {
       date: eventDate,
       eventName,
@@ -118,11 +187,17 @@ export const BookVenueForm: React.FC = () => {
         <Typography variant="h5" gutterBottom>
           Book Venue
         </Typography>
-        <EventDetails category={category} setCategory={setCategory} setEventName={setEventName} />
+        <EventDetails
+          error={error}
+          category={category}
+          setCategory={setCategory}
+          setEventName={setEventName}
+        />
         <EventDateTime
           setEventDate={setEventDate}
           setStartTime={setStartTime}
           setEndTime={setEndTime}
+          error={error}
         />
         <EventFrequency
           repeatUntil={repeatUntil}
@@ -131,6 +206,7 @@ export const BookVenueForm: React.FC = () => {
           setSelectedFrequency={setSelectedFrequency}
           repeatOption={repeatOption}
           setRepeatOption={setRepeatOption}
+          error={error}
         />
         <VenueSelection
           venueSelection={venueSelection}
@@ -145,6 +221,7 @@ export const BookVenueForm: React.FC = () => {
           selectedRoom={selectedRoom}
           setSelectedRoom={setSelectedRoom}
           filterVenuesByBuilding={filterVenuesByBuilding}
+          error={error}
         />
         <FormButtons handleSubmit={handleSubmit} isSubmitting={isSubmitting} />
       </Paper>

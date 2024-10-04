@@ -163,7 +163,11 @@ const SideBar: React.FC = () => {
           }}
         >
           {primaryMenuItems.map((item) => (
-            <BottomNavigationAction key={item.label} label={item.label} icon={item.icon} />
+            <BottomNavigationAction
+              key={item.label}
+              label={item.label.split(' ')[1] || item.label}
+              icon={item.icon}
+            />
           ))}
           <BottomNavigationAction label="Profile" icon={<AccountCircleOutlined />} />
         </BottomNavigation>
