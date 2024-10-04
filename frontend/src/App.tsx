@@ -6,7 +6,7 @@ import { LoadingIndicator } from './components/LoadingIndicator';
 import { useGetQuery } from './hooks';
 import NotificationList from './pages/activities/list';
 import BookingRequestsModal from './pages/admin/booking/booking-request';
-import AdminDashboard from './pages/admin/dashboard';
+import DashboardCards from './pages/admin/home/dashboard';
 import MaintenanceIssuesPage from './pages/admin/issues/page';
 import UserManagement from './pages/admin/user-management/user-management';
 import BannedPage from './pages/banned';
@@ -62,7 +62,7 @@ const App: React.FC = () => {
           >
             {user?.role === 'admin' && (
               <>
-                <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<DashboardCards />} />
                 <Route path="/admin/manage-users" element={<UserManagement />} />
                 <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
                 <Route path="/admin/issues" element={<MaintenanceIssuesPage />} />
