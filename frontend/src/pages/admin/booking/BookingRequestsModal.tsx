@@ -1,4 +1,4 @@
-import { ErrorNotification } from '@/components/ErrorNotification';
+import ErrorComponent from '@/components/error-component';
 import { useGetQuery, useUpdateMutation } from '@/hooks';
 import { Bookings, Venue } from '@/interfaces';
 import { formatDate, formatTime } from '@/utils';
@@ -378,10 +378,10 @@ const BookingRequestsModal: React.FC = () => {
 
   if (isError) {
     return (
-      <ErrorNotification
+      <ErrorComponent
         errorMessage="Failed to load bookings"
         onRetry={() => location.reload()}
-      ></ErrorNotification>
+      ></ErrorComponent>
     );
   }
   // Filter bookings into pending and confirmed

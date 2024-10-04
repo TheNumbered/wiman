@@ -127,6 +127,64 @@
         "x-swagger-router-controller": "Venues"
       }
     },
+    "/venues/{venueId}/issue-report": {
+      "post": {
+        "tags": ["Venues"],
+        "summary": "Create a new issue report",
+        "description": "Create a new issue report with an optional image upload.",
+        "operationId": "createIssueReport",
+        "parameters": [
+          {
+            "name": "venueId",
+            "in": "path",
+            "description": "ID of the venue",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "images": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Issue report created successfully"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/venues/{venueId}/reservations": {
       "get": {
         "tags": ["Venues"],
@@ -255,6 +313,51 @@
                     "error": {
                       "type": "string",
                       "example": "User role not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/history": {
+      "delete": {
+        "summary": "Get user role",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "User role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "History cleared"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No history found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "No history found"
                     }
                   }
                 }
@@ -647,6 +750,82 @@
         "x-swagger-router-controller": "Admin"
       }
     },
+    "/admin/notify/user": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Send notification to a user",
+        "description": "Send a notification to a specific user.",
+        "operationId": "notifyUser",
+        "requestBody": {
+          "description": "Notification details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "ID of the user to notify"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "description": "Heading of the notification",
+                    "example": "New Notification"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Message content of the notification",
+                    "example": "You have a new message!"
+                  },
+                  "route": {
+                    "type": "string",
+                    "description": "Optional route for the notification",
+                    "example": "/messages"
+                  }
+                },
+                "required": ["userId", "message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notification sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Notification sent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-swagger-router-controller": "Admin"
+      }
+    },
+
     "/admin/bookings/approve/{id}": {
       "put": {
         "tags": ["Admin"],
@@ -1006,56 +1185,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ]
-      }
-    },
-    "/maintenance/issue-report": {
-      "post": {
-        "tags": ["Maintenance"],
-        "summary": "Create a new issue report",
-        "description": "Create a new issue report with an optional image upload.",
-        "operationId": "createIssueReport",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "venueId": {
-                    "type": "string"
-                  },
-                  "issueDescription": {
-                    "type": "string"
-                  },
-                  "image": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Issue report created successfully"
           },
           "500": {
             "description": "Internal server error",

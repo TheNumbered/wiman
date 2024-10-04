@@ -29,6 +29,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -120,7 +121,14 @@ const BookingCard: React.FC<BookingCardProps> = ({
       >
         {/* Details Section */}
         <CardContent sx={{ flex: 1, paddingLeft: 2 }}>
-          <Typography variant="h6" fontWeight="bold" color="primary">
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="primary"
+            sx={{
+              fontSize: { xs: '1rem', sm: '1.2rem' },
+            }}
+          >
             {booking.eventName}
           </Typography>
           <Typography variant="body2" color="textSecondary">

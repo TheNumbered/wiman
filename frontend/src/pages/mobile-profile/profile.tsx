@@ -1,10 +1,12 @@
 import OtherWitsAppsModal from '@/components/other-wits-apps';
+import { useClearHistory } from '@/hooks/clear-history';
 import { useColorMode } from '@/theme-provider';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import {
   ArrowBackIosNew,
   DarkModeOutlined,
   DeleteOutline,
+  EventAvailableOutlined,
   FastForwardOutlined,
   KeyboardReturnOutlined,
 } from '@mui/icons-material';
@@ -14,9 +16,11 @@ import { useNavigate } from 'react-router-dom';
 
 const MobileProfilePage: React.FC = () => {
   const { toggleColorMode } = useColorMode();
-  const { signOut, getToken } = useAuth();
+  const { signOut } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
+
+  const { clearHistory } = useClearHistory();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -25,27 +29,8 @@ const MobileProfilePage: React.FC = () => {
       case 'Dark Mode':
         toggleColorMode();
         break;
-      case 'Clear History':
-        try {
-          // Get the token for authorization
-          const token = await getToken();
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/bookings/clear-history`,
-            {
-              method: 'DELETE',
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          );
-
-          if (!response.ok) {
-            throw new Error('Failed to clear history');
-          }
-          window.location.reload();
-        } catch {
-          alert('Failed to clear history');
-        }
+      case 'My Bookings':
+        navigate('/bookings');
         break;
       case 'Log Out':
         signOut();
@@ -105,8 +90,21 @@ const MobileProfilePage: React.FC = () => {
 
         <Button
           fullWidth
+          startIcon={<EventAvailableOutlined />}
+          onClick={() => handleActionClick('My Bookings')}
+          sx={{
+            justifyContent: 'flex-start',
+            textTransform: 'none',
+            color: 'text.primary',
+            mb: 1,
+          }}
+        >
+          My Bookings
+        </Button>
+        <Button
+          fullWidth
           startIcon={<DeleteOutline />}
-          onClick={() => handleActionClick('Clear History')}
+          onClick={clearHistory}
           sx={{
             justifyContent: 'flex-start',
             textTransform: 'none',
@@ -116,7 +114,6 @@ const MobileProfilePage: React.FC = () => {
         >
           Clear History
         </Button>
-
         <Button
           fullWidth
           startIcon={<FastForwardOutlined />}
@@ -143,6 +140,10 @@ const MobileProfilePage: React.FC = () => {
         >
           Logout
         </Button>
+
+        <Typography variant="body2" sx={{ color: 'grey.500', mt: 2 }}>
+          Version 1.0.0 (c) 2024 Wits Solutions
+        </Typography>
       </Box>
 
       <OtherWitsAppsModal open={openModal} onClose={() => setOpenModal(false)} />

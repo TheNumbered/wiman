@@ -1,4 +1,4 @@
-import { ErrorNotification } from '@/components/ErrorNotification';
+import ErrorComponent from '@/components/error-component';
 import { LoadingIndicator } from '@/components/LoadingIndicator';
 import { useGetQuery } from '@/hooks';
 import { Notifications } from '@/interfaces';
@@ -21,10 +21,10 @@ const NotificationList: React.FC = () => {
 
   if (isError) {
     return (
-      <ErrorNotification
+      <ErrorComponent
         errorMessage="No notifications found"
         onRetry={() => location.reload()}
-      ></ErrorNotification>
+      ></ErrorComponent>
     );
   }
 

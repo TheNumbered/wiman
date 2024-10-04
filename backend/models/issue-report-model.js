@@ -34,7 +34,7 @@ class IssueReport {
       m.resolution_log,
       r.capacity, 
       m.venue_id, 
-      m.image_url AS maintenance_image_url, 
+      m.image_url AS issue_images, 
       m.issue_description, 
       r.amenities, 
       r.under_maintenance

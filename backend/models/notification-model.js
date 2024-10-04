@@ -17,6 +17,14 @@ class Notification {
     );
     return result.affectedRows; // Returns the number of rows updated
   }
+
+  static async createNotification(userId, message, route) {
+    const [result] = await db.query(
+      'INSERT INTO notifications (user_id, message, route) VALUES (?, ?, ?)',
+      [userId, message, route],
+    );
+    return result.insertId;
+  }
 }
 
 export default Notification;

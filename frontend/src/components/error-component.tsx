@@ -1,16 +1,16 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-interface ErrorNotificationProps {
+interface ErrorProps {
+  errorTitle?: string;
   errorMessage: string;
   onRetry: () => void; // Function to retry the action
 }
 
-export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ errorMessage, onRetry }) => {
+const ErrorComponent: React.FC<ErrorProps> = ({ errorTitle, errorMessage, onRetry }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    // Navigate to the previous page or home
     navigate('/');
   };
 
@@ -40,7 +40,7 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ errorMessa
         }}
       >
         <Typography variant="h5" gutterBottom fontWeight="bold" color="error">
-          An Error Occurred
+          {errorTitle || 'An error occurred'}
         </Typography>
 
         <Typography variant="body1" gutterBottom color="textSecondary">
@@ -85,3 +85,5 @@ export const ErrorNotification: React.FC<ErrorNotificationProps> = ({ errorMessa
     </Box>
   );
 };
+
+export default ErrorComponent;

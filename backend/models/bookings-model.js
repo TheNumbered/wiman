@@ -10,7 +10,7 @@ class Booking {
 
   static async getBookingById(id) {
     const [rows] = await db.query('SELECT * FROM bookings WHERE booking_id = ?', [id]);
-    return rows.map(toCamelCase);
+    return toCamelCase(rows[0]);
   }
 
   // Get active bookings for a user
@@ -33,11 +33,22 @@ class Booking {
     eventName,
     repeatFrequency,
     repeatUntil,
+    nextReminder,
   ) {
     const [result] = await db.query(
-      `INSERT INTO bookings (user_id, date, start_time, end_time, venue_id, status, event_name, repeat_frequency, repeat_until) 
-       VALUES (?, ?, ?, ?, ?, 'pending', ?, ?, ?)`,
-      [userId, date, startTime, endTime, venueId, eventName, repeatFrequency, repeatUntil],
+      `INSERT INTO bookings (user_id, date, start_time, end_time, venue_id, event_name, repeat_frequency, repeat_until, next_reminder)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        userId,
+        date,
+        startTime,
+        endTime,
+        venueId,
+        eventName,
+        repeatFrequency,
+        repeatUntil,
+        nextReminder,
+      ],
     );
     return result.insertId; // Returns the newly created booking's ID
   }
@@ -69,16 +80,27 @@ class Booking {
     );
     return result.affectedRows; // Returns the number of rows updated
   }
-  static async clearBookingHistory(userId) {
-    const [result] = await db.query(
-      `DELETE FROM bookings 
-       WHERE user_id = ? 
-       AND (status = 'cancelled' 
-            OR (date < CURDATE() AND (status = 'pending' OR repeat_until IS NULL))
-            OR (repeat_until < CURDATE()))`,
-      [userId],
-    );
-    return result.affectedRows; // Returns the number of rows deleted
+
+  // Get bookings due for reminder
+  static async getBookingsDueForReminder(currentTime) {
+    const query = `
+      SELECT * FROM bookings
+      WHERE status = 'confirmed'
+        AND next_reminder IS NOT NULL
+        AND next_reminder <= ?
+    `;
+    const [rows] = await db.execute(query, [currentTime]);
+    return rows.map(toCamelCase);
+  }
+
+  // Update the next reminder for a booking
+  static async updateNextReminder(bookingId, nextReminder) {
+    const query = `
+      UPDATE bookings
+      SET next_reminder = ?
+      WHERE booking_id = ?
+    `;
+    await db.execute(query, [nextReminder, bookingId]);
   }
 }
 

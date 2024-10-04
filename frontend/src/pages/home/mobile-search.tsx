@@ -16,9 +16,9 @@ import { Link, useLocation } from 'react-router-dom';
 
 const filterButtons = [
   { label: 'All', value: '' },
-  { label: 'Available', value: 'Available' },
-  { label: 'Lecture Hall', value: 'Lecture' },
+  { label: 'Lecture', value: 'Lecture' },
   { label: 'Tutorial', value: 'Tutorial' },
+  { label: 'Hall', value: 'Hall' },
 ];
 
 const FilterButton = styled(Button)(({ theme }) => ({

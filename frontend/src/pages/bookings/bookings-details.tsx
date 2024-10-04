@@ -2,7 +2,7 @@ import { useGetQuery } from '@/hooks';
 import { Bookings, Venue } from '@/interfaces';
 import Calendar from '../venue-booking/venue-details/calendar';
 
-import { ErrorNotification } from '@/components/ErrorNotification';
+import ErrorComponent from '@/components/error-component';
 import { formatDate, getRecurringDates } from '@/utils';
 import {
   Alert,
@@ -36,10 +36,10 @@ const BookingsDetails: React.FC<BookingsDetailsProps> = ({ booking }) => {
   });
   if (isError) {
     return (
-      <ErrorNotification
+      <ErrorComponent
         errorMessage="Failed to load venues"
         onRetry={() => location.reload()}
-      ></ErrorNotification>
+      ></ErrorComponent>
     );
   }
 
@@ -57,7 +57,7 @@ const BookingsDetails: React.FC<BookingsDetailsProps> = ({ booking }) => {
     <Box sx={{ p: 3, overflow: 'scroll', maxHeight: '100vh', pb: { xs: 12, md: 0 } }}>
       {/* Venue Calendar */}
       <Box mb={2}>
-        <Typography variant={'h4'}>{booking.eventName}</Typography>
+        <Typography variant={'h5'}>{booking.eventName}</Typography>
         <Typography mb={2}>{formatDate(booking.date)}</Typography>
         {booking.repeatFrequency == 'none' ? (
           <Chip label={'Once-Off'} />

@@ -7,7 +7,7 @@ import {
   Breadcrumbs,
   Button,
   Container,
-  Link,
+  Link as LinkComponent,
   Menu,
   MenuItem,
   TextField,
@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useGetQuery } from '../../hooks/get-query';
 
 const getStatusIcon = (status: string) => {
@@ -113,20 +114,12 @@ const IssueReportsList = ({ onSelect }: { onSelect: (id: number) => void }) => {
   }
 
   const breadcrumbs = [
-    <Link underline="hover" key="1" color="inherit" href="/">
+    <LinkComponent component={Link} underline="hover" key="1" color="inherit" to={'/'}>
       Home
-    </Link>,
-    <Link
-      underline="hover"
-      key="2"
-      color="inherit"
-      // href="/material-ui/getting-started/installation/"
-    >
+    </LinkComponent>,
+    <LinkComponent underline="hover" key="2" color="inherit">
       Maintenance Issues
-    </Link>,
-    <Typography key="3" sx={{ color: 'text.primary' }}>
-      List
-    </Typography>,
+    </LinkComponent>,
   ];
 
   return (
