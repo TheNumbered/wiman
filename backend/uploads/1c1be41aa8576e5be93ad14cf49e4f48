@@ -1,0 +1,3 @@
+date,start_time,end_time,venue_id,event_name
+2024-10-10,10:00:00,12:00:00,1,Conference
+2024-10-11,14:00:00,16:00:00,2,Meeting

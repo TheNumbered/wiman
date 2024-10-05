@@ -5,7 +5,7 @@ import IssueDetails from './issue-detail';
 import IssuesList from './issue-list';
 
 const IssuesPage = () => {
-  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
   const [selectedIssue, setSelectedIssue] = useState<AdvancedIssue | null>(null);
 
   const handleIssueClick = (issue: AdvancedIssue) => {

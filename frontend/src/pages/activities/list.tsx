@@ -22,7 +22,7 @@ const NotificationList: React.FC = () => {
   if (isError) {
     return (
       <ErrorComponent
-        errorMessage="No notifications found"
+        errorMessage="Error fetching notifications"
         onRetry={() => location.reload()}
       ></ErrorComponent>
     );

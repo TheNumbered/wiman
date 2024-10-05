@@ -1,4 +1,16 @@
 import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
+
+let backupBuildingData = [];
+try {
+  console.log('Reading backup-building-data.json file');
+  backupBuildingData = JSON.parse(
+    fs.readFileSync(path.resolve('./backup-building-data.json'), 'utf8'),
+  );
+} catch {
+  console.log('Error reading backup-building-data.json file');
+}
 
 export const toCapitalizedWords = (str) => {
   return str
@@ -39,10 +51,12 @@ export const fetchBuildingData = async () => {
       return cachedBuildingData;
     } else {
       console.error('Error fetching building data:', response.data.data.message);
-      return [];
+      //return [];
+      return backupBuildingData;
     }
   } catch (error) {
     console.error('Error fetching building data:', error.message);
-    return [];
+    //return [];
+    return backupBuildingData;
   }
 };

@@ -13,6 +13,7 @@ export interface Venue {
     lat: number;
     lng: number;
   };
+  isUnderMaintenance: any;
 }
 
 export interface AdvancedIssue {

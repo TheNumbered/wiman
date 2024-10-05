@@ -5,12 +5,14 @@ interface EventDateTimeProps {
   setEventDate: (value: string) => void;
   setStartTime: (value: string) => void;
   setEndTime: (value: string) => void;
+  error: { eventDate?: string; startTime?: string; endTime?: string };
 }
 
 const EventDateTime: React.FC<EventDateTimeProps> = ({
   setEventDate,
   setStartTime,
   setEndTime,
+  error,
 }) => {
   return (
     <Box sx={{ marginBottom: 3 }}>
@@ -32,6 +34,8 @@ const EventDateTime: React.FC<EventDateTimeProps> = ({
             margin="normal"
             aria-required="true"
             onChange={(e) => setEventDate(e.target.value)}
+            error={!!error.eventDate}
+            helperText={error.eventDate || ''}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -48,6 +52,8 @@ const EventDateTime: React.FC<EventDateTimeProps> = ({
             margin="normal"
             aria-required="true"
             onChange={(e) => setStartTime(e.target.value)}
+            error={!!error.startTime}
+            helperText={error.startTime || ''}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -64,6 +70,8 @@ const EventDateTime: React.FC<EventDateTimeProps> = ({
             margin="normal"
             aria-required="true"
             onChange={(e) => setEndTime(e.target.value)}
+            error={!!error.endTime}
+            helperText={error.endTime || ''}
           />
         </Grid>
       </Grid>

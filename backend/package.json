@@ -24,7 +24,8 @@
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
     "supertest": "^7.0.0",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "csv-parser": "^3.0.0"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.24.0",

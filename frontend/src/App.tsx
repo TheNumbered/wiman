@@ -5,8 +5,8 @@ import Layout from './components/layout';
 import { LoadingIndicator } from './components/LoadingIndicator';
 import { useGetQuery } from './hooks';
 import NotificationList from './pages/activities/list';
-import BookingRequestsModal from './pages/admin/booking/BookingRequestsModal';
-import AdminDashboard from './pages/admin/dashboard';
+import BookingRequestsModal from './pages/admin/booking/booking-request';
+import DashboardCards from './pages/admin/home/dashboard';
 import MaintenanceIssuesPage from './pages/admin/issues/page';
 import UserManagement from './pages/admin/user-management/user-management';
 import BannedPage from './pages/banned';
@@ -34,6 +34,7 @@ const App: React.FC = () => {
     isError,
   } = useGetQuery<User>({
     resource: 'api/user/role',
+    queryKey: `api/user/role-${userId}`,
   });
 
   if (!isLoaded) {
@@ -49,8 +50,12 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        {!isSignedIn && (
+          <>
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+          </>
+        )}
 
         {isSignedIn && user?.blocked === 0 && (
           <Route
@@ -62,7 +67,7 @@ const App: React.FC = () => {
           >
             {user?.role === 'admin' && (
               <>
-                <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<DashboardCards />} />
                 <Route path="/admin/manage-users" element={<UserManagement />} />
                 <Route path="/admin/manage-bookings" element={<BookingRequestsModal />} />
                 <Route path="/admin/issues" element={<MaintenanceIssuesPage />} />

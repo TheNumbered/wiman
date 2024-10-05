@@ -1,0 +1,290 @@
+{
+  "26171747": {
+    "buildingName": "David Webster",
+    "campus": "West Campus",
+    "latitude": -26.18672692288881,
+    "longitude": 28.026222785265507
+  },
+  "011673db": {
+    "buildingName": "OLS",
+    "campus": "East Campus",
+    "latitude": -26.1909492,
+    "longitude": 28.0287961
+  },
+  "5519b211": {
+    "buildingName": "Wits Science Stadium",
+    "campus": "West Campus",
+    "latitude": -26.190634268424184,
+    "longitude": 28.02534818903165
+  },
+  "56272f69": {
+    "buildingName": "Faculty of Commerce, Law and Management",
+    "campus": "West Campus",
+    "latitude": -26.18933907491459,
+    "longitude": 28.02646610362738
+  },
+  "9775fafe": {
+    "buildingName": "WITS Entrance 9",
+    "campus": "West Campus",
+    "latitude": -26.19250551381709,
+    "longitude": 28.026617052687694
+  },
+  "2c9ba499": {
+    "buildingName": "Commerce library",
+    "campus": "West Campus",
+    "latitude": -26.1894572,
+    "longitude": 28.025734
+  },
+  "a8658eca": {
+    "buildingName": "Mathematical Science Lab",
+    "campus": "West Campus",
+    "latitude": -26.190541396090865,
+    "longitude": 28.026821486509032
+  },
+  "fca9e12b": {
+    "buildingName": "School of Information Systems",
+    "campus": "West Campus",
+    "latitude": -26.18970994264231,
+    "longitude": 28.026639395516057
+  },
+  "47384ede": {
+    "buildingName": "Mathematical Science Building",
+    "campus": "West Campus",
+    "latitude": -26.190054831119543,
+    "longitude": 28.026488703542284
+  },
+  "255f9557": {
+    "buildingName": "CCDU",
+    "campus": "West Campus",
+    "latitude": -26.19087134826338,
+    "longitude": 28.026787998167055
+  },
+  "3c1d5cec": {
+    "buildingName": "First National Bank Building",
+    "campus": "West Campus",
+    "latitude": -26.18860966118155,
+    "longitude": 28.026387782014314
+  },
+  "934e3c6f": {
+    "buildingName": "Wits Law School",
+    "campus": "West Campus",
+    "latitude": -26.18870398134314,
+    "longitude": 28.02534218948511
+  },
+  "4f129d19": {
+    "buildingName": "DJ Du Plessis",
+    "campus": "West Campus",
+    "latitude": -26.1886347,
+    "longitude": 28.0240738
+  },
+  "2f2534bc": {
+    "buildingName": "Wits Law Clinic",
+    "campus": "West Campus",
+    "latitude": -26.18953703243695,
+    "longitude": 28.025378101459307
+  },
+  "aded2776": {
+    "buildingName": "Chemistry Labs",
+    "campus": "West Campus",
+    "latitude": -26.190756913324165,
+    "longitude": 28.02609085879213
+  },
+  "e608ef1b": {
+    "buildingName": "Flower Hall",
+    "campus": "West Campus",
+    "latitude": -26.191644,
+    "longitude": 28.026033
+  },
+  "50df0bf3": {
+    "buildingName": "Chamber of Mines",
+    "campus": "West Campus",
+    "latitude": -26.1914761,
+    "longitude": 28.0269351
+  },
+  "46c532de": {
+    "buildingName": "ARM Building",
+    "campus": "West Campus",
+    "latitude": -26.1914761,
+    "longitude": 28.0269351
+  },
+  "6e081697": {
+    "buildingName": "WITS 3rd+ Year Parking",
+    "campus": "West Campus",
+    "latitude": -26.1924677,
+    "longitude": 28.0262417
+  },
+  "dd1cad09": {
+    "buildingName": "Vida Amic Deck",
+    "campus": "West Campus",
+    "latitude": -26.1843267,
+    "longitude": 28.0239573
+  },
+  "ad218d56": {
+    "buildingName": "Amic Deck",
+    "campus": "West Campus",
+    "latitude": -26.1843267,
+    "longitude": 28.0239573
+  },
+  "d445b32d": {
+    "buildingName": "2nd+ Year Parking",
+    "campus": "West Campus",
+    "latitude": -26.1875746,
+    "longitude": 28.0245301
+  },
+  "939ecc63": {
+    "buildingName": "Law Lawns",
+    "campus": "West Campus",
+    "latitude": -26.18741,
+    "longitude": 28.0249324
+  },
+  "a52e2156": {
+    "buildingName": "Hall 29",
+    "campus": "West Campus",
+    "latitude": -26.1867963,
+    "longitude": 28.0243886
+  },
+  "31969ab7": {
+    "buildingName": "Olives and Plates Wits",
+    "campus": "West Campus",
+    "latitude": -26.1867963,
+    "longitude": 28.0243886
+  },
+  "2b4144fc": {
+    "buildingName": "Barnato Hall",
+    "campus": "West Campus",
+    "latitude": -26.1867963,
+    "longitude": 28.0243886
+  },
+  "fcc2e1a1": {
+    "buildingName": "Wits Anglo American Digital Dome",
+    "campus": "East Campus",
+    "latitude": -26.1877409,
+    "longitude": 28.0287539
+  },
+  "0b609d90": {
+    "buildingName": "Bozzoli",
+    "campus": "East Campus",
+    "latitude": -26.1866592,
+    "longitude": 28.030159
+  },
+  "734e33ae": {
+    "buildingName": "Wits Musalla",
+    "campus": "East Campus",
+    "latitude": -26.1881858,
+    "longitude": 28.028996
+  },
+  "8f5f348c": {
+    "buildingName": "Mens Halls Of Residence",
+    "campus": "East Campus",
+    "latitude": -26.1887975,
+    "longitude": 28.0295616
+  },
+  "4a9ab404": {
+    "buildingName": "College House",
+    "campus": "East Campus",
+    "latitude": -26.1888696,
+    "longitude": 28.0303059
+  },
+  "9921cffe": {
+    "buildingName": "Wits University Jubilee Hall",
+    "campus": "East Campus",
+    "latitude": -26.1880709,
+    "longitude": 28.0311215
+  },
+  "a122cc65": {
+    "buildingName": "Wits Rugby Stadium",
+    "campus": "East Campus",
+    "latitude": -26.1880709,
+    "longitude": 28.0311215
+  },
+  "a26dd49f": {
+    "buildingName": "Old Mutual Sports Hall",
+    "campus": "East Campus",
+    "latitude": -26.1895047,
+    "longitude": 28.0290692
+  },
+  "8a0cc984": {
+    "buildingName": "The Matrix",
+    "campus": "East Campus",
+    "latitude": -26.1899,
+    "longitude": 28.0295217
+  },
+  "7c20046b": {
+    "buildingName": "William Cullen Library",
+    "campus": "East Campus",
+    "latitude": -26.1906694,
+    "longitude": 28.0288162
+  },
+  "4407a9b6": {
+    "buildingName": "Wits Inter Campus Bus Service",
+    "campus": "East Campus",
+    "latitude": -26.1914707,
+    "longitude": 28.0288787
+  },
+  "5df50cfd": {
+    "buildingName": "North West Engineering Building",
+    "campus": "East Campus",
+    "latitude": -26.1914707,
+    "longitude": 28.0288787
+  },
+  "4653dee9": {
+    "buildingName": "chool of Mechanical, Industrial and Aeronautical Engineering",
+    "campus": "East Campus",
+    "latitude": -26.1917993,
+    "longitude": 28.028837
+  },
+  "639380dd": {
+    "buildingName": "Solomon Mahlangu House",
+    "campus": "East Campus",
+    "latitude": -26.1918288,
+    "longitude": 28.0299226
+  },
+  "395b0863": {
+    "buildingName": "Main Hall",
+    "campus": "East Campus",
+    "latitude": -26.1919539,
+    "longitude": 28.0298139
+  },
+  "c3e8f358": {
+    "buildingName": "RS Exam Hall",
+    "campus": "East Campus",
+    "latitude": -26.1919539,
+    "longitude": 28.0298139
+  },
+  "e12c3107": {
+    "buildingName": "Wartenweiler Library",
+    "campus": "East Campus",
+    "latitude": -26.1911185,
+    "longitude": 28.0303412
+  },
+  "07a23e28": {
+    "buildingName": "Physics Building",
+    "campus": "East Campus",
+    "latitude": -26.1914172,
+    "longitude": 28.0311313
+  },
+  "fa145529": {
+    "buildingName": "Biology Building",
+    "campus": "East Campus",
+    "latitude": -26.1911103,
+    "longitude": 28.0312252
+  },
+  "0de6d1b8": {
+    "buildingName": "Wits School of Arts",
+    "campus": "East Campus",
+    "latitude": -26.1921308,
+    "longitude": 28.0324523
+  },
+  "0bdb22ab": {
+    "buildingName": "Wits Theatre Complex",
+    "campus": "East Campus",
+    "latitude": -26.1925313,
+    "longitude": 28.0307648
+  },
+  "8669ecbc": {
+    "buildingName": "Wits Journalism Department",
+    "campus": "East Campus",
+    "latitude": -26.1925313,
+    "longitude": 28.0307648
+  }
+}

@@ -34,10 +34,11 @@ class Booking {
     repeatFrequency,
     repeatUntil,
     nextReminder,
+    status = 'pending',
   ) {
     const [result] = await db.query(
-      `INSERT INTO bookings (user_id, date, start_time, end_time, venue_id, event_name, repeat_frequency, repeat_until, next_reminder)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO bookings (user_id, date, start_time, end_time, venue_id, event_name, repeat_frequency, repeat_until, next_reminder, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         userId,
         date,
@@ -48,6 +49,7 @@ class Booking {
         repeatFrequency,
         repeatUntil,
         nextReminder,
+        status,
       ],
     );
     return result.insertId; // Returns the newly created booking's ID
