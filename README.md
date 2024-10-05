@@ -57,6 +57,10 @@ To configure the app, you need to set the following environment variables:
 - `CLERK_PUBLISHABLE_KEY`: The publishable key provided by (https://clerk.com/)
 - `CLERK_SECRET_KEY` : The secret key provided by (https://clerk.com/)
 - `API_KEY`: This the secret key (used by other apps)
+- `ONESIGNAL_REST_API_KEY`: <Your OneSignal REST API Key> from (https://onesignal.com/)
+- `ONESIGNAL_USER_AUTH_KEY`: <Your OneSignal User Auth Key>
+- `AZURE_BLOB_CONTAINER_NAME`: <Your Azure Blob Container Name>
+- `AZURE_STORAGE_CONNECTION_STRING`: <Your Azure Storage Connection String>
 
 Make sure to set these environment variables before running the app.
 
