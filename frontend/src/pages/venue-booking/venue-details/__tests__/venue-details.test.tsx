@@ -34,7 +34,6 @@ const mockVenue = {
 };
 
 describe('RoomDetails Component', () => {
-
   beforeEach(() => {
     // Reset mocks before each test
     (useGetQuery as vi.Mock).mockClear();

@@ -17,6 +17,7 @@ import {
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Notifications from '../notifications';
+import UploadCsvModal from './upload-csv';
 
 const DashboardCards: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -25,6 +26,7 @@ const DashboardCards: React.FC = () => {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [openUploadModal, setOpenUploadModal] = React.useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -228,6 +230,7 @@ const DashboardCards: React.FC = () => {
                         justifyContent: 'center',
                         height: '150px',
                       }}
+                      onClick={() => setOpenUploadModal(true)}
                     >
                       <FileUploadOutlinedIcon
                         sx={{ fontSize: '120px', color: 'gray' }} // Set color to black
@@ -246,6 +249,7 @@ const DashboardCards: React.FC = () => {
           </Grid>
         </Box>
       )}
+      <UploadCsvModal open={openUploadModal} handleClose={() => setOpenUploadModal(false)} />
     </div>
   );
 };
