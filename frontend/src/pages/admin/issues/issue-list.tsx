@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import useSecurityIssues from './security-issues-utils';
+import useSecurityIssues, { truncateText } from './security-issues-utils';
 
 interface IssuesListProps {
   onIssueClick: (issue: any) => void;
@@ -149,7 +149,7 @@ const IssuesList: React.FC<IssuesListProps> = ({ onIssueClick }) => {
               primary={`Issue: ${issue.issueDescription}`}
               secondary={
                 <Typography variant="body2" color="textSecondary">
-                  Venue: {issue.venueId}
+                  Venue: {truncateText(issue.venueId.toString(), 20)}
                 </Typography>
               }
             />

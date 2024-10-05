@@ -32,10 +32,10 @@ const CancelVenueBookingsModal = ({
     resource: 'api/admin/notify/user',
     onSuccessMessage: 'Notification sent to organizer successfully!',
   });
+  const venueIds = venueId.split(', ');
 
-  // Filter to exclude cancelled bookings
   const venueBookings = bookings?.filter(
-    (booking) => booking.venueId === venueId && booking.status !== 'cancelled',
+    (booking) => venueIds.includes(booking.venueId) && booking.status !== 'cancelled',
   );
 
   const handleCancelBooking = (bookingId: number) => {
@@ -58,7 +58,7 @@ const CancelVenueBookingsModal = ({
 
   return (
     <Dialog open={!!venueId} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Bookings for Venue: {venueId}</DialogTitle>
+      <DialogTitle>Affected Bookings</DialogTitle>
       <DialogContent>
         {venueBookings && venueBookings.length > 0 ? (
           venueBookings.map((booking) => (

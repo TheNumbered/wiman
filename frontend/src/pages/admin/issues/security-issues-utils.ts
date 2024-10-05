@@ -73,7 +73,7 @@ const useSecurityIssues = () => {
 
   useEffect(() => {
     if (reports.length > 0 && venuesData) {
-      const radius = 500;
+      const radius = 200;
 
       // Map each security report to an AdvancedIssue
       const issues = reports.map((report) => {
@@ -83,20 +83,16 @@ const useSecurityIssues = () => {
           radius,
         );
 
-        // Combine venue details into the advanced issue
-        const amenities = nearbyVenues.flatMap((venue) => venue.amenities);
-        const capacity = nearbyVenues.reduce((total, venue) => total + venue.capacity, 0);
-
         const advancedIssue: AdvancedIssue = {
           issueId: report.uid,
-          issueDescription: report.description,
+          issueDescription: report.description + ` - [${report.urgencyLevel}]`,
           issueImages: report.imageUrls,
           resolutionLog: null, // defaulting to null
-          amenities,
-          underMaintenance: nearbyVenues.filter((venue) => venue.status === 'UNDER-MANTAINANCE')
-            .length,
-          capacity,
-          venueId: nearbyVenues.length > 0 ? nearbyVenues[0].venueId : 'N/A', // Assign first venue or 'N/A'
+          amenities: nearbyVenues.length == 1 ? nearbyVenues[0].amenities : [],
+          underMaintenance: nearbyVenues.length == 1 ? nearbyVenues[0].isUnderMaintenance : 0,
+          capacity: nearbyVenues.length == 1 ? nearbyVenues[0].capacity : 0,
+          venueId:
+            nearbyVenues.length > 0 ? nearbyVenues.map((venue) => venue.venueId).join(', ') : 'N/A',
         };
 
         return advancedIssue;
@@ -107,6 +103,13 @@ const useSecurityIssues = () => {
   }, [reports, venuesData]);
 
   return advancedIssues;
+};
+
+export const truncateText = (text: string, charLimit: number): string => {
+  if (text.length > charLimit) {
+    return text.slice(0, charLimit) + '...';
+  }
+  return text;
 };
 
 export default useSecurityIssues;

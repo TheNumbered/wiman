@@ -104,7 +104,7 @@ const DashboardCards: React.FC = () => {
             />
           </Box>
 
-          <Typography variant="h5" fontWeight="bold" color="text.primary" mb={2}>
+          <Typography variant="h6" color="text.primary" mb={2}>
             Recommendations
           </Typography>
 

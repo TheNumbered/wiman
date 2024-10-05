@@ -34,6 +34,7 @@ const App: React.FC = () => {
     isError,
   } = useGetQuery<User>({
     resource: 'api/user/role',
+    queryKey: `api/user/role-${userId}`,
   });
 
   if (!isLoaded) {
@@ -49,8 +50,12 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        {!isSignedIn && (
+          <>
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+          </>
+        )}
 
         {isSignedIn && user?.blocked === 0 && (
           <Route

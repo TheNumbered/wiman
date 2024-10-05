@@ -7,7 +7,7 @@
     "**/**config**": true,
     "**/**lock**": true,
     "**/**vite**": true,
-    "**/**package**": true,
+    //"**/**package**": true,
     "**/**coverage**": true,
     "**/**.prettier**": true
   },
