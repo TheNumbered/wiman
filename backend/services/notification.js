@@ -26,7 +26,6 @@ class NotificationService {
 
       notification.contents = { en: content };
       notification.headings = { en: heading };
-      notification.included_segments = ['All'];
       if (userIds.length > 0) {
         notification.include_aliases = {
           external_id: userIds,
@@ -36,6 +35,7 @@ class NotificationService {
 
       if (filters.length > 0) {
         notification.filters = filters;
+        notification.target_channel = 'push';
       }
 
       const response = await this.client.createNotification(notification);
