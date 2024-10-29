@@ -18,8 +18,8 @@ const HomeMobile: FC = () => {
   const campuses = [
     { campus: 'Braamfontein', subCampus: 'East Campus' },
     { campus: 'Braamfontein', subCampus: 'West Campus' },
-    // { campus: 'Parktown', subCampus: 'Education Campus' },
-    // { campus: 'Parktown', subCampus: 'Health Science Campus' },
+    { campus: 'Parktown', subCampus: 'Education Campus' },
+    { campus: 'Parktown', subCampus: 'Health Science Campus' },
   ];
 
   return (

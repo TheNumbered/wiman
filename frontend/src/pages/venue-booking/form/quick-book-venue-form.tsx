@@ -85,6 +85,7 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
 
     const validationErrors: {
       eventName?: string;
+      eventDate?: string;
       startDate?: string;
       startTime?: string;
       endTime?: string;
@@ -102,6 +103,11 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
       hasError = true;
     }
 
+    if (date && new Date(date) < new Date()) {
+      validationErrors.startDate = 'Start Date must be a future date';
+      hasError = true;
+    }
+
     if (!startTime) {
       validationErrors.startTime = 'Start Time is required';
       hasError = true;
@@ -109,6 +115,11 @@ export const QuickBookVenueForm: React.FC<QuickBookVenueFormProps> = ({ onClose 
 
     if (!endTime) {
       validationErrors.endTime = 'End Time is required';
+      hasError = true;
+    }
+
+    if (endTime && startTime && endTime <= startTime) {
+      validationErrors.endTime = 'End Time must be greater than Start Time';
       hasError = true;
     }
 

@@ -124,6 +124,9 @@ export const BookVenueForm: React.FC = () => {
     if (!eventDate) {
       validationErrors.eventDate = 'Start Date is required';
     }
+    if (eventDate && new Date(eventDate) < new Date()) {
+      validationErrors.eventDate = 'Start Date must be greater than today';
+    }
 
     if (!startTime) {
       validationErrors.startTime = 'Start Time is required';
@@ -131,6 +134,10 @@ export const BookVenueForm: React.FC = () => {
 
     if (!endTime) {
       validationErrors.endTime = 'End Time is required';
+    }
+
+    if (endTime && startTime && endTime <= startTime) {
+      validationErrors.endTime = 'End Time must be greater than Start Time';
     }
 
     if (venueSelection === 'chooseForMe' && !capacity) {

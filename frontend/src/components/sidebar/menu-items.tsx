@@ -4,7 +4,6 @@ import {
   DarkModeOutlined,
   DeleteOutline,
   EventAvailableOutlined,
-  FastForwardOutlined,
   GroupOutlined,
   HomeOutlined,
   KeyboardReturnOutlined,
@@ -58,10 +57,10 @@ export const profileMenuItems = [
     label: 'Clear History',
     icon: <DeleteOutline />,
   },
-  {
-    label: 'Other Wits Apps',
-    icon: <FastForwardOutlined />,
-  },
+  // {
+  //   label: 'Profile',
+  //   icon: <AccountCircleOutlined />,
+  // },
   {
     label: 'Log Out',
     icon: <KeyboardReturnOutlined />,
